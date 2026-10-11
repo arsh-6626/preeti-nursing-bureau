@@ -13,6 +13,7 @@ const NAV = [
   { href: "/contact", label: "Contact" },
 ];
 
+/** Floating pill navigation that sits over the ink stage at the top of every public page. */
 export function SiteHeader({ brand, tel }: { brand: React.ReactNode; tel: string | null }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -23,8 +24,8 @@ export function SiteHeader({ brand, tel }: { brand: React.ReactNode; tel: string
     setOpen(false);
   }
   return (
-    <header className="sticky top-0 z-30 border-b border-line/80 bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/85">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-[72px] sm:px-6">
+    <header className="on-ink sticky top-0 z-30 px-3 pt-3 sm:px-5">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 rounded-full border border-white/10 bg-ink-950/80 pl-4 pr-2 shadow-[0_10px_40px_-12px_rgb(6_26_29/0.6)] backdrop-blur-xl supports-[backdrop-filter]:bg-ink-950/65 sm:pl-5">
         {brand}
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
           {NAV.map((n) => (
@@ -32,52 +33,50 @@ export function SiteHeader({ brand, tel }: { brand: React.ReactNode; tel: string
               key={n.href}
               href={n.href}
               aria-current={pathname === n.href ? "page" : undefined}
-              className="rounded-md px-3 py-2 text-[15px] font-medium text-ink hover:text-teal-700 aria-[current=page]:text-teal-700"
+              className="rounded-full px-3.5 py-2 text-[14px] font-medium text-on-ink-muted transition-colors hover:text-white aria-[current=page]:text-white"
             >
               {n.label}
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {tel && (
-            <a href={tel} className={buttonClass("quiet", "md", "max-sm:hidden")}>
-              <PhoneIcon size={18} aria-hidden />
+            <a href={tel} className="hidden h-10 items-center gap-2 rounded-full px-3.5 text-[14px] font-medium text-on-ink-muted hover:text-white sm:inline-flex">
+              <PhoneIcon size={17} aria-hidden />
               Call
             </a>
           )}
-          <Link href="/request" className={buttonClass("primary", "md", "max-sm:hidden")}>
+          <Link href="/request" className={buttonClass("mint", "sm", "h-10 px-4 max-sm:hidden")}>
             Find a Caregiver
           </Link>
           <button
             type="button"
-            className="grid size-11 place-items-center rounded-[var(--radius-control)] text-navy-900 hover:bg-mist lg:hidden"
+            className="grid size-10 place-items-center rounded-full text-white hover:bg-white/10 lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <XIcon size={24} aria-hidden /> : <ListIcon size={24} aria-hidden />}
+            {open ? <XIcon size={22} aria-hidden /> : <ListIcon size={22} aria-hidden />}
           </button>
         </div>
       </div>
       {open && (
-        <nav id="mobile-nav" aria-label="Mobile" className="border-t border-line bg-paper px-4 pb-5 pt-2 lg:hidden">
+        <nav id="mobile-nav" aria-label="Mobile" className="mx-auto mt-2 max-w-6xl rounded-[28px] border border-white/10 bg-ink-950/95 p-3 backdrop-blur-xl lg:hidden">
           <ul className="flex flex-col">
             {NAV.map((n) => (
               <li key={n.href}>
-                <Link href={n.href} className="block border-b border-line py-3.5 text-base font-medium text-navy-900">
+                <Link href={n.href} className="block rounded-2xl px-4 py-3.5 text-lg font-medium text-white hover:bg-white/5">
                   {n.label}
                 </Link>
               </li>
             ))}
           </ul>
-          <div className="mt-4 grid gap-2">
-            <Link href="/request" className={buttonClass("primary", "lg", "w-full")}>
-              Find a Caregiver
-            </Link>
+          <div className="mt-2 grid gap-2 p-1">
+            <Link href="/request" className={buttonClass("mint", "lg", "w-full")}>Find a Caregiver</Link>
             {tel && (
-              <a href={tel} className={buttonClass("secondary", "lg", "w-full")}>
-                <PhoneIcon size={20} aria-hidden /> Call us
+              <a href={tel} className={buttonClass("onInk", "lg", "w-full")}>
+                <PhoneIcon size={19} aria-hidden /> Call us
               </a>
             )}
           </div>

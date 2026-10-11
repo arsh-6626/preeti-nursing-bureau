@@ -55,8 +55,8 @@ test("a family can submit a care request from a phone and gets a reference", asy
   await page.getByRole("button", { name: "Send request" }).click();
 
   await expect(page).toHaveURL(/\/request\/status\//);
-  await expect(page.getByText("Your request has been received")).toBeVisible();
-  const reference = (await page.locator("p.tabular").first().textContent())?.trim();
+  await expect(page.getByRole("heading", { name: "Request received" })).toBeVisible();
+  const reference = (await page.getByText(/^PNB-[A-Z0-9]{4}-[A-Z0-9]{4}$/).first().textContent())?.trim();
   expect(reference).toMatch(/^PNB-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
   await expect(page.getByText(/not a confirmed booking/)).toBeVisible();
 });

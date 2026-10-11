@@ -20,8 +20,8 @@ export default async function LegalPage({ params }: PageProps<"/legal/[slug]">) 
   return (
     <>
       <PageIntro title={page.title} />
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-        <p className="mb-6 text-sm text-muted">Last updated {formatDate(page.updatedAt)}</p>
+      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-24">
+        <p className="mb-6 font-mono text-xs uppercase tracking-[0.12em] text-ink-700">Last updated {formatDate(page.updatedAt)}</p>
         <PlainText text={page.body} />
       </div>
     </>

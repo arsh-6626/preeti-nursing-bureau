@@ -9,28 +9,31 @@ export function ContactActions({
   prefill,
   size = "md",
   showNumbers = false,
+  tone = "paper",
 }: {
   phone: string | null;
   whatsapp: string | null;
   prefill: string;
   size?: "md" | "lg";
   showNumbers?: boolean;
+  tone?: "paper" | "ink";
 }) {
   const tel = telHref(phone);
   const wa = whatsappHref(whatsapp, prefill);
   if (!tel && !wa) return null;
+  const cls = tone === "ink" ? buttonClass("onInk", size) : buttonClass("secondary", size, "rounded-full");
   return (
     <div className="flex flex-wrap gap-3">
       {tel && (
-        <a href={tel} className={buttonClass("secondary", size, "rounded-full")}>
-          <PhoneIcon size={20} weight="regular" aria-hidden />
-          {showNumbers && phone ? `Call ${formatPhoneDisplay(phone)}` : "Call us"}
+        <a href={tel} className={cls}>
+          <PhoneIcon size={19} aria-hidden />
+          {showNumbers && phone ? formatPhoneDisplay(phone) : "Call us"}
         </a>
       )}
       {wa && (
-        <a href={wa} target="_blank" rel="noopener noreferrer" className={buttonClass("secondary", size, "rounded-full")}>
-          <WhatsappLogoIcon size={20} weight="regular" aria-hidden />
-          WhatsApp us
+        <a href={wa} target="_blank" rel="noopener noreferrer" className={cls}>
+          <WhatsappLogoIcon size={19} aria-hidden />
+          WhatsApp
         </a>
       )}
     </div>

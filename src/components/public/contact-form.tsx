@@ -22,7 +22,7 @@ export function ContactForm({ consentText }: { consentText: string }) {
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
       <CheckboxField name="contactConsent" label={consentText} />
       <div>
-        <SubmitButton size="lg" pendingLabel="Sending…">Request a call back</SubmitButton>
+        <SubmitButton size="lg" variant="ink" className="px-7" pendingLabel="Sending…">Request a call back</SubmitButton>
       </div>
     </ActionForm>
   );

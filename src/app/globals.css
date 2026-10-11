@@ -37,6 +37,20 @@
   --color-rose-50: #fbeceb;
   --color-rose-700: #a3271f;
 
+  /* Public site (medtech redesign) */
+  --color-ink-950: #061a1d;
+  --color-ink-900: #0b2529;
+  --color-ink-800: #12343a;
+  --color-ink-700: #1d4a50;
+  --color-fog: #f4f7f5;
+  --color-fog-2: #e9efec;
+  --color-brand: #0b6b61;
+  --color-brand-deep: #08524b;
+  --color-mint: #7cf2d2;
+  --color-mint-soft: #c9fbee;
+  --color-on-ink: #e6f2ef;
+  --color-on-ink-muted: #9db8b3;
+
   --radius-panel: 14px;
   --radius-control: 10px;
 
@@ -107,4 +121,25 @@ a {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Public marquee: one strip of plain facts, paused under reduced motion. */
+@keyframes pnb-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.pnb-marquee {
+  animation: pnb-marquee 38s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pnb-marquee { animation: none; }
+}
+
+/* Focus rings stay visible on dark public stages. */
+.on-ink :focus-visible {
+  outline-color: var(--color-mint);
+}
+.on-ink ::selection {
+  background: var(--color-mint);
+  color: var(--color-ink-950);
 }

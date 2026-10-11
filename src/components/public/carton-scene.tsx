@@ -265,7 +265,8 @@ function Scene({ name, region }: { name: string; region: string }) {
       <ambientLight intensity={0.9} />
       <directionalLight position={[2.5, 4, 5]} intensity={2.1} castShadow />
       <directionalLight position={[0, 0.5, 6]} intensity={0.7} />
-      <directionalLight position={[-4, 2, -2]} intensity={0.5} color={MINT} />
+      <directionalLight position={[-4, 2, -2]} intensity={1.1} color={MINT} />
+      <pointLight position={[-2.5, -1, 2]} intensity={6} distance={6} color={MINT} />
       <Environment resolution={256}>
         <Lightformer intensity={2.2} position={[0, 4, 3]} scale={[8, 2, 1]} />
         <Lightformer intensity={1.2} position={[-5, 1, 2]} rotation-y={Math.PI / 2} scale={[6, 3, 1]} />
@@ -278,7 +279,7 @@ function Scene({ name, region }: { name: string; region: string }) {
       <Capsule position={[1.12, -0.45, 0.9]} rotation={[0.2, 0.3, -0.6]} color="#ffffff" scale={0.9} speed={1.5} />
       <Capsule position={[1.05, 1.25, -0.4]} rotation={[0.1, 0, 0.3]} color={MINT} scale={0.75} speed={1} />
       <Capsule position={[-1.05, -1.0, 0.3]} rotation={[0.3, 0.2, -1.1]} color="#ffffff" scale={0.7} speed={1.3} />
-      <ContactShadows position={[0, -1.45, 0]} opacity={0.26} scale={3.6} blur={2.6} far={2.2} color={NAVY} />
+      <ContactShadows position={[0, -1.45, 0]} opacity={0.55} scale={3.6} blur={2.6} far={2.2} color="#000000" />
     </>
   );
 }

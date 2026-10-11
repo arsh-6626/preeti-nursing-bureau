@@ -28,6 +28,7 @@
     "@react-three/fiber": "^9.8.1",
     "bcryptjs": "^3.0.3",
     "decimal.js": "^10.6.0",
+    "motion": "^14.1.0",
     "next": "16.4.0",
     "pg": "^8.23.1",
     "react": "19.3.0",
