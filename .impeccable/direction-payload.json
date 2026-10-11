@@ -1,0 +1,123 @@
+{
+  "title": "Choose the visual world for Preeti Nursing Bureau",
+  "question": "The roll assigned the Inland Letter. Keep it, take an alternate, or re-roll. Palette stays inside your brief: white and neutral grounds, muted teal, navy, subtle green.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Inland Letter",
+      "kicker": "THE ROLL",
+      "lineage": "India Post inland letter card and registered-post receipt",
+      "thesis": "A family writes to the bureau; the bureau answers with a receipt number and a phone call, never an instant booking.",
+      "palette": ["#FFFFFF", "#E3EFEC", "#2E6E6B", "#1E3550", "#5C9467"],
+      "materials": ["folded letter sheet with perforated fold edges", "hairline-ruled address panels", "round postmark carrying the reference number"],
+      "viewport": "Navy headline on white at left; at right the first fold of the letter sheet is the working request form: choose the service and the 12 or 24 hour arrangement right there.",
+      "risk": "Reads nostalgic or postal if the letter turns into a costume instead of the working form.",
+      "raised": [
+        {"from": "Centre-rail reference setting", "raise": "Every rule on the letter is a single device-pixel hairline, and the sheet holds to three ink values."},
+        {"from": "VU meter bridge", "raise": "The 12-hour and 24-hour choices are identical faces side by side, read as one row, never a menu."},
+        {"from": "Blacksmith scale shower", "raise": "References, dates and rupee amounts set in tabular numerals everywhere, public and admin."}
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "The Reservation Chart",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Indian Railways reservation chart and PNR slip",
+      "thesis": "Every request gets a PNR-style reference and a status line that moves from received to matched to confirmed by a person.",
+      "palette": ["#FFFFFF", "#EEF3F2", "#1E3550", "#2E6E6B", "#5C9467"],
+      "materials": ["printed chart rows", "status stamps", "perforated slip"],
+      "viewport": "A reservation slip at the top of the page: service, area, shift, start date filled in as the family types.",
+      "risk": "The most familiar of my list, and booking vocabulary can sound like a guarantee the bureau never makes."
+    },
+    {
+      "id": "challenger-rail",
+      "label": "Centre-rail reference setting",
+      "verdict": "declined",
+      "lineage": "wide-margin scholarly editions",
+      "thesis": "Two dense text columns around a rail of keys.",
+      "palette": ["#F2EEE4", "#1A1A1A", "#C2412D"],
+      "materials": ["ruling-engine hairlines", "small-caps apparatus"],
+      "viewport": "Twin columns with a vermilion key rail.",
+      "case": "Families in a hurry do not read scholarly apparatus; clarity loses.",
+      "risk": "Reads academic and slow.",
+      "kept": "One-pixel hairline discipline and a three-value ink rule."
+    },
+    {
+      "id": "challenger-vu",
+      "label": "VU meter bridge",
+      "verdict": "declined",
+      "lineage": "studio recording desks",
+      "thesis": "A row of identical meters read as one instrument.",
+      "palette": ["#F1E9D2", "#111111", "#B33A2B"],
+      "materials": ["meter glass", "walnut"],
+      "viewport": "A bridge of needles.",
+      "case": "No family identifies care with audio gear.",
+      "risk": "Pure costume for this audience.",
+      "kept": "Identical repeated faces as a ruler: the two shift cards."
+    },
+    {
+      "id": "challenger-forge",
+      "label": "Blacksmith scale shower",
+      "verdict": "declined",
+      "lineage": "power-hammer forging",
+      "thesis": "Each blow visibly changes the metal.",
+      "palette": ["#141414", "#6B6B6B", "#E8622A"],
+      "materials": ["hot iron", "scale particles"],
+      "viewport": "A forge-dark stage.",
+      "case": "Violent and dark; wrong scene for a worried family.",
+      "risk": "Alarming.",
+      "kept": "Tabular force numerals: every figure set to be measured."
+    },
+    {
+      "id": "challenger-garden",
+      "label": "Gravity-rain garden",
+      "verdict": "declined",
+      "lineage": "surreal impossible worlds",
+      "thesis": "Rain obeys the colour of each cloud.",
+      "palette": ["#5D6B63", "#3B6FB6", "#C2463A"],
+      "materials": ["vector rain", "dusk garden"],
+      "viewport": "A painted gravity field.",
+      "case": "Whimsy undermines trust for medical-adjacent care.",
+      "risk": "Confusing.",
+      "kept": "Nothing structural; declined outright."
+    },
+    {
+      "id": "challenger-arcade",
+      "label": "CRT arcade pixel glow",
+      "verdict": "declined",
+      "lineage": "arcade cabinets",
+      "thesis": "Fat pixels as stage.",
+      "palette": ["#0A0A0A", "#F4D03F", "#3FA7F4"],
+      "materials": ["scanlines", "phosphor"],
+      "viewport": "A pixel playfield.",
+      "case": "Playful gaming register contradicts the brief.",
+      "risk": "Unserious.",
+      "kept": "Nothing structural; declined outright."
+    },
+    {
+      "id": "challenger-emigre",
+      "label": "Emigre bitmap specimen",
+      "verdict": "declined",
+      "lineage": "1990s type specimens",
+      "thesis": "Low resolution as the aesthetic.",
+      "palette": ["#FFFFFF", "#111111", "#FF3B30"],
+      "materials": ["bitmap type", "halftone"],
+      "viewport": "Poster-scale pixel headline.",
+      "case": "Hard to read for older family members.",
+      "risk": "Accessibility cost.",
+      "kept": "Nothing structural; declined outright."
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code", "toggle": false},
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "A clean home-healthcare site: hero with headline and two buttons, service cards, steps, FAQ, contact.",
+    "palette": ["#FFFFFF", "#F4F7F7", "#1E3550", "#2E6E6B"],
+    "materials": ["clean grid", "icon tiles"],
+    "viewport": "Headline and two CTAs at left, service highlights at right.",
+    "risk": "Indistinguishable from every other home-care bureau by design."
+  },
+  "steer": true
+}

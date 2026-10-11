@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/*
+ * Preeti Nursing Bureau design tokens.
+ * Light theme only (pinned by the brief: white and neutral grounds).
+ * Navy carries headings and ink, muted teal carries every primary action and
+ * selection, subtle green is reserved for confirmed / positive state.
+ */
+@theme {
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #ffffff;
+  --color-mist: #f3f7f7;
+  --color-mist-2: #e8f0ef;
+  --color-line: #d9e3e2;
+  --color-line-strong: #b9cbca;
+
+  --color-navy-950: #0f2237;
+  --color-navy-900: #142b44;
+  --color-navy-800: #1e3a57;
+  --color-ink: #24384c;
+  --color-muted: #52657a;
+
+  --color-teal-50: #eaf4f2;
+  --color-teal-100: #d3e8e4;
+  --color-teal-600: #2c6e6a;
+  --color-teal-700: #235a57;
+  --color-teal-800: #1b4744;
+
+  --color-leaf-50: #e9f4ec;
+  --color-leaf-600: #3c7a4c;
+  --color-leaf-700: #2f6340;
+
+  --color-amber-50: #fbf3e2;
+  --color-amber-700: #855600;
+  --color-rose-50: #fbeceb;
+  --color-rose-700: #a3271f;
+
+  --radius-panel: 14px;
+  --radius-control: 10px;
+
+  --shadow-raise: 0 1px 2px rgb(20 43 68 / 0.06), 0 8px 24px -8px rgb(20 43 68 / 0.14);
+  --shadow-float: 0 2px 4px rgb(20 43 68 / 0.05), 0 24px 48px -16px rgb(20 43 68 / 0.22);
+}
+
+html {
+  color-scheme: light;
+  /* Keep focused or scrolled-to elements clear of the sticky header. */
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-teal-100);
+  color: var(--color-navy-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-teal-600);
+  outline-offset: 2px;
+}
+
+input,
+textarea,
+select {
+  caret-color: var(--color-teal-600);
+}
+
+a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+* {
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+/* Long-form legal / about content rendered from plain text. */
+.prose-plain h2 {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 650;
+  color: var(--color-navy-900);
+}
+.prose-plain p {
+  margin-top: 0.75rem;
+  line-height: 1.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

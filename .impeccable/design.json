@@ -1,0 +1,605 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T18:25:24+00:00",
+  "title": "Design System: Preeti Nursing Bureau",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "mist": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "canonical": "#f3f7f7",
+        "oklch": "oklch(97.3% 0.004 197.1)",
+        "tonalRamp": [
+          "#090c0c",
+          "#232626",
+          "#3f4343",
+          "#5f6262",
+          "#7f8383",
+          "#a2a6a6",
+          "#c6caca",
+          "#ebefef"
+        ]
+      },
+      "mist-2": {
+        "role": "neutral",
+        "displayName": "Mist 2",
+        "canonical": "#e8f0ef",
+        "oklch": "oklch(94.9% 0.009 188.1)",
+        "tonalRamp": [
+          "#070c0c",
+          "#212626",
+          "#3d4443",
+          "#5c6362",
+          "#7d8483",
+          "#9fa7a6",
+          "#c3cbca",
+          "#e8f0ef"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#d9e3e2",
+        "oklch": "oklch(90.8% 0.011 189.8)",
+        "tonalRamp": [
+          "#060d0c",
+          "#1f2726",
+          "#3c4443",
+          "#5b6362",
+          "#7b8484",
+          "#9ea7a6",
+          "#c2cbca",
+          "#e7f1f0"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "#b9cbca",
+        "oklch": "oklch(82.8% 0.020 192.7)",
+        "tonalRamp": [
+          "#030e0d",
+          "#1a2828",
+          "#364545",
+          "#556564",
+          "#758685",
+          "#98a9a8",
+          "#bbcdcc",
+          "#e0f3f2"
+        ]
+      },
+      "navy-950": {
+        "role": "secondary",
+        "displayName": "Night Navy",
+        "canonical": "#0f2237",
+        "oklch": "oklch(24.8% 0.047 252.4)",
+        "tonalRamp": [
+          "#010b1c",
+          "#13263b",
+          "#2f445b",
+          "#4e637c",
+          "#6e859f",
+          "#90a7c3",
+          "#b4cce8",
+          "#e4f0fe"
+        ]
+      },
+      "navy-900": {
+        "role": "secondary",
+        "displayName": "Harbour Navy",
+        "canonical": "#142b44",
+        "oklch": "oklch(28.4% 0.055 252.0)",
+        "tonalRamp": [
+          "#000b1d",
+          "#0f263f",
+          "#2c445e",
+          "#4a6380",
+          "#6b85a3",
+          "#8da8c7",
+          "#b0cced",
+          "#e4f0fe"
+        ]
+      },
+      "navy-800": {
+        "role": "secondary",
+        "displayName": "Slate Navy",
+        "canonical": "#1e3a57",
+        "oklch": "oklch(34.1% 0.062 250.8)",
+        "tonalRamp": [
+          "#000b1d",
+          "#0a2642",
+          "#284462",
+          "#466483",
+          "#6785a6",
+          "#89a8cb",
+          "#accdf1",
+          "#e3f0fe"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#24384c",
+        "oklch": "oklch(33.3% 0.044 249.3)",
+        "tonalRamp": [
+          "#000c1b",
+          "#132739",
+          "#304459",
+          "#4e647a",
+          "#6e859c",
+          "#90a8c0",
+          "#b4cce5",
+          "#e3f0fe"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Slate",
+        "canonical": "#52657a",
+        "oklch": "oklch(49.9% 0.041 251.2)",
+        "tonalRamp": [
+          "#010b1c",
+          "#152638",
+          "#324457",
+          "#506378",
+          "#71859b",
+          "#93a7be",
+          "#b6cce4",
+          "#e3f0ff"
+        ]
+      },
+      "teal-50": {
+        "role": "primary",
+        "displayName": "Teal Tint",
+        "canonical": "#eaf4f2",
+        "oklch": "oklch(95.9% 0.011 182.9)",
+        "tonalRamp": [
+          "#060d0c",
+          "#1f2725",
+          "#3c4442",
+          "#5b6362",
+          "#7c8583",
+          "#9ea7a5",
+          "#c2ccca",
+          "#e7f1ef"
+        ]
+      },
+      "teal-100": {
+        "role": "primary",
+        "displayName": "Teal Wash",
+        "canonical": "#d3e8e4",
+        "oklch": "oklch(91.4% 0.023 183.1)",
+        "tonalRamp": [
+          "#020e0c",
+          "#182926",
+          "#354643",
+          "#536662",
+          "#748784",
+          "#96aaa6",
+          "#baceca",
+          "#dff4f0"
+        ]
+      },
+      "teal-600": {
+        "role": "primary",
+        "displayName": "Bureau Teal",
+        "canonical": "#2c6e6a",
+        "oklch": "oklch(49.5% 0.067 189.8)",
+        "tonalRamp": [
+          "#000f0d",
+          "#022c2a",
+          "#0d4c49",
+          "#2b6d69",
+          "#4f8f8b",
+          "#72b3ae",
+          "#96d8d2",
+          "#bbfef8"
+        ]
+      },
+      "teal-700": {
+        "role": "primary",
+        "displayName": "Deep Teal",
+        "canonical": "#235a57",
+        "oklch": "oklch(43.0% 0.058 190.3)",
+        "tonalRamp": [
+          "#000e0d",
+          "#042b2a",
+          "#124c49",
+          "#366c69",
+          "#588e8a",
+          "#7ab1ad",
+          "#9ed6d2",
+          "#c3fcf7"
+        ]
+      },
+      "teal-800": {
+        "role": "primary",
+        "displayName": "Darkest Teal",
+        "canonical": "#1b4744",
+        "oklch": "oklch(36.6% 0.049 189.2)",
+        "tonalRamp": [
+          "#000f0d",
+          "#032c29",
+          "#1f4a47",
+          "#3f6a67",
+          "#608c88",
+          "#82afab",
+          "#a6d4d0",
+          "#cafaf5"
+        ]
+      },
+      "leaf-50": {
+        "role": "tertiary",
+        "displayName": "Leaf Tint",
+        "canonical": "#e9f4ec",
+        "oklch": "oklch(95.7% 0.016 154.5)",
+        "tonalRamp": [
+          "#060d08",
+          "#1f2722",
+          "#3c453e",
+          "#5b645d",
+          "#7b857e",
+          "#9ea8a1",
+          "#c2ccc5",
+          "#e7f2ea"
+        ]
+      },
+      "leaf-600": {
+        "role": "tertiary",
+        "displayName": "Leaf",
+        "canonical": "#3c7a4c",
+        "oklch": "oklch(52.5% 0.097 150.3)",
+        "tonalRamp": [
+          "#001003",
+          "#012e11",
+          "#0b5024",
+          "#327043",
+          "#559363",
+          "#77b685",
+          "#9bdba8",
+          "#c9fed3"
+        ]
+      },
+      "leaf-700": {
+        "role": "tertiary",
+        "displayName": "Deep Leaf",
+        "canonical": "#2f6340",
+        "oklch": "oklch(45.3% 0.080 152.6)",
+        "tonalRamp": [
+          "#001004",
+          "#032e15",
+          "#194e2c",
+          "#3a6e4b",
+          "#5c906b",
+          "#7eb48d",
+          "#a2d9b0",
+          "#c6ffd5"
+        ]
+      },
+      "amber-50": {
+        "role": "status",
+        "displayName": "Amber Tint",
+        "canonical": "#fbf3e2",
+        "oklch": "oklch(96.6% 0.024 85.8)",
+        "tonalRamp": [
+          "#100a02",
+          "#2a2417",
+          "#484134",
+          "#676052",
+          "#898272",
+          "#aca494",
+          "#d0c8b8",
+          "#f6eedd"
+        ]
+      },
+      "amber-700": {
+        "role": "status",
+        "displayName": "Amber",
+        "canonical": "#855600",
+        "oklch": "oklch(49.3% 0.105 72.7)",
+        "tonalRamp": [
+          "#130900",
+          "#352000",
+          "#5a3a06",
+          "#855600",
+          "#a87732",
+          "#cd9a56",
+          "#f3be7a",
+          "#feebd4"
+        ]
+      },
+      "rose-50": {
+        "role": "status",
+        "displayName": "Rose Tint",
+        "canonical": "#fbeceb",
+        "oklch": "oklch(95.5% 0.016 22.1)",
+        "tonalRamp": [
+          "#110808",
+          "#2d2221",
+          "#4a3f3e",
+          "#6a5e5d",
+          "#8c7f7e",
+          "#afa1a0",
+          "#d4c5c4",
+          "#f9eae9"
+        ]
+      },
+      "rose-700": {
+        "role": "status",
+        "displayName": "Rose",
+        "canonical": "#a3271f",
+        "oklch": "oklch(47.3% 0.162 28.6)",
+        "tonalRamp": [
+          "#1f0000",
+          "#4c0102",
+          "#7e0d0a",
+          "#aa2e25",
+          "#d15447",
+          "#fa7869",
+          "#fcb4aa",
+          "#ffe9e5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline only; 2rem on phones, 2.6rem from sm. Two lines at 1280/1440 desktop, three at 390px by design (owner-editable copy is not shortened)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Public section headings; page intros step to 2.25rem from sm; admin page titles 600 at 1.5rem."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Sub-section headings, step titles, request panel title."
+      },
+      "body-lead": {
+        "displayName": "Body lead",
+        "purpose": "Section introductions and hero sentence, 46-62ch."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy in ink; secondary in muted."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels and legends, sentence case; badges at 12px."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Tabular shift lengths and references; references widen to 0.05em tracking."
+      }
+    },
+    "shadows": [
+      {
+        "name": "raise",
+        "value": "0 1px 2px rgb(20 43 68 / 0.06), 0 8px 24px -8px rgb(20 43 68 / 0.14)",
+        "purpose": "Request wizard panel, request status card, admin sign-in card, active admin nav item."
+      },
+      {
+        "name": "float",
+        "value": "0 2px 4px rgb(20 43 68 / 0.05), 0 24px 48px -16px rgb(20 43 68 / 0.22)",
+        "purpose": "Hero request starter panel and confirmation dialogs."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-transition",
+        "value": "150ms ease-out",
+        "purpose": "Background, border, color, and 1px press transform on buttons and controls."
+      },
+      {
+        "name": "progress-width",
+        "value": "300ms",
+        "purpose": "Request wizard progress bar width."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "All animations and transitions collapse under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px",
+        "purpose": "Header CTAs appear; mobile action bar hides."
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px",
+        "purpose": "Hero two-column; desktop nav; admin sidebar."
+      }
+    ],
+    "capture": {
+      "browser": "Chromium",
+      "flags": [
+        "--font-render-hinting=none"
+      ],
+      "note": "Linux hinting produced false letter-gap artifacts in Figtree captures."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single teal action in any group: Find a Caregiver, Submit, Save.",
+      "html": "<button class=\"ds-btn-primary\">Find a Caregiver <svg width=\"18\" height=\"18\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z\"/></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; border-radius: var(--radius-control); font-family: var(--font-sans); font-weight: 600; height: 44px; padding: 0 16px; font-size: 15px; transition: background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out, transform 150ms ease-out; cursor: pointer; height: 52px; padding: 0 24px; font-size: 16px; background: var(--color-teal-600); color: #fff; border: none; box-shadow: 0 1px 0 rgb(15 34 55 / 0.08); } .ds-btn-primary:hover { background: var(--color-teal-700); } .ds-btn-primary:active { transform: translateY(1px); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-teal-600); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Bordered paper button; always used for Call and WhatsApp.",
+      "html": "<button class=\"ds-btn-secondary\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46ZM176,208A128.14,128.14,0,0,1,48,80,40.2,40.2,0,0,1,82.87,40a.61.61,0,0,0,0,.12l21,47L83.2,111.86a6.13,6.13,0,0,0-.57.77,16,16,0,0,0-1,15.7c9.06,18.53,27.73,37.06,46.46,46.11a16,16,0,0,0,15.75-1.14,8.44,8.44,0,0,0,.74-.56L168.89,152l47,21.05h0s.08,0,.11,0A40.21,40.21,0,0,1,176,208Z\"/></svg> Call us</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; border-radius: var(--radius-control); font-family: var(--font-sans); font-weight: 600; height: 44px; padding: 0 16px; font-size: 15px; transition: background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out, transform 150ms ease-out; cursor: pointer; background: var(--color-paper); color: var(--color-navy-900); border: 1px solid var(--color-line-strong); } .ds-btn-secondary:hover { border-color: var(--color-teal-600); color: var(--color-teal-700); } .ds-btn-secondary:active { transform: translateY(1px); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-teal-600); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Low-emphasis teal text action with a tint on hover.",
+      "html": "<button class=\"ds-btn-ghost\">Edit details</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; border-radius: var(--radius-control); font-family: var(--font-sans); font-weight: 600; height: 44px; padding: 0 16px; font-size: 15px; transition: background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out, transform 150ms ease-out; cursor: pointer; background: transparent; color: var(--color-teal-700); border: none; } .ds-btn-ghost:hover { background: var(--color-teal-50); } .ds-btn-ghost:focus-visible { outline: 2px solid var(--color-teal-600); outline-offset: 2px; }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destructive action; always confirmed in a dialog.",
+      "html": "<button class=\"ds-btn-danger\">Cancel assignment</button>",
+      "css": ".ds-btn-danger { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; border-radius: var(--radius-control); font-family: var(--font-sans); font-weight: 600; height: 44px; padding: 0 16px; font-size: 15px; transition: background-color 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out, transform 150ms ease-out; cursor: pointer; height: 36px; padding: 0 12px; font-size: 14px; background: var(--color-paper); color: var(--color-rose-700); border: 1px solid rgb(163 39 31 / 0.3); } .ds-btn-danger:hover { background: var(--color-rose-50); } .ds-btn-danger:focus-visible { outline: 2px solid var(--color-teal-600); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Label above, 44px control, teal focus, optional/required marked in the label.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-name\">Patient name <span class=\"ds-field-opt\">(optional)</span></label><input id=\"ds-name\" class=\"ds-input\" placeholder=\"e.g. Kamla Devi\"><p class=\"ds-field-hint\">We use this only when we call you.</p></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; font-family: var(--font-sans); } .ds-field-label { font-size: 14px; font-weight: 600; color: var(--color-navy-900); } .ds-field-opt { font-weight: 400; color: var(--color-muted); } .ds-input { height: 44px; padding: 0 12px; border-radius: var(--radius-control); border: 1px solid var(--color-line-strong); background: var(--color-paper); font-size: 15px; color: var(--color-navy-950); caret-color: var(--color-teal-600); transition: border-color 150ms; } .ds-input::placeholder { color: rgb(82 101 122 / 0.8); } .ds-input:hover { border-color: rgb(30 58 87 / 0.4); } .ds-input:focus { border-color: var(--color-teal-600); outline: 2px solid rgb(44 110 106 / 0.3); outline-offset: 0; } .ds-input[aria-invalid=true] { border-color: var(--color-rose-700); } .ds-field-hint { margin: 0; font-size: 12px; color: var(--color-muted); }"
+    },
+    {
+      "name": "Shift Choice",
+      "kind": "custom",
+      "refersTo": "shift-face",
+      "description": "Signature: the two permitted shift lengths as identical side-by-side radio faces.",
+      "html": "<fieldset class=\"ds-shift\"><legend class=\"ds-shift-legend\">Shift length</legend><div class=\"ds-shift-grid\"><label class=\"ds-shift-face\"><input type=\"radio\" name=\"ds-shift\" checked><span class=\"ds-shift-num\">12<span class=\"ds-shift-unit\">hours</span></span><span class=\"ds-shift-desc\">Day or night duty</span><span class=\"ds-shift-dot\"></span></label><label class=\"ds-shift-face\"><input type=\"radio\" name=\"ds-shift\"><span class=\"ds-shift-num\">24<span class=\"ds-shift-unit\">hours</span></span><span class=\"ds-shift-desc\">Round-the-clock, with planned rest</span><span class=\"ds-shift-dot\"></span></label></div></fieldset>",
+      "css": ".ds-shift { border: 0; margin: 0; padding: 0; font-family: var(--font-sans); } .ds-shift-legend { font-size: 14px; font-weight: 600; color: var(--color-navy-900); } .ds-shift-grid { margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } .ds-shift-face { position: relative; display: flex; flex-direction: column; cursor: pointer; border: 1px solid var(--color-line-strong); border-radius: var(--radius-control); background: var(--color-paper); padding: 12px 16px; transition: border-color 150ms, background-color 150ms; } .ds-shift-face input { position: absolute; opacity: 0; width: 1px; height: 1px; } .ds-shift-face:hover { border-color: var(--color-teal-600); } .ds-shift-face:has(input:checked) { border-color: var(--color-teal-600); background: var(--color-teal-50); } .ds-shift-face:has(input:focus-visible) { outline: 2px solid var(--color-teal-600); outline-offset: 2px; } .ds-shift-num { font-variant-numeric: tabular-nums; font-size: 24px; font-weight: 700; letter-spacing: -0.025em; color: var(--color-navy-900); } .ds-shift-unit { margin-left: 4px; font-size: 14px; font-weight: 600; color: var(--color-muted); letter-spacing: 0; } .ds-shift-desc { margin-top: 2px; font-size: 14px; line-height: 1.375; color: var(--color-muted); } .ds-shift-dot { position: absolute; right: 12px; top: 12px; width: 16px; height: 16px; box-sizing: border-box; border-radius: 9999px; border: 1px solid var(--color-line-strong); background: var(--color-paper); } .ds-shift-face:has(input:checked) .ds-shift-dot { border: 5px solid var(--color-teal-600); }"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Flat paper container with hairline border; header row divided by a hairline.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><h2 class=\"ds-panel-title\">Customer details</h2><p class=\"ds-panel-desc\">Who we call and where care happens.</p></header><div class=\"ds-panel-body\">Content</div></section>",
+      "css": ".ds-panel { border-radius: var(--radius-panel); border: 1px solid var(--color-line); background: var(--color-paper); font-family: var(--font-sans); color: var(--color-ink); } .ds-panel-head { padding: 16px 20px; border-bottom: 1px solid var(--color-line); } .ds-panel-title { margin: 0; font-size: 15px; font-weight: 600; color: var(--color-navy-900); } .ds-panel-desc { margin: 2px 0 0; font-size: 14px; color: var(--color-muted); } .ds-panel-body { padding: 16px 20px; font-size: 14px; }"
+    },
+    {
+      "name": "Request Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The lifted, actionable panel: hero request starter (Float).",
+      "html": "<div class=\"ds-request\"><h2 class=\"ds-request-title\">Find a caregiver</h2><p class=\"ds-request-sub\">Takes about three minutes. We call you before anything is arranged.</p></div>",
+      "css": ".ds-request { border-radius: var(--radius-panel); border: 1px solid var(--color-line); background: var(--color-paper); padding: 24px; box-shadow: var(--shadow-float); font-family: var(--font-sans); } .ds-request-title { margin: 0; font-size: 18px; font-weight: 600; color: var(--color-navy-900); } .ds-request-sub { margin: 4px 0 0; font-size: 14px; color: var(--color-muted); }"
+    },
+    {
+      "name": "Status Badges",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Pill badges with inset ring; tones map to state (green only for confirmed/positive).",
+      "html": "<span class=\"ds-badge ds-badge-navy\">New</span> <span class=\"ds-badge ds-badge-teal\">Contacted</span> <span class=\"ds-badge ds-badge-amber\">Matching</span> <span class=\"ds-badge ds-badge-green\">Confirmed</span> <span class=\"ds-badge ds-badge-rose\">Cancelled</span> <span class=\"ds-badge\">Completed</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; border-radius: 9999px; padding: 2px 10px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; background: var(--color-mist); color: var(--color-muted); box-shadow: inset 0 0 0 1px var(--color-line); } .ds-badge-navy { background: var(--color-navy-900); color: #fff; box-shadow: inset 0 0 0 1px var(--color-navy-900); } .ds-badge-teal { background: var(--color-teal-50); color: var(--color-teal-800); box-shadow: inset 0 0 0 1px var(--color-teal-100); } .ds-badge-green { background: var(--color-leaf-50); color: var(--color-leaf-700); box-shadow: inset 0 0 0 1px rgb(60 122 76 / 0.2); } .ds-badge-amber { background: var(--color-amber-50); color: var(--color-amber-700); box-shadow: inset 0 0 0 1px rgb(133 86 0 / 0.2); } .ds-badge-rose { background: var(--color-rose-50); color: var(--color-rose-700); box-shadow: inset 0 0 0 1px rgb(163 39 31 / 0.2); }"
+    },
+    {
+      "name": "Public Header",
+      "kind": "nav",
+      "refersTo": "button-primary",
+      "description": "Sticky translucent header: monogram wordmark, ink links with teal current state, quiet call plus primary CTA.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-brand\" href=\"#\"><span class=\"ds-mono\">P</span><span class=\"ds-brand-name\">Preeti Nursing Bureau</span></a><nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">Services</a><a href=\"#\">How it works</a><a href=\"#\">About</a><a href=\"#\">Contact</a></nav><div class=\"ds-header-actions\"><a class=\"ds-quiet\" href=\"#\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46ZM176,208A128.14,128.14,0,0,1,48,80,40.2,40.2,0,0,1,82.87,40a.61.61,0,0,0,0,.12l21,47L83.2,111.86a6.13,6.13,0,0,0-.57.77,16,16,0,0,0-1,15.7c9.06,18.53,27.73,37.06,46.46,46.11a16,16,0,0,0,15.75-1.14,8.44,8.44,0,0,0,.74-.56L168.89,152l47,21.05h0s.08,0,.11,0A40.21,40.21,0,0,1,176,208Z\"/></svg> Call</a><a class=\"ds-cta\" href=\"#\">Find a Caregiver</a></div></header>",
+      "css": ".ds-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 72px; padding: 0 24px; background: rgb(255 255 255 / 0.85); backdrop-filter: blur(8px); border-bottom: 1px solid rgb(217 227 226 / 0.8); font-family: var(--font-sans); } .ds-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; } .ds-mono { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--color-teal-600); color: #fff; font-weight: 700; font-size: 15px; } .ds-brand-name { font-size: 16px; font-weight: 700; letter-spacing: -0.025em; color: var(--color-navy-900); } .ds-nav { display: flex; gap: 4px; } .ds-nav a { padding: 8px 12px; border-radius: 6px; font-size: 15px; font-weight: 500; color: var(--color-ink); text-decoration: none; } .ds-nav a:hover, .ds-nav a[aria-current=page] { color: var(--color-teal-700); } .ds-header-actions { display: flex; gap: 8px; } .ds-quiet, .ds-cta { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 16px; border-radius: var(--radius-control); font-size: 15px; font-weight: 600; text-decoration: none; transition: background-color 150ms ease-out, color 150ms ease-out; } .ds-quiet { color: var(--color-muted); } .ds-quiet:hover { background: var(--color-mist); color: var(--color-navy-900); } .ds-cta { background: var(--color-teal-600); color: #fff; } .ds-cta:hover { background: var(--color-teal-700); } .ds-nav a:focus-visible, .ds-quiet:focus-visible, .ds-cta:focus-visible { outline: 2px solid var(--color-teal-600); outline-offset: 2px; }"
+    },
+    {
+      "name": "Mobile Action Bar",
+      "kind": "custom",
+      "refersTo": "button-primary-lg",
+      "description": "Phones only (below 640px): fixed bottom bar carrying the primary action plus a call button when a number is configured; hidden on request pages.",
+      "html": "<div class=\"ds-mbar\"><a class=\"ds-mbar-call\" href=\"#\" aria-label=\"Call us\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 256 256\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46ZM176,208A128.14,128.14,0,0,1,48,80,40.2,40.2,0,0,1,82.87,40a.61.61,0,0,0,0,.12l21,47L83.2,111.86a6.13,6.13,0,0,0-.57.77,16,16,0,0,0-1,15.7c9.06,18.53,27.73,37.06,46.46,46.11a16,16,0,0,0,15.75-1.14,8.44,8.44,0,0,0,.74-.56L168.89,152l47,21.05h0s.08,0,.11,0A40.21,40.21,0,0,1,176,208Z\"/></svg></a><a class=\"ds-mbar-cta\" href=\"#\">Find a Caregiver</a></div>",
+      "css": ".ds-mbar { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--color-line); background: rgb(255 255 255 / 0.85); backdrop-filter: blur(8px); font-family: var(--font-sans); } .ds-mbar-call, .ds-mbar-cta { display: inline-flex; align-items: center; justify-content: center; height: 52px; border-radius: var(--radius-control); font-size: 16px; font-weight: 600; text-decoration: none; } .ds-mbar-call { padding: 0 16px; border: 1px solid var(--color-line-strong); background: var(--color-paper); color: var(--color-navy-900); } .ds-mbar-cta { flex: 1; background: var(--color-teal-600); color: #fff; } .ds-mbar-cta:hover { background: var(--color-teal-700); } .ds-mbar-call:focus-visible, .ds-mbar-cta:focus-visible { outline: 2px solid var(--color-teal-600); outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Calm Front Desk",
+    "overview": "This is the category standard for home care, executed with more care than the category usually gets. A worried family should meet a quiet, well-ordered front desk: white ground, cool neutral fields, navy words, and one muted teal that marks everything you can act on. Nothing performs. There are no stock nurse photographs, no icon-tile card rows, and no invented trust numbers. Trust comes from plain language, a working request form in the first viewport, and visible honesty about what is and is not promised.\n\nDensity is generous on the public site and compact on the admin. Both share the same tokens. The public site is a Persuade surface built from wide bands (white, then mist, then white) inside a 72rem column. The admin is an Operate surface: a mist sidebar, white panels, tabular figures, and status badges. Depth is almost entirely hairlines and tonal fields. Shadow appears only where something is lifted to be acted on: the request starter, the request wizard, a dialog.\n\nThe world is light only, pinned by the brief (white and neutral grounds, `color-scheme: light`). Figtree is the single family. Hierarchy comes from weight, size, and navy against ink, never from a second face.",
+    "keyCharacteristics": [
+      "White and cool mist grounds, navy headings, ink body, muted teal for action, selection, and progress",
+      "Subtle green reserved for confirmed or positive state",
+      "One sans family (Figtree) with tabular numerals for references, dates, rupees, and shift lengths",
+      "Hairline borders, 14px panels, 10px controls, and pill-shaped badges and chips",
+      "Soft navy-tinted shadow only on lifted, actionable surfaces",
+      "12 and 24 hours presented as identical, side-by-side equals wherever shift appears"
+    ],
+    "rules": [
+      {
+        "name": "The Teal Means Act Rule",
+        "body": "Teal marks what can be acted on, what is selected, and where you are in a sequence, plus the small wayfinding marks that travel with them (step and shift numerals, the area pin, the monogram tile, info tints). The only large teal field is the closing call-to-action band.",
+        "section": "colors"
+      },
+      {
+        "name": "The Earned Green Rule",
+        "body": "Leaf green appears only for confirmed or positive state: a verified caregiver, a confirmed assignment, a saved form, a completed check. Never use it for decoration or as a second accent.",
+        "section": "colors"
+      },
+      {
+        "name": "The Light Only Rule",
+        "body": "The system is light theme only (`color-scheme: light`, theme-color white). No dark-mode variants are designed or implied.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Figtree is the only typeface. Make contrast through weight and navy against ink, never through a second family.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "body": "References, dates, rupee amounts, counts, and shift lengths always set in tabular numerals.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "Labels, headings, and buttons are sentence case at normal tracking. There are no uppercase labels and no eyebrow lines above headings.",
+        "section": "typography"
+      },
+      {
+        "name": "The Request In Reach Rule",
+        "body": "On every public viewport, the real request action is visible without scrolling: the request panel in the desktop hero, the bottom action bar on phones.",
+        "section": "layout"
+      },
+      {
+        "name": "The Lifted Means Actionable Rule",
+        "body": "Shadow is never decoration. A surface gets Raise or Float only if it is a form, a dialog, or the current location. Content panels, cards, and tables stay flat with a hairline.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use teal-600 for the single primary action in any group, and secondary (bordered paper) for call and WhatsApp.",
+      "Do show 12 and 24 hours as equal, side-by-side faces whenever shift is chosen or explained.",
+      "Do set every reference, date, rupee amount, and count in tabular numerals.",
+      "Do keep panels at 14px and controls at 10px, with 1px hairline borders.",
+      "Do keep the request action in reach: the hero request panel on desktop, the fixed bottom action bar on phones.",
+      "Do let the owner-editable hero headline wrap naturally (two lines at desktop, three at 390px) rather than shortening copy.",
+      "Do use Phosphor icons (regular weight, fill weight for active or confirmed) at 16 to 24px, always `aria-hidden` beside a text label.",
+      "Do make review captures in Chromium with `--font-render-hinting=none`. Linux hinting produces false letter-gap artifacts in Figtree."
+    ],
+    "donts": [
+      "Don't use stock photographs of people presented as bureau staff, icon-tile card rows, or invented ratings, counts, or testimonials.",
+      "Don't use leaf green for anything except confirmed or positive state.",
+      "Don't add a second typeface, uppercase labels, or eyebrow lines above headings.",
+      "Don't put Raise or Float shadows on content cards. Shadow is for forms, dialogs, and current location only.",
+      "Don't use heavy gradients. The only gradient is the hero's gentle mist-to-paper wash.",
+      "Don't design a dark theme. The system is light only."
+    ]
+  }
+}

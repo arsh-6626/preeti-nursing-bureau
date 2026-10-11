@@ -1,0 +1,758 @@
+// Preeti Nursing Bureau data model.
+// Shift types are restricted to exactly two values at the database level via the
+// ShiftType enum ("12_HOURS" and "24_HOURS"). Currency uses Decimal(12, 2).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+/// The only two permitted shift arrangements.
+enum ShiftType {
+  TWELVE_HOURS      @map("12_HOURS")
+  TWENTY_FOUR_HOURS @map("24_HOURS")
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  REQUIREMENTS_COLLECTED
+  MATCHING
+  CAREGIVER_ASSIGNED
+  SERVICE_ACTIVE
+  COMPLETED
+  CANCELLED
+  UNFULFILLED
+}
+
+enum LeadSource {
+  WEBSITE
+  PHONE
+  WHATSAPP
+  REFERRAL
+  OTHER
+}
+
+enum Priority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum Mobility {
+  MOBILE
+  NEEDS_ASSISTANCE
+  BEDRIDDEN
+  OTHER
+}
+
+enum GenderPreference {
+  NO_PREFERENCE
+  FEMALE
+  MALE
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+  UNSPECIFIED
+}
+
+/// Day/night preference. It never changes the shift duration.
+enum ShiftTiming {
+  NO_PREFERENCE
+  DAY
+  NIGHT
+}
+
+enum ArrangementType {
+  ONE_TIME
+  TEMPORARY
+  LONG_TERM
+}
+
+enum DurationUnit {
+  DAYS
+  WEEKS
+  MONTHS
+}
+
+enum ContactMethod {
+  PHONE
+  WHATSAPP
+  EMAIL
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  ON_ASSIGNMENT
+  UNAVAILABLE
+}
+
+enum AvailabilityKind {
+  AVAILABLE_WINDOW
+  UNAVAILABLE
+}
+
+enum AffiliationType {
+  INDEPENDENT
+  AGENCY_MANAGED
+  OTHER
+}
+
+enum VerificationStatus {
+  NOT_STARTED
+  PENDING
+  VERIFIED
+  REJECTED
+  EXPIRED
+}
+
+enum VerificationType {
+  IDENTITY
+  QUALIFICATION
+  REFERENCE
+  BACKGROUND
+  OTHER
+}
+
+enum AssignmentStatus {
+  PROPOSED
+  AWAITING_CONFIRMATION
+  CONFIRMED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  REPLACEMENT_REQUIRED
+}
+
+enum CommissionMethod {
+  FIXED
+  PERCENTAGE
+}
+
+enum CommissionBasis {
+  CUSTOMER_AMOUNT
+  CAREGIVER_PAYOUT
+}
+
+enum CommissionRecognition {
+  ON_CONFIRMATION
+  ON_COMPLETION
+}
+
+enum CommissionEntryType {
+  RECOGNITION
+  REVERSAL
+}
+
+enum PaymentDirection {
+  CUSTOMER_RECEIPT
+  CUSTOMER_REFUND
+  CAREGIVER_PAYOUT
+}
+
+enum PaymentMethod {
+  CASH
+  UPI
+  BANK_TRANSFER
+  OTHER
+}
+
+enum PaymentEntryType {
+  PAYMENT
+  REVERSAL
+}
+
+enum AdjustmentTarget {
+  CUSTOMER_CHARGE
+  CAREGIVER_PAYOUT
+}
+
+enum FollowUpStatus {
+  PENDING
+  DONE
+  CANCELLED
+}
+
+enum CallOutcome {
+  REACHED
+  NO_ANSWER
+  CALLBACK_REQUESTED
+  WRONG_NUMBER
+  NOT_INTERESTED
+  OTHER
+}
+
+enum RatePeriod {
+  PER_DAY
+  PER_MONTH
+}
+
+// ---------------------------------------------------------------------------
+// Auth and access
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  email        String    @unique
+  name         String
+  passwordHash String
+  role         Role      @default(STAFF)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions              Session[]
+  assignedRequests      ServiceRequest[]      @relation("RequestAssignee")
+  statusChanges         StatusChange[]
+  notes                 InternalNote[]
+  followUpsCreated      FollowUp[]            @relation("FollowUpCreator")
+  followUpsAssigned     FollowUp[]            @relation("FollowUpAssignee")
+  verificationsReviewed VerificationRecord[]
+  assignmentsCreated    Assignment[]          @relation("AssignmentCreator")
+  assignmentsConfirmed  Assignment[]          @relation("AssignmentConfirmer")
+  assignmentEvents      AssignmentEvent[]
+  payments              Payment[]
+  adjustments           FinancialAdjustment[]
+  commissionRecords     CommissionRecord[]
+  auditLogs             AuditLog[]
+}
+
+/// Server-side sessions. The id is the SHA-256 hash of the cookie token, so a
+/// database leak does not expose usable session tokens.
+model Session {
+  id        String   @id
+  userId    String   @db.Uuid
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// Fixed-window rate limit counters, stored in Postgres so limits hold across
+/// multiple app instances.
+model RateLimit {
+  key         String   @id
+  count       Int
+  windowStart DateTime
+}
+
+// ---------------------------------------------------------------------------
+// Catalogue and configuration
+// ---------------------------------------------------------------------------
+
+model ServiceCategory {
+  id              String   @id @default(uuid()) @db.Uuid
+  name            String
+  slug            String   @unique
+  summary         String
+  description     String
+  imageUrl        String?
+  requiredSkills  String[]
+  indicativePrice String?
+  notes           String?
+  /// True for qualified nursing services, as opposed to general caregiving.
+  isNursing       Boolean  @default(false)
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  requests     ServiceRequest[]
+  caregivers   CaregiverService[]
+  pricingRules PricingRule[]
+
+  @@index([isActive, sortOrder])
+}
+
+model ServiceArea {
+  id        String   @id @default(uuid()) @db.Uuid
+  city      String
+  locality  String
+  pincode   String?
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requests   ServiceRequest[]
+  caregivers CaregiverArea[]
+
+  @@unique([city, locality])
+  @@index([isActive, city])
+}
+
+/// Indicative customer rate and caregiver payout per service and shift type.
+model PricingRule {
+  id                String          @id @default(uuid()) @db.Uuid
+  serviceCategoryId String          @db.Uuid
+  shiftType         ShiftType
+  ratePeriod        RatePeriod      @default(PER_DAY)
+  customerRate      Decimal         @db.Decimal(12, 2)
+  caregiverPayout   Decimal         @db.Decimal(12, 2)
+  notes             String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  serviceCategory   ServiceCategory @relation(fields: [serviceCategoryId], references: [id], onDelete: Restrict)
+
+  @@unique([serviceCategoryId, shiftType])
+}
+
+/// Singleton row (id = 1) holding business profile and policy settings.
+model BusinessSettings {
+  id                    Int                   @id @default(1)
+  businessName          String                @default("Preeti Nursing Bureau")
+  logoUrl               String?
+  phone                 String?
+  whatsapp              String?
+  email                 String?
+  businessHours         String?
+  address               String?
+  regionLabel           String                @default("Delhi NCR")
+  heroHeadline          String                @default("Patient care at home, arranged by people who call you back")
+  heroSubtext           String                @default("Tell us what your family needs. We call you, understand the situation, and suggest a suitable caregiver.")
+  aboutText             String                @default("")
+  consentText           String                @default("I agree to be contacted by phone or WhatsApp about this request.")
+  whatsappPrefill       String                @default("Hello, I would like to ask about patient care at home.")
+  followUpDefaultHours  Int                   @default(24)
+  allowOtherService     Boolean               @default(true)
+  commissionMethod      CommissionMethod      @default(PERCENTAGE)
+  commissionRate        Decimal               @default(10) @db.Decimal(5, 2)
+  commissionFixedAmount Decimal               @default(0) @db.Decimal(12, 2)
+  commissionBasis       CommissionBasis       @default(CUSTOMER_AMOUNT)
+  commissionRecognition CommissionRecognition @default(ON_CONFIRMATION)
+  updatedAt             DateTime              @updatedAt
+}
+
+/// Editable public content pages (legal pages, about). needsReview flags
+/// wording the business must review before publishing.
+model ContentPage {
+  id          String   @id @default(uuid()) @db.Uuid
+  slug        String   @unique
+  title       String
+  body        String
+  needsReview Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Customers and requests
+// ---------------------------------------------------------------------------
+
+model Customer {
+  id               String        @id @default(uuid()) @db.Uuid
+  name             String
+  phone            String
+  email            String?
+  relationship     String?
+  preferredContact ContactMethod @default(PHONE)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  requests ServiceRequest[]
+  notes    InternalNote[]
+
+  @@index([phone])
+  @@index([name])
+}
+
+model ServiceRequest {
+  id                     String           @id @default(uuid()) @db.Uuid
+  /// Human-readable, non-sequential reference shown to the customer.
+  reference              String           @unique
+  /// SHA-256 hash of the unguessable token in the customer's status link.
+  publicTokenHash        String           @unique
+  /// Client-generated key that makes repeated submissions idempotent.
+  idempotencyKey         String?          @unique
+  customerId             String           @db.Uuid
+  serviceCategoryId      String?          @db.Uuid
+  otherServiceText       String?
+  assistanceType         String?
+  mobility               Mobility
+  careDescription        String
+  preferredGender        GenderPreference @default(NO_PREFERENCE)
+  nursingSkillsRequired  String?
+  additionalRequirements String?
+  shiftType              ShiftType
+  shiftTiming            ShiftTiming      @default(NO_PREFERENCE)
+  startDate              DateTime         @db.Date
+  durationValue          Int
+  durationUnit           DurationUnit
+  arrangementType        ArrangementType
+  serviceAreaId          String?          @db.Uuid
+  city                   String
+  locality               String
+  pincode                String
+  address                String?
+  contactConsent         Boolean
+  consentAt              DateTime
+  source                 LeadSource       @default(WEBSITE)
+  status                 LeadStatus       @default(NEW)
+  priority               Priority         @default(NORMAL)
+  assignedToId           String?          @db.Uuid
+  nextFollowUpAt         DateTime?
+  lastCallOutcome        CallOutcome?
+  closedReason           String?
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+
+  customer        Customer             @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  serviceCategory ServiceCategory?     @relation(fields: [serviceCategoryId], references: [id], onDelete: Restrict)
+  serviceArea     ServiceArea?         @relation(fields: [serviceAreaId], references: [id], onDelete: Restrict)
+  assignedTo      User?                @relation("RequestAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  statusChanges   StatusChange[]
+  notes           InternalNote[]
+  followUps       FollowUp[]
+  assignments     Assignment[]
+  statusTokens    RequestStatusToken[]
+
+  @@index([status, createdAt])
+  @@index([createdAt])
+  @@index([nextFollowUpAt])
+  @@index([serviceCategoryId])
+  @@index([city])
+  @@index([assignedToId])
+  @@index([customerId])
+}
+
+model StatusChange {
+  id          String         @id @default(uuid()) @db.Uuid
+  requestId   String         @db.Uuid
+  fromStatus  LeadStatus?
+  toStatus    LeadStatus
+  note        String?
+  changedById String?        @db.Uuid
+  createdAt   DateTime       @default(now())
+  request     ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  changedBy   User?          @relation(fields: [changedById], references: [id], onDelete: SetNull)
+
+  @@index([requestId, createdAt])
+}
+
+/// Private notes. Never rendered on any public page.
+model InternalNote {
+  id          String          @id @default(uuid()) @db.Uuid
+  requestId   String?         @db.Uuid
+  customerId  String?         @db.Uuid
+  caregiverId String?         @db.Uuid
+  authorId    String          @db.Uuid
+  body        String
+  createdAt   DateTime        @default(now())
+  request     ServiceRequest? @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  customer    Customer?       @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  caregiver   Caregiver?      @relation(fields: [caregiverId], references: [id], onDelete: Restrict)
+  author      User            @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([requestId, createdAt])
+  @@index([caregiverId])
+  @@index([customerId])
+}
+
+model FollowUp {
+  id           String         @id @default(uuid()) @db.Uuid
+  requestId    String         @db.Uuid
+  dueAt        DateTime
+  status       FollowUpStatus @default(PENDING)
+  outcome      CallOutcome?
+  notes        String?
+  assignedToId String?        @db.Uuid
+  createdById  String         @db.Uuid
+  completedAt  DateTime?
+  createdAt    DateTime       @default(now())
+  request      ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  assignedTo   User?          @relation("FollowUpAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  createdBy    User           @relation("FollowUpCreator", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@index([status, dueAt])
+  @@index([requestId])
+}
+
+// ---------------------------------------------------------------------------
+// Caregivers
+// ---------------------------------------------------------------------------
+
+model Caregiver {
+  id                 String             @id @default(uuid()) @db.Uuid
+  /// Human-readable caregiver ID, e.g. CG-0007.
+  code               String             @unique
+  fullName           String
+  phone              String
+  email              String?
+  photoUrl           String?
+  gender             Gender             @default(UNSPECIFIED)
+  skills             String[]
+  qualifications     String?
+  experienceYears    Int                @default(0)
+  languages          String[]
+  availabilityStatus AvailabilityStatus @default(AVAILABLE)
+  supportedShifts    ShiftType[]
+  payout12h          Decimal?           @db.Decimal(12, 2)
+  payout24h          Decimal?           @db.Decimal(12, 2)
+  payoutPeriod       RatePeriod         @default(PER_DAY)
+  affiliation        AffiliationType    @default(INDEPENDENT)
+  agencyName         String?
+  /// Overall verification status. Always starts NOT_STARTED; only an admin
+  /// can set it to VERIFIED.
+  verificationStatus VerificationStatus @default(NOT_STARTED)
+  archivedAt         DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  services      CaregiverService[]
+  areas         CaregiverArea[]
+  availability  CaregiverAvailability[]
+  verifications VerificationRecord[]
+  assignments   Assignment[]
+  notes         InternalNote[]
+
+  @@index([archivedAt, availabilityStatus])
+  @@index([phone])
+  @@index([fullName])
+}
+
+model CaregiverService {
+  caregiverId       String          @db.Uuid
+  serviceCategoryId String          @db.Uuid
+  caregiver         Caregiver       @relation(fields: [caregiverId], references: [id], onDelete: Cascade)
+  serviceCategory   ServiceCategory @relation(fields: [serviceCategoryId], references: [id], onDelete: Restrict)
+
+  @@id([caregiverId, serviceCategoryId])
+  @@index([serviceCategoryId])
+}
+
+model CaregiverArea {
+  caregiverId   String      @db.Uuid
+  serviceAreaId String      @db.Uuid
+  caregiver     Caregiver   @relation(fields: [caregiverId], references: [id], onDelete: Cascade)
+  serviceArea   ServiceArea @relation(fields: [serviceAreaId], references: [id], onDelete: Restrict)
+
+  @@id([caregiverId, serviceAreaId])
+  @@index([serviceAreaId])
+}
+
+/// Availability windows and temporary unavailability periods.
+model CaregiverAvailability {
+  id          String           @id @default(uuid()) @db.Uuid
+  caregiverId String           @db.Uuid
+  kind        AvailabilityKind
+  startDate   DateTime         @db.Date
+  endDate     DateTime?        @db.Date
+  reason      String?
+  createdAt   DateTime         @default(now())
+  caregiver   Caregiver        @relation(fields: [caregiverId], references: [id], onDelete: Cascade)
+
+  @@index([caregiverId, startDate])
+}
+
+model VerificationRecord {
+  id           String             @id @default(uuid()) @db.Uuid
+  caregiverId  String             @db.Uuid
+  type         VerificationType
+  status       VerificationStatus @default(NOT_STARTED)
+  /// Description of the document checked (e.g. "Aadhaar sighted, last 4 digits 1234").
+  /// Document files are not stored in the MVP.
+  documentRef  String?
+  expiresAt    DateTime?          @db.Date
+  verifiedAt   DateTime?
+  reviewedById String?            @db.Uuid
+  notes        String?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  caregiver    Caregiver          @relation(fields: [caregiverId], references: [id], onDelete: Restrict)
+  reviewedBy   User?              @relation(fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([caregiverId])
+  @@index([expiresAt])
+}
+
+// ---------------------------------------------------------------------------
+// Assignments and money
+// ---------------------------------------------------------------------------
+
+model Assignment {
+  id                    String           @id @default(uuid()) @db.Uuid
+  requestId             String           @db.Uuid
+  caregiverId           String           @db.Uuid
+  shiftType             ShiftType
+  startDate             DateTime         @db.Date
+  /// Expected last day of service (inclusive), used for overlap checks.
+  endDate               DateTime         @db.Date
+  durationValue         Int
+  durationUnit          DurationUnit
+  status                AssignmentStatus @default(PROPOSED)
+  quotedAmount          Decimal?         @db.Decimal(12, 2)
+  /// Final agreed amount billed to the customer for the arrangement.
+  customerAmount        Decimal          @db.Decimal(12, 2)
+  /// Agreed payout owed to the caregiver for the arrangement.
+  caregiverPayout       Decimal          @db.Decimal(12, 2)
+  commissionMethod      CommissionMethod
+  commissionRate        Decimal?         @db.Decimal(5, 2)
+  commissionFixedAmount Decimal?         @db.Decimal(12, 2)
+  commissionBasis       CommissionBasis  @default(CUSTOMER_AMOUNT)
+  customerAcceptedAt    DateTime?
+  caregiverAcceptedAt   DateTime?
+  confirmedAt           DateTime?
+  confirmedById         String?          @db.Uuid
+  cancelledAt           DateTime?
+  cancellationReason    String?
+  /// Relief, rest and staffing plan (required context for 24-hour arrangements).
+  staffingPlan          String?
+  financialNotes        String?
+  replacesAssignmentId  String?          @unique @db.Uuid
+  createdById           String           @db.Uuid
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+
+  request     ServiceRequest        @relation(fields: [requestId], references: [id], onDelete: Restrict)
+  caregiver   Caregiver             @relation(fields: [caregiverId], references: [id], onDelete: Restrict)
+  createdBy   User                  @relation("AssignmentCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  confirmedBy User?                 @relation("AssignmentConfirmer", fields: [confirmedById], references: [id], onDelete: SetNull)
+  replaces    Assignment?           @relation("Replacement", fields: [replacesAssignmentId], references: [id], onDelete: Restrict)
+  replacedBy  Assignment?           @relation("Replacement")
+  events      AssignmentEvent[]
+  payments    Payment[]
+  adjustments FinancialAdjustment[]
+  commissions CommissionRecord[]
+
+  @@index([caregiverId, status])
+  @@index([requestId])
+  @@index([status, startDate])
+}
+
+/// Append-only assignment history.
+model AssignmentEvent {
+  id           String            @id @default(uuid()) @db.Uuid
+  assignmentId String            @db.Uuid
+  fromStatus   AssignmentStatus?
+  toStatus     AssignmentStatus
+  note         String?
+  actorId      String?           @db.Uuid
+  createdAt    DateTime          @default(now())
+  assignment   Assignment        @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  actor        User?             @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([assignmentId, createdAt])
+}
+
+/// Commission ledger. Recognition rows are created only when the configured
+/// recognition event happens; reversals are separate rows, never edits.
+model CommissionRecord {
+  id           String              @id @default(uuid()) @db.Uuid
+  assignmentId String              @db.Uuid
+  entryType    CommissionEntryType
+  /// Signed amount: positive for recognition, negative for reversal.
+  amount       Decimal             @db.Decimal(12, 2)
+  method       CommissionMethod
+  rate         Decimal?            @db.Decimal(5, 2)
+  basisAmount  Decimal?            @db.Decimal(12, 2)
+  reason       String?
+  recordedById String?             @db.Uuid
+  createdAt    DateTime            @default(now())
+  assignment   Assignment          @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  recordedBy   User?               @relation(fields: [recordedById], references: [id], onDelete: SetNull)
+
+  @@index([assignmentId])
+  @@index([createdAt])
+}
+
+/// Manual payment ledger. Amounts are always positive; a correction is a
+/// REVERSAL row pointing at the original payment.
+model Payment {
+  id                String           @id @default(uuid()) @db.Uuid
+  assignmentId      String           @db.Uuid
+  direction         PaymentDirection
+  entryType         PaymentEntryType @default(PAYMENT)
+  amount            Decimal          @db.Decimal(12, 2)
+  method            PaymentMethod
+  methodNote        String?
+  paidOn            DateTime         @db.Date
+  transactionRef    String?
+  notes             String?
+  reversesPaymentId String?          @unique @db.Uuid
+  recordedById      String           @db.Uuid
+  createdAt         DateTime         @default(now())
+  assignment        Assignment       @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  recordedBy        User             @relation(fields: [recordedById], references: [id], onDelete: Restrict)
+  reverses          Payment?         @relation("PaymentReversal", fields: [reversesPaymentId], references: [id], onDelete: Restrict)
+  reversedBy        Payment?         @relation("PaymentReversal")
+
+  @@index([assignmentId, direction])
+  @@index([paidOn])
+}
+
+/// Signed adjustments to the agreed customer charge or caregiver payout.
+model FinancialAdjustment {
+  id           String           @id @default(uuid()) @db.Uuid
+  assignmentId String           @db.Uuid
+  target       AdjustmentTarget
+  amount       Decimal          @db.Decimal(12, 2)
+  reason       String
+  recordedById String           @db.Uuid
+  createdAt    DateTime         @default(now())
+  assignment   Assignment       @relation(fields: [assignmentId], references: [id], onDelete: Restrict)
+  recordedBy   User             @relation(fields: [recordedById], references: [id], onDelete: Restrict)
+
+  @@index([assignmentId])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  actorId    String?  @db.Uuid
+  action     String
+  entityType String
+  entityId   String?
+  summary    String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+/// Short "please call me" messages from the contact page. Converted into a
+/// full lead by staff after the call.
+model ContactInquiry {
+  id                 String        @id @default(uuid()) @db.Uuid
+  name               String
+  phone              String
+  message            String?
+  preferredContact   ContactMethod @default(PHONE)
+  contactConsent     Boolean
+  handledAt          DateTime?
+  handledById        String?       @db.Uuid
+  convertedRequestId String?       @db.Uuid
+  createdAt          DateTime      @default(now())
+
+  @@index([handledAt, createdAt])
+}
+
+/// Additional status-link tokens issued when the same submission is repeated
+/// (e.g. a double tap). Every issued link keeps working; only hashes are stored.
+model RequestStatusToken {
+  tokenHash String         @id
+  requestId String         @db.Uuid
+  createdAt DateTime       @default(now())
+  request   ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+}
