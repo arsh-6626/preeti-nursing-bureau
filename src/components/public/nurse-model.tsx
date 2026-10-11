@@ -1,16 +1,15 @@
 "use client";
 
 /**
- * 3D hero: a stylized "clay" nurse built entirely from primitives in code
- * (no external model, no licensing). She breathes, blinks, waves now and then
- * and follows the pointer with her head. Under reduced motion she renders still.
+ * Stylized "clay" nurse built from primitives in code. Shared by the hero
+ * scene. She breathes, blinks, waves now and then and follows the pointer.
  */
 import { useMemo, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { ContactShadows, Environment, Float, Lightformer, RoundedBox } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import { RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 
-const C = {
+export const C = {
   skin: "#b9774f",
   skinShade: "#a5663f",
   hair: "#1d1412",
@@ -25,7 +24,7 @@ const C = {
   board: "#e3ebe8",
 };
 
-function Clay({ color, rough = 0.62 }: { color: string; rough?: number }) {
+export function Clay({ color, rough = 0.62 }: { color: string; rough?: number }) {
   return <meshPhysicalMaterial color={color} roughness={rough} clearcoat={0.18} clearcoatRoughness={0.6} sheen={0.3} sheenColor="#ffffff" />;
 }
 
@@ -69,7 +68,7 @@ function Stethoscope() {
   );
 }
 
-function Nurse() {
+export function Nurse() {
   const root = useRef<THREE.Group>(null);
   const head = useRef<THREE.Group>(null);
   const torso = useRef<THREE.Group>(null);
@@ -270,39 +269,3 @@ function Nurse() {
   );
 }
 
-function Scene() {
-  return (
-    <>
-      <ambientLight intensity={0.75} />
-      <directionalLight position={[2.5, 4, 5]} intensity={2.2} castShadow shadow-mapSize={[1024, 1024]} />
-      <directionalLight position={[-4, 2, -2]} intensity={1.0} color="#cfe8ff" />
-      <Environment resolution={256}>
-        <Lightformer intensity={2} position={[0, 4, 3]} scale={[8, 2, 1]} />
-        <Lightformer intensity={1.1} position={[-5, 1, 2]} rotation-y={Math.PI / 2} scale={[6, 3, 1]} />
-        <Lightformer intensity={0.7} position={[5, 0, 1]} rotation-y={-Math.PI / 2} scale={[6, 3, 1]} />
-      </Environment>
-      <Float speed={1} rotationIntensity={0.05} floatIntensity={0.25}>
-        <Nurse />
-      </Float>
-      <ContactShadows position={[0, -1.47, 0]} opacity={0.5} scale={3.2} blur={2.2} far={2} color="#03211d" />
-    </>
-  );
-}
-
-export default function NurseScene({ animate }: { animate: boolean }) {
-  return (
-    <Canvas
-      shadows
-      dpr={[1, 2]}
-      frameloop={animate ? "always" : "demand"}
-      camera={{ position: [0, 0.1, 7], fov: 30 }}
-      onCreated={({ gl }) => {
-        gl.toneMappingExposure = 1.15;
-      }}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      aria-hidden
-    >
-      <Scene />
-    </Canvas>
-  );
-}

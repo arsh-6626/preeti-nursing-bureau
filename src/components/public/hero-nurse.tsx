@@ -3,11 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-const NurseScene = dynamic(() => import("./nurse-scene"), { ssr: false, loading: () => <Glow /> });
-
-function Glow() {
-  return <div aria-hidden className="h-full w-full" />;
-}
+const HomeScene = dynamic(() => import("./home-scene"), { ssr: false, loading: () => <div aria-hidden className="h-full w-full" /> });
 
 function canUseWebGL() {
   try {
@@ -18,7 +14,7 @@ function canUseWebGL() {
   }
 }
 
-/** 3D nurse for the hero. Renders still under reduced motion; skipped without WebGL. */
+/** 3D "care at home" diorama for the hero. Still under reduced motion; skipped without WebGL. */
 export function HeroNurse() {
   const [mode, setMode] = useState<"pending" | "animate" | "still" | "none">("pending");
   useEffect(() => {
@@ -26,9 +22,5 @@ export function HeroNurse() {
     const id = requestAnimationFrame(() => setMode(!canUseWebGL() ? "none" : reduce ? "still" : "animate"));
     return () => cancelAnimationFrame(id);
   }, []);
-  return (
-    <div className="relative h-full w-full">
-      {mode === "animate" || mode === "still" ? <NurseScene animate={mode === "animate"} /> : <Glow />}
-    </div>
-  );
+  return <div className="relative h-full w-full">{mode === "animate" || mode === "still" ? <HomeScene animate={mode === "animate"} /> : null}</div>;
 }

@@ -15,8 +15,8 @@ const ROWS: { task: string; gda: boolean; nurse: boolean }[] = [
 /** Plain comparison of what a GDA or attendant does versus a home nurse. */
 export function WhosWho() {
   return (
-    <div className="overflow-hidden rounded-[16px] border border-rule bg-white">
-      <div className="grid grid-cols-[1fr_88px_88px] items-end border-b border-rule bg-paper-2 px-4 py-4 sm:grid-cols-[1fr_180px_180px] sm:px-8">
+    <div>
+      <div className="grid grid-cols-[1fr_84px_84px] items-end border-b-2 border-text pb-3 sm:grid-cols-[1fr_170px_170px]">
         <span className="text-sm font-medium text-text-2">Task</span>
         <span className="text-center font-display text-sm font-bold leading-tight text-text sm:text-lg">GDA or attendant</span>
         <span className="text-center font-display text-sm font-bold leading-tight text-text sm:text-lg">Home nurse</span>
@@ -25,7 +25,7 @@ export function WhosWho() {
         {ROWS.map((r, i) => (
           <li
             key={r.task}
-            className={`grid grid-cols-[1fr_88px_88px] items-center px-4 py-3.5 text-[15px] sm:grid-cols-[1fr_180px_180px] sm:px-8 sm:text-base ${i % 2 === 1 ? "bg-paper-2/60" : ""} ${!r.gda ? "font-medium" : ""}`}
+            className={`grid grid-cols-[1fr_84px_84px] items-center border-b border-text/12 py-3.5 text-[15px] sm:grid-cols-[1fr_170px_170px] sm:text-base ${!r.gda ? "font-medium" : ""}`}
           >
             <span className="pr-3 text-text">{r.task}</span>
             {[r.gda, r.nurse].map((ok, j) => (
@@ -35,7 +35,7 @@ export function WhosWho() {
                     <CheckIcon size={15} weight="bold" aria-label="Yes" />
                   </span>
                 ) : (
-                  <span className="grid size-7 place-items-center rounded-full bg-rule text-text-2">
+                  <span className="grid size-7 place-items-center rounded-full border border-text/20 text-text-2">
                     <MinusIcon size={15} weight="bold" aria-label="No" />
                   </span>
                 )}
@@ -44,7 +44,7 @@ export function WhosWho() {
           </li>
         ))}
       </ul>
-      <p className="border-t border-rule px-4 py-4 text-sm text-text-2 sm:px-8">
+      <p className="pt-4 text-sm text-text-2">
         Clinical tasks follow your doctor&apos;s instructions. Neither caregivers nor nurses prescribe or change medication.
       </p>
     </div>

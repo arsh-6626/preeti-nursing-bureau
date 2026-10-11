@@ -57,21 +57,21 @@ export function ShiftDay() {
   const plan = PLANS[which];
   return (
     <div>
-      <div role="tablist" aria-label="Shift length" className="inline-flex gap-1 rounded-[14px] bg-white p-1 ring-1 ring-rule">
+      <div role="tablist" aria-label="Shift length" className="flex gap-8 border-b border-text/15">
         {(["12", "24"] as const).map((k) => (
           <button
             key={k}
             role="tab"
             aria-selected={which === k}
             onClick={() => setWhich(k)}
-            className={`rounded-[10px] px-5 py-2.5 font-display text-lg font-bold transition-colors ${which === k ? "bg-field text-white" : "text-text-2 hover:text-text"}`}
+            className={`-mb-px border-b-[3px] pb-3 font-display text-xl font-bold transition-colors ${which === k ? "border-field text-field" : "border-transparent text-text-2 hover:text-text"}`}
           >
             {k} hours
           </button>
         ))}
       </div>
 
-      <div role="tabpanel" className="mt-8 rounded-[16px] bg-white p-5 ring-1 ring-rule sm:p-8">
+      <div role="tabpanel" className="mt-10">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <h3 className="font-display text-2xl font-bold tracking-[-0.015em] text-text sm:text-3xl">{plan.title}</h3>
           <ul className="flex gap-4 text-sm text-text-2">
@@ -88,11 +88,11 @@ export function ShiftDay() {
 
         {/* To-scale bar */}
         <div className="mt-6" aria-hidden>
-          <div className="flex h-11 overflow-hidden rounded-[10px]">
+          <div className="flex h-14 overflow-hidden rounded-[8px]">
             {plan.blocks.map((b, i) => (
               <div
                 key={i}
-                className={`${KIND_STYLE[b.kind].bar} border-r-2 border-white last:border-r-0`}
+                className={`${KIND_STYLE[b.kind].bar} border-r-2 border-paper-2 last:border-r-0`}
                 style={{ width: `${((b.to - b.from) / plan.length) * 100}%` }}
               />
             ))}
@@ -117,7 +117,7 @@ export function ShiftDay() {
             </li>
           ))}
         </ol>
-        <p className="mt-8 border-t border-rule pt-5 text-sm text-text-2">
+        <p className="mt-8 text-sm text-text-2">
           An example only. Every routine, rest break and relief arrangement is agreed with your family on the call.
         </p>
       </div>

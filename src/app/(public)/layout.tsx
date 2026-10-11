@@ -17,7 +17,7 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
         Skip to content
       </a>
       <SiteHeader brand={<Brand name={settings.businessName} logoUrl={settings.logoUrl} />} tel={telHref(settings.phone)} />
-      <main id="main" className="flex-1 bg-paper-2 text-text">{children}</main>
+      <main id="main" className="pnb-grain flex-1 bg-paper-2 text-text">{children}</main>
       <SiteFooter settings={settings} />
       <MobileActionBar tel={telHref(settings.phone)} />
     </>

@@ -21,30 +21,30 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero: one committed green field, the nurse staged like a product shot. */}
-      <section className="bg-field">
-        <div className="mx-auto grid max-w-6xl items-center gap-x-10 px-4 pb-12 pt-10 sm:px-6 lg:min-h-[640px] lg:grid-cols-[1.25fr_1fr] lg:pb-16 lg:pt-8">
-          <h1 className="font-display text-[2.7rem] font-bold leading-[0.98] tracking-[-0.03em] text-white sm:text-[4rem] lg:col-start-1 lg:row-start-1 lg:self-end lg:text-[4.6rem]">
+      {/* Hero: the headline beside a 3D room at home, with the nurse at the bedside. */}
+      <section className="overflow-hidden">
+        <div className="mx-auto grid max-w-[1320px] items-center gap-x-4 px-4 pb-10 pt-8 sm:px-6 lg:min-h-[660px] lg:grid-cols-[0.95fr_1.25fr] lg:pb-12 lg:pt-4">
+          <h1 className="font-display text-[2.7rem] font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-[4rem] lg:col-start-1 lg:row-start-1 lg:self-end lg:pl-6 lg:text-[4.4rem]">
             {settings.heroHeadline}
           </h1>
-          <div className="relative -mx-4 h-[360px] sm:mx-0 sm:h-[460px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[580px]">
+          <div className="relative -mx-4 h-[340px] sm:mx-0 sm:h-[480px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:-mr-10 lg:h-[640px]">
             <HeroNurse />
           </div>
-          <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
-            <p className="max-w-[40ch] text-lg leading-relaxed text-field-soft sm:text-xl lg:mt-7">{settings.heroSubtext}</p>
+          <div className="lg:col-start-1 lg:row-start-2 lg:self-start lg:pl-6">
+            <p className="max-w-[40ch] text-lg leading-relaxed text-text-2 sm:text-xl lg:mt-7">{settings.heroSubtext}</p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link href="/request" className={buttonClass("marigold", "lg", "px-6 text-[17px]")}>
+              <Link href="/request" className={buttonClass("field", "lg", "px-6 text-[17px]")}>
                 Find a Caregiver
                 <ArrowRightIcon size={18} weight="bold" aria-hidden />
               </Link>
-              <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" tone="field" />
+              <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" />
             </div>
           </div>
         </div>
       </section>
 
       {/* Who comes to your home */}
-      <section id="who" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-20 sm:px-6 md:py-28">
+      <section id="who" className="mx-auto max-w-6xl scroll-mt-24 border-t border-text/15 px-4 py-20 sm:px-6 md:py-28">
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <h2 className="max-w-[14ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
@@ -59,8 +59,8 @@ export default async function HomePage() {
       </section>
 
       {/* A shift, hour by hour */}
-      <section className="border-y border-rule bg-field-soft/50">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="border-t border-text/15 py-20 md:py-28">
           <h2 className="max-w-[18ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
             12 hours or 24 hours. Here is what a day looks like.
           </h2>
@@ -74,8 +74,8 @@ export default async function HomePage() {
       </section>
 
       {/* Services index */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
-        <div className="flex flex-wrap items-end justify-between gap-6">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="flex flex-wrap items-end justify-between gap-6 border-t border-text/15 pt-20 md:pt-28">
           <h2 className="font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">Care we arrange</h2>
           <Link href="/services" className="font-semibold text-field underline-offset-4 hover:underline">All services</Link>
         </div>
@@ -98,7 +98,7 @@ export default async function HomePage() {
       </section>
 
       {/* How it works */}
-      <section id="how-it-works" className="scroll-mt-24 bg-white">
+      <section id="how-it-works" className="scroll-mt-24">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
           <h2 className="max-w-[16ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
             A person on the phone at every step
@@ -116,7 +116,7 @@ export default async function HomePage() {
       </section>
 
       {/* Practicalities */}
-      <section className="mx-auto grid max-w-6xl px-4 py-20 sm:px-6 md:grid-cols-3 md:py-28">
+      <section className="mx-auto grid max-w-6xl border-t border-text/15 px-4 py-16 sm:px-6 md:grid-cols-3 md:py-20">
         <div className="pb-8 md:pb-0 md:pr-10">
           <h3 className="font-display text-2xl font-bold text-text">Where we work</h3>
           <p className="mt-3 text-lg leading-relaxed text-text">{cities.join(", ")}</p>
@@ -135,8 +135,8 @@ export default async function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-rule bg-white">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 md:py-28 lg:grid-cols-[0.8fr_1.2fr]">
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="grid gap-12 border-t border-text/15 py-20 md:py-28 lg:grid-cols-[0.8fr_1.2fr]">
           <h2 className="max-w-[12ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">Questions families ask</h2>
           <div className="border-t border-rule">
             {FAQS.map((f) => (
@@ -153,15 +153,15 @@ export default async function HomePage() {
       </section>
 
       {/* Close */}
-      <section className="bg-field">
-        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-4 py-20 sm:px-6 md:flex-row md:items-end md:py-24">
-          <h2 className="max-w-[15ch] font-display text-4xl font-bold leading-[1] tracking-[-0.03em] text-white sm:text-6xl">Talk to a person about your family.</h2>
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="flex flex-col items-start justify-between gap-8 border-t border-text/15 py-20 md:flex-row md:items-end md:py-28">
+          <h2 className="max-w-[15ch] font-display text-5xl font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-7xl">Talk to a person about your family.</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/request" className={buttonClass("marigold", "lg", "px-6 text-[17px]")}>
+            <Link href="/request" className={buttonClass("field", "lg", "px-6 text-[17px]")}>
               Find a Caregiver
               <ArrowRightIcon size={18} weight="bold" aria-hidden />
             </Link>
-            <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" tone="field" />
+            <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" />
           </div>
         </div>
       </section>
