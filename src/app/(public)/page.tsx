@@ -6,6 +6,7 @@ import { HeroNurse } from "@/components/public/hero-nurse";
 import { WhosWho } from "@/components/public/whos-who";
 import { ShiftDay } from "@/components/public/shift-day";
 import { buttonClass } from "@/components/ui/button";
+import { CaregiverCta } from "@/components/public/caregiver-cta";
 import { FAQS } from "@/components/public/faqs";
 
 const STEPS = [
@@ -33,10 +34,10 @@ export default async function HomePage() {
           <div className="lg:col-start-1 lg:row-start-2 lg:self-start lg:pl-6">
             <p className="max-w-[40ch] text-lg leading-relaxed text-text-2 sm:text-xl lg:mt-7">{settings.heroSubtext}</p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link href="/request" className={buttonClass("field", "lg", "px-6 text-[17px]")}>
+              <CaregiverCta href="/request" className={buttonClass("field", "lg", "px-6 text-[17px]")}>
                 Find a Caregiver
                 <ArrowRightIcon size={18} weight="bold" aria-hidden />
-              </Link>
+              </CaregiverCta>
               <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" />
             </div>
           </div>
@@ -157,10 +158,10 @@ export default async function HomePage() {
         <div className="flex flex-col items-start justify-between gap-8 border-t border-text/15 py-20 md:flex-row md:items-end md:py-28">
           <h2 className="max-w-[15ch] font-display text-5xl font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-7xl">Talk to a person about your family.</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/request" className={buttonClass("field", "lg", "px-6 text-[17px]")}>
+            <CaregiverCta href="/request" className={buttonClass("field", "lg", "px-6 text-[17px]")}>
               Find a Caregiver
               <ArrowRightIcon size={18} weight="bold" aria-hidden />
-            </Link>
+            </CaregiverCta>
             <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" />
           </div>
         </div>

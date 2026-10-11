@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ListIcon, XIcon, PhoneIcon } from "@phosphor-icons/react";
 import { buttonClass } from "@/components/ui/button";
+import { CaregiverCta } from "./caregiver-cta";
 
 const NAV = [
   { href: "/services", label: "Services" },
@@ -45,9 +46,9 @@ export function SiteHeader({ brand, tel }: { brand: React.ReactNode; tel: string
               Call
             </a>
           )}
-          <Link href="/request" className={buttonClass("field", "sm", "h-10 px-4 max-sm:hidden")}>
+          <CaregiverCta href="/request" className={buttonClass("field", "sm", "h-10 px-4 max-sm:hidden")}>
             Find a Caregiver
-          </Link>
+          </CaregiverCta>
           <button
             type="button"
             className="grid size-10 place-items-center rounded-[10px] text-text hover:bg-rule/60 lg:hidden"

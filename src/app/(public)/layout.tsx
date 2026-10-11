@@ -5,6 +5,7 @@ import { Brand } from "@/components/public/brand";
 import { SiteHeader } from "@/components/public/site-header";
 import { SiteFooter } from "@/components/public/site-footer";
 import { MobileActionBar } from "@/components/public/mobile-action-bar";
+import { PageCurtain } from "@/components/public/page-curtain";
 
 export default async function PublicLayout({ children }: LayoutProps<"/">) {
   // Public pages read live settings, services and areas from the database,
@@ -20,6 +21,7 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
       <main id="main" className="pnb-grain flex-1 bg-paper-2 text-text">{children}</main>
       <SiteFooter settings={settings} />
       <MobileActionBar tel={telHref(settings.phone)} />
+      <PageCurtain />
     </>
   );
 }

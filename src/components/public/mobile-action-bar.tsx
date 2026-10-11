@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PhoneIcon } from "@phosphor-icons/react";
 import { buttonClass } from "@/components/ui/button";
+import { CaregiverCta } from "./caregiver-cta";
 
 /** Phones only: keeps the primary action within reach on every public page except the request form. */
 export function MobileActionBar({ tel }: { tel: string | null }) {
@@ -17,9 +18,9 @@ export function MobileActionBar({ tel }: { tel: string | null }) {
             <PhoneIcon size={20} aria-hidden />
           </a>
         )}
-        <Link href="/request" className={buttonClass("field", "lg", "flex-1")}>
+        <CaregiverCta href="/request" className={buttonClass("field", "lg", "flex-1")}>
           Find a Caregiver
-        </Link>
+        </CaregiverCta>
       </div>
     </div>
   );

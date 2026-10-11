@@ -4,7 +4,8 @@
  * Stylized "clay" nurse built from primitives in code. Shared by the hero
  * scene. She breathes, blinks, waves now and then and follows the pointer.
  */
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { GO_EVENT } from "@/lib/client/go-event";
 import { useFrame, useThree } from "@react-three/fiber";
 import { RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
@@ -75,11 +76,26 @@ export function Nurse() {
   const waveArm = useRef<THREE.Group>(null);
   const forearm = useRef<THREE.Group>(null);
   const eyes = useRef<THREE.Group>(null);
-  const { pointer } = useThree();
+  const { pointer, clock } = useThree();
+  // Time the "go" reaction started (excited hop and wave), or null.
+  const goAt = useRef<number | null>(null);
+  useEffect(() => {
+    const onGo = () => {
+      goAt.current = clock.elapsedTime;
+    };
+    window.addEventListener(GO_EVENT, onGo);
+    return () => window.removeEventListener(GO_EVENT, onGo);
+  }, [clock]);
 
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
-    if (root.current) root.current.rotation.y = THREE.MathUtils.damp(root.current.rotation.y, -0.25 + pointer.x * 0.35, 2.5, delta);
+    const since = goAt.current === null ? Infinity : t - goAt.current;
+    const excited = since < 1.6;
+    if (root.current) {
+      root.current.rotation.y = THREE.MathUtils.damp(root.current.rotation.y, excited ? 0.1 : -0.25 + pointer.x * 0.35, excited ? 8 : 2.5, delta);
+      // Two quick hops.
+      root.current.position.y = excited ? -0.05 + Math.abs(Math.sin(since * Math.PI * 2.6)) * 0.28 * Math.max(0, 1 - since / 1.6) : THREE.MathUtils.damp(root.current.position.y, -0.05, 8, delta);
+    }
     if (head.current) {
       head.current.rotation.y = THREE.MathUtils.damp(head.current.rotation.y, pointer.x * 0.45, 4, delta);
       head.current.rotation.x = THREE.MathUtils.damp(head.current.rotation.x, -pointer.y * 0.22, 4, delta);
@@ -88,13 +104,13 @@ export function Nurse() {
     if (torso.current) torso.current.scale.y = 1 + Math.sin(t * 1.6) * 0.012;
     // Wave for ~2.4s every 7s.
     const cycle = t % 7;
-    const waving = cycle < 2.4;
+    const waving = excited || cycle < 2.4;
     if (waveArm.current) {
       const target = waving ? 2.55 : 0.18;
       waveArm.current.rotation.z = THREE.MathUtils.damp(waveArm.current.rotation.z, target, 6, delta);
     }
     if (forearm.current) {
-      const target = waving ? 0.35 + Math.sin(t * 9) * 0.35 : 0.05;
+      const target = waving ? 0.35 + Math.sin(t * (excited ? 16 : 9)) * 0.4 : 0.05;
       forearm.current.rotation.z = THREE.MathUtils.damp(forearm.current.rotation.z, target, 10, delta);
     }
     if (eyes.current) {

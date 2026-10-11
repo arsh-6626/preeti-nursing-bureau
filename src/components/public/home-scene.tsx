@@ -6,7 +6,8 @@
  * Built from primitives in code. Tilts gently with the pointer; renders still
  * under reduced motion.
  */
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { GO_EVENT } from "@/lib/client/go-event";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { ContactShadows, Environment, Lightformer, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
@@ -211,8 +212,23 @@ function Room() {
 function Diorama() {
   const group = useRef<THREE.Group>(null);
   const { pointer } = useThree();
-  useFrame((_, delta) => {
+  const going = useRef(false);
+  useEffect(() => {
+    const onGo = () => {
+      going.current = true;
+    };
+    window.addEventListener(GO_EVENT, onGo);
+    return () => window.removeEventListener(GO_EVENT, onGo);
+  }, []);
+  useFrame((state, delta) => {
     if (!group.current) return;
+    // Dolly the camera towards the nurse when the visitor heads to the request form.
+    const persp = state.camera as THREE.PerspectiveCamera;
+    const targetFov = going.current ? 17 : 30;
+    if (Math.abs(persp.fov - targetFov) > 0.01) {
+      persp.fov = THREE.MathUtils.damp(persp.fov, targetFov, 3.2, delta);
+      persp.updateProjectionMatrix();
+    }
     group.current.rotation.y = THREE.MathUtils.damp(group.current.rotation.y, 0.32 + pointer.x * 0.12, 2.5, delta);
     group.current.rotation.x = THREE.MathUtils.damp(group.current.rotation.x, -pointer.y * 0.04, 2.5, delta);
   });
