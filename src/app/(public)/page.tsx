@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRightIcon, MapPinIcon, PlusIcon } from "@phosphor-icons/react/ssr";
 import { getPublicSettings, listActiveAreas, listActiveServices } from "@/lib/services/settings";
 import { ContactActions } from "@/components/public/contact-actions";
-import { HeroCarton } from "@/components/public/hero-carton";
+import { HeroNurse } from "@/components/public/hero-nurse";
 import { ServiceExplorer } from "@/components/public/service-explorer";
 import { ShiftSwitch } from "@/components/public/shift-switch";
 import { ProcessSteps } from "@/components/public/process-steps";
@@ -23,7 +23,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Ink stage: headline and actions, with the 3D carton between headline and text on phones. */}
+      {/* Ink stage: headline and actions, with the 3D nurse between headline and text on phones. */}
       <section className="on-ink relative -mt-[68px] overflow-hidden bg-ink-950 pt-[68px]">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_75%_40%,rgb(124_242_210/0.14),transparent_70%)]" />
         <div className="relative mx-auto grid max-w-6xl items-center gap-x-8 px-4 pb-14 pt-10 sm:px-6 lg:min-h-[calc(100dvh-68px)] lg:max-h-[860px] lg:grid-cols-[1.3fr_1fr] lg:pb-20 lg:pt-6">
@@ -32,7 +32,7 @@ export default async function HomePage() {
           </h1>
           <div className="relative -mx-4 h-[340px] sm:mx-0 sm:h-[460px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[600px]">
             <div aria-hidden className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(closest-side,rgb(124_242_210/0.32),transparent)]" />
-            <HeroCarton name={settings.businessName} region={settings.regionLabel} />
+            <HeroNurse />
           </div>
           <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
             <p className="mt-2 max-w-[42ch] text-lg leading-relaxed text-on-ink-muted sm:text-xl lg:mt-7">{settings.heroSubtext}</p>
