@@ -7,7 +7,8 @@
  * selection, subtle green is reserved for confirmed / positive state.
  */
 @theme {
-  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   --color-paper: #ffffff;
   --color-mist: #f3f7f7;

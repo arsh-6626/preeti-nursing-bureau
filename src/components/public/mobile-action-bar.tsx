@@ -16,11 +16,11 @@ export function MobileActionBar({ tel }: { tel: string | null }) {
     <div className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-paper/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-paper/85 sm:hidden">
       <div className="flex gap-2">
         {tel && (
-          <a href={tel} className={buttonClass("secondary", "lg", "px-4")} aria-label="Call us">
+          <a href={tel} className={buttonClass("secondary", "lg", "rounded-full px-4")} aria-label="Call us">
             <PhoneIcon size={20} aria-hidden />
           </a>
         )}
-        <Link href="/request" className={buttonClass("primary", "lg", "flex-1")}>
+        <Link href="/request" className={buttonClass("primary", "lg", "flex-1 rounded-full")}>
           Find a Caregiver
         </Link>
       </div>

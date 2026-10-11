@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRightIcon, ChatCircleTextIcon, CheckCircleIcon, MapPinIcon, PlusIcon } from "@phosphor-icons/react/ssr";
 import { getPublicSettings, listActiveAreas, listActiveServices } from "@/lib/services/settings";
 import { ContactActions } from "@/components/public/contact-actions";
-import { ShiftChoice } from "@/components/public/shift-choice";
+import { HeroCarton } from "@/components/public/hero-carton";
 import { buttonClass } from "@/components/ui/button";
 import { SHIFT_DESCRIPTIONS } from "@/lib/domain/shift";
 import { FAQS } from "@/components/public/faqs";
@@ -15,49 +15,26 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero: the offer on the left, the working request starter on the right. */}
-      <section className="border-b border-line bg-[linear-gradient(180deg,var(--color-mist)_0%,var(--color-paper)_100%)]">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-10 sm:px-6 md:pt-16 lg:grid-cols-[1.35fr_1fr] lg:gap-12 lg:pb-20">
-          <div>
-            <h1 className="text-[2rem] font-bold leading-[1.12] tracking-tight text-navy-900 sm:text-[2.6rem]">
-              {settings.heroHeadline}
-            </h1>
-            <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-ink">{settings.heroSubtext}</p>
-            <div className="mt-7">
+      {/* Hero: the offer on the left, the 3D carton on the right (between headline and text on phones). */}
+      <section className="relative overflow-hidden border-b border-line bg-paper">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-x-6 px-4 pb-10 pt-8 sm:px-6 lg:min-h-[620px] lg:grid-cols-[1.05fr_1fr] lg:pb-14 lg:pt-12">
+          <h1 className="text-[2.1rem] font-semibold leading-[1.06] tracking-[-0.035em] text-navy-950 sm:text-[3rem] lg:col-start-1 lg:row-start-1 lg:self-end lg:text-[3.5rem]">
+            {settings.heroHeadline}
+          </h1>
+          <div className="relative -mx-4 h-[330px] sm:mx-0 sm:h-[440px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[580px]">
+            <div aria-hidden className="pointer-events-none absolute inset-[6%] rounded-full bg-[radial-gradient(closest-side,rgb(153_246_228/0.6),rgb(153_246_228/0))]" />
+            <HeroCarton name={settings.businessName} region={settings.regionLabel} />
+          </div>
+          <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
+            <p className="mt-2 max-w-[44ch] text-lg leading-relaxed text-muted sm:text-xl lg:mt-6">{settings.heroSubtext}</p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link href="/request" className={buttonClass("primary", "lg", "rounded-full px-7")}>
+                Find a Caregiver
+                <ArrowRightIcon size={18} weight="bold" aria-hidden />
+              </Link>
               <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" />
             </div>
           </div>
-
-          <form
-            action="/request"
-            method="get"
-            className="rounded-[var(--radius-panel)] border border-line bg-paper p-5 shadow-[var(--shadow-float)] sm:p-6"
-            aria-labelledby="starter-title"
-          >
-            <h2 id="starter-title" className="text-lg font-semibold text-navy-900">Find a caregiver</h2>
-            <p className="mt-1 text-sm text-muted">Takes about three minutes. We call you before anything is arranged.</p>
-            <div className="mt-5 flex flex-col gap-1.5">
-              <label htmlFor="starter-service" className="text-sm font-semibold text-navy-900">What kind of care?</label>
-              <select
-                id="starter-service"
-                name="service"
-                className="h-12 w-full rounded-[var(--radius-control)] border border-line-strong bg-paper px-3 text-base text-navy-950 focus:border-teal-600"
-                defaultValue=""
-              >
-                <option value="">I&apos;m not sure yet</option>
-                {services.map((s) => (
-                  <option key={s.id} value={s.slug}>{s.name}</option>
-                ))}
-              </select>
-            </div>
-            <div className="mt-5">
-              <ShiftChoice />
-            </div>
-            <button type="submit" className={buttonClass("primary", "lg", "mt-6 w-full")}>
-              Find a Caregiver
-              <ArrowRightIcon size={18} weight="bold" aria-hidden />
-            </button>
-          </form>
         </div>
       </section>
 

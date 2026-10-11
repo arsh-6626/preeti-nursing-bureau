@@ -22,13 +22,13 @@ export function ContactActions({
   return (
     <div className="flex flex-wrap gap-3">
       {tel && (
-        <a href={tel} className={buttonClass("secondary", size)}>
+        <a href={tel} className={buttonClass("secondary", size, "rounded-full")}>
           <PhoneIcon size={20} weight="regular" aria-hidden />
           {showNumbers && phone ? `Call ${formatPhoneDisplay(phone)}` : "Call us"}
         </a>
       )}
       {wa && (
-        <a href={wa} target="_blank" rel="noopener noreferrer" className={buttonClass("secondary", size)}>
+        <a href={wa} target="_blank" rel="noopener noreferrer" className={buttonClass("secondary", size, "rounded-full")}>
           <WhatsappLogoIcon size={20} weight="regular" aria-hidden />
           WhatsApp us
         </a>

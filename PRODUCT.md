@@ -48,7 +48,7 @@ A human-run bureau, not a marketplace or app. Every match is reviewed and confir
 
 ## Evidence on Hand
 
-None. There are no testimonials, reviews, certifications, registrations, caregiver counts, or performance figures, and none may be invented. No photographs of real staff or caregivers; stock photos of people must not be presented as bureau staff.
+None. There are no testimonials, reviews, certifications, registrations, caregiver counts, or performance figures, and none may be invented. No photographs of real staff or caregivers. Generic stock photos are allowed (confirmed 2026-10-12) but must never be presented as bureau staff, caregivers or clients.
 
 ## Product Principles
 
@@ -62,6 +62,6 @@ None. There are no testimonials, reviews, certifications, registrations, caregiv
 
 Users include older family members and people using phones with large text settings. Body text at least 16px, generous tap targets, high contrast, plain language, labels above inputs, and error messages that say how to fix the problem. WCAG 2.2 AA is the target.
 
-## Design Preference (confirmed 2026-10-11)
+## Design Preference (updated 2026-10-12)
 
-The owner chose the category-standard home-care layout over themed directions, and asked that it be built to a clearly higher quality than existing Indian home-care sites (Portea, Care24, Apollo 24|7 and similar were all judged weak). Convention is the commitment; craft is the bar.
+The first build used the category-standard layout; the owner rejected it as looking like "a generic e-commerce platform". Confirmed new direction for the public site: a **medtech startup** feel (product-grade, modern health-tech, confident), replacing the earlier canon choice. The admin keeps its current Operate design. After two concept rolls the owner asked for it to "look like a real startup": the bar is funded medtech brands such as Hims, Forward, Function Health and One Medical (polished product UI, big confident type, strong photography, smooth motion). Convention executed at that craft level is the commitment. Stock photography is allowed when clearly generic: never captioned, implied or presented as the bureau's staff, caregivers or clients, and listed for later replacement with real photos.
