@@ -43,7 +43,7 @@ const STEPS = [
 ] as const satisfies readonly { key: string; title: string; fields: readonly FieldPath<CareRequestInput>[] }[];
 
 const inputClass =
-  "block w-full rounded-[14px] border border-ink-950/15 bg-white px-4 text-base text-ink-950 placeholder:text-ink-700/60 hover:border-ink-950/35 focus:border-brand focus:outline-2 focus:outline-offset-0 focus:outline-brand/25 aria-invalid:border-rose-700";
+  "block w-full rounded-[14px] border border-text/20 bg-white px-4 text-base text-text placeholder:text-text-2/70 hover:border-text/35 focus:border-field focus:outline-2 focus:outline-offset-0 focus:outline-field/25 aria-invalid:border-rose-700";
 
 function Label({ htmlFor, children, optional }: { htmlFor: string; children: React.ReactNode; optional?: boolean }) {
   return (
@@ -66,7 +66,7 @@ function ErrorText({ id, message }: { id: string; message?: string }) {
 function ChoiceCard({ checked, children }: { checked: boolean; children: React.ReactNode }) {
   return (
     <span
-      className={`flex h-full cursor-pointer flex-col rounded-2xl border px-4 py-4 transition-[background-color,border-color,box-shadow] duration-200 ${checked ? "border-brand bg-mint-soft/50 shadow-[inset_0_0_0_1px_var(--color-brand)]" : "border-ink-950/12 bg-white hover:border-ink-950/40"}`}
+      className={`flex h-full cursor-pointer flex-col rounded-2xl border px-4 py-4 transition-[background-color,border-color,box-shadow] duration-200 ${checked ? "border-field bg-field-soft/60 shadow-[inset_0_0_0_1px_var(--color-field)]" : "border-text/15 bg-white hover:border-text/40"}`}
     >
       {children}
     </span>
@@ -184,12 +184,12 @@ export function RequestWizard(props: Props) {
   return (
     <div>
       {/* Progress */}
-      <nav aria-label="Progress" className="mb-3 rounded-[22px] bg-white px-5 py-4 shadow-[0_20px_60px_-40px_rgb(6_26_29/0.5)] ring-1 ring-ink-950/[0.06]">
+      <nav aria-label="Progress" className="mb-3 rounded-[14px] bg-white px-5 py-4  ring-1 ring-rule">
         <p className="text-sm font-medium text-muted sm:hidden">
           Step {step + 1} of {STEPS.length}: <span className="text-navy-900">{current.title}</span>
         </p>
         <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-mist-2 sm:hidden" aria-hidden>
-          <div className="h-full rounded-full bg-brand transition-[width] duration-300" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
+          <div className="h-full rounded-full bg-field transition-[width] duration-300" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
         </div>
         <ol className="hidden gap-2 sm:grid sm:grid-cols-6">
           {STEPS.map((s, i) => (
@@ -201,8 +201,8 @@ export function RequestWizard(props: Props) {
                 aria-current={i === step ? "step" : undefined}
                 className="flex w-full flex-col items-start gap-1.5 text-left disabled:cursor-default"
               >
-                <span className={`h-1.5 w-full rounded-full ${i <= step ? "bg-brand" : "bg-ink-950/10"}`} />
-                <span className={`text-sm font-semibold ${i === step ? "text-ink-950" : i < step ? "text-brand" : "text-ink-700/70"}`}>
+                <span className={`h-1.5 w-full rounded-full ${i <= step ? "bg-field" : "bg-field/10"}`} />
+                <span className={`text-sm font-semibold ${i === step ? "text-text" : i < step ? "text-field" : "text-text-2"}`}>
                   {s.title}
                 </span>
               </button>
@@ -218,9 +218,9 @@ export function RequestWizard(props: Props) {
           else submit();
         }}
         noValidate
-        className="rounded-[28px] bg-white p-6 shadow-[0_40px_90px_-50px_rgb(6_26_29/0.45)] ring-1 ring-ink-950/[0.06] sm:p-10"
+        className="rounded-[16px] bg-white p-6 shadow-[0_30px_70px_-45px_rgb(10_59_54/0.45)] ring-1 ring-rule sm:p-10"
       >
-        <h2 ref={headingRef} tabIndex={-1} className="text-2xl font-semibold tracking-[-0.025em] text-ink-950 outline-none sm:text-3xl">
+        <h2 ref={headingRef} tabIndex={-1} className="text-2xl font-display font-bold tracking-[-0.015em] text-text outline-none sm:text-3xl">
           {
             {
               service: "What kind of care do you need?",
@@ -289,7 +289,7 @@ export function RequestWizard(props: Props) {
               )}
               <ErrorText id="serviceCategoryId-error" message={err("serviceCategoryId") ?? err("otherServiceText")} />
               {selectedService?.isNursing && (
-                <p className="rounded-2xl bg-mint-soft/60 px-4 py-3 text-sm leading-relaxed text-ink-950">
+                <p className="rounded-2xl bg-field-soft/70 px-4 py-3 text-sm leading-relaxed text-text">
                   Home nursing is for clinical tasks such as injections, dressings or catheter care. For personal care
                   only, a GDA or attendant is usually the right choice. We will talk this through with you.
                 </p>
@@ -550,7 +550,7 @@ export function RequestWizard(props: Props) {
                 <textarea id="address" rows={2} maxLength={300} autoComplete="street-address" className={`${inputClass} py-3`} {...register("address")} />
               </div>
 
-              <p className="rounded-2xl bg-fog px-4 py-3 text-sm leading-relaxed text-ink-950">
+              <p className="rounded-2xl bg-paper-2 px-4 py-3 text-sm leading-relaxed text-text">
                 Availability depends on your locality and dates. We confirm on the call.
               </p>
             </>
@@ -622,7 +622,7 @@ export function RequestWizard(props: Props) {
           </div>
         )}
 
-        <div className="mt-10 flex flex-col-reverse gap-3 border-t border-ink-950/[0.08] pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col-reverse gap-3 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between">
           {step > 0 ? (
             <button type="button" onClick={back} className={buttonClass("quiet", "lg")}>
               <ArrowLeftIcon size={18} aria-hidden /> Back
@@ -631,11 +631,11 @@ export function RequestWizard(props: Props) {
             <span />
           )}
           {step < STEPS.length - 1 ? (
-            <button type="submit" className={buttonClass("ink", "lg", "w-full px-7 sm:w-auto")}>
+            <button type="submit" className={buttonClass("field", "lg", "w-full px-7 sm:w-auto")}>
               Continue <ArrowRightIcon size={18} weight="bold" aria-hidden />
             </button>
           ) : (
-            <button type="submit" disabled={isPending} aria-busy={isPending} className={buttonClass("ink", "lg", "w-full px-7 sm:w-auto")}>
+            <button type="submit" disabled={isPending} aria-busy={isPending} className={buttonClass("field", "lg", "w-full px-7 sm:w-auto")}>
               {isPending ? "Sending your request…" : (<><CheckIcon size={18} weight="bold" aria-hidden /> Send request</>)}
             </button>
           )}
@@ -705,8 +705,8 @@ function ReviewSummary({
   return (
     <div className="grid gap-4">
       {groups.map((g) => (
-        <section key={g.title} className="overflow-hidden rounded-2xl border border-ink-950/[0.08]">
-          <header className="flex items-center justify-between border-b border-ink-950/[0.08] bg-fog px-4 py-3">
+        <section key={g.title} className="overflow-hidden rounded-2xl border border-rule">
+          <header className="flex items-center justify-between border-b border-rule bg-paper-2 px-4 py-3">
             <h3 className="text-sm font-semibold text-navy-900">{g.title}</h3>
             <button type="button" onClick={() => onEdit(g.step)} className="inline-flex items-center gap-1 text-sm font-semibold text-teal-700 hover:underline">
               <PencilSimpleIcon size={14} aria-hidden /> Edit <span className="sr-only">{g.title}</span>

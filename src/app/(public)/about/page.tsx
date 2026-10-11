@@ -13,7 +13,7 @@ export default async function AboutPage() {
       <PageIntro title={`About ${settings.businessName}`}>How we connect families in {settings.regionLabel} with caregivers.</PageIntro>
       <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-24">
         {settings.aboutText ? <PlainText text={settings.aboutText} /> : <p className="text-muted">More about us is coming soon.</p>}
-        <LinkButton href="/request" size="lg" variant="ink" className="mt-12 px-7">Find a Caregiver</LinkButton>
+        <LinkButton href="/request" size="lg" variant="field" className="mt-12 px-7">Find a Caregiver</LinkButton>
       </div>
     </>
   );

@@ -14,14 +14,14 @@ const C = {
   skin: "#b9774f",
   skinShade: "#a5663f",
   hair: "#1d1412",
-  scrubs: "#22a294",
-  scrubsDeep: "#137a6f",
-  pants: "#0f6b62",
+  scrubs: "#8ec5e8",
+  scrubsDeep: "#5f9fca",
+  pants: "#5f9fca",
   white: "#f6f9f8",
   ink: "#152a2e",
   blush: "#e7877c",
   silver: "#c9d4d6",
-  mint: "#7cf2d2",
+  mint: "#f2a93b",
   board: "#e3ebe8",
 };
 
@@ -270,36 +270,21 @@ function Nurse() {
   );
 }
 
-function Capsule({ position, rotation, color, scale = 1, speed = 1.2 }: { position: [number, number, number]; rotation: [number, number, number]; color: string; scale?: number; speed?: number }) {
-  return (
-    <Float speed={speed} rotationIntensity={0.8} floatIntensity={0.9}>
-      <mesh position={position} rotation={rotation} scale={scale} castShadow>
-        <capsuleGeometry args={[0.11, 0.26, 8, 24]} />
-        <meshPhysicalMaterial color={color} roughness={0.25} clearcoat={0.8} clearcoatRoughness={0.15} />
-      </mesh>
-    </Float>
-  );
-}
-
 function Scene() {
   return (
     <>
       <ambientLight intensity={0.75} />
       <directionalLight position={[2.5, 4, 5]} intensity={2.2} castShadow shadow-mapSize={[1024, 1024]} />
-      <directionalLight position={[-4, 2, -2]} intensity={1.4} color={C.mint} />
-      <pointLight position={[-2.2, 0.5, 2.2]} intensity={5} distance={6} color={C.mint} />
+      <directionalLight position={[-4, 2, -2]} intensity={1.0} color="#cfe8ff" />
       <Environment resolution={256}>
         <Lightformer intensity={2} position={[0, 4, 3]} scale={[8, 2, 1]} />
         <Lightformer intensity={1.1} position={[-5, 1, 2]} rotation-y={Math.PI / 2} scale={[6, 3, 1]} />
-        <Lightformer intensity={0.9} color={C.mint} position={[5, 0, 1]} rotation-y={-Math.PI / 2} scale={[6, 3, 1]} />
+        <Lightformer intensity={0.7} position={[5, 0, 1]} rotation-y={-Math.PI / 2} scale={[6, 3, 1]} />
       </Environment>
       <Float speed={1} rotationIntensity={0.05} floatIntensity={0.25}>
         <Nurse />
       </Float>
-      <Capsule position={[-0.95, 1.15, 0.2]} rotation={[0.4, 0, 0.9]} color={C.scrubs} />
-      <Capsule position={[1.2, 0.95, -0.3]} rotation={[0.1, 0, 0.3]} color={C.mint} scale={0.8} speed={1} />
-      <Capsule position={[1.15, -0.6, 0.6]} rotation={[0.2, 0.3, -0.6]} color={C.white} scale={0.85} speed={1.5} />
-      <ContactShadows position={[0, -1.47, 0]} opacity={0.55} scale={3.4} blur={2.4} far={2} color="#000000" />
+      <ContactShadows position={[0, -1.47, 0]} opacity={0.5} scale={3.2} blur={2.2} far={2} color="#03211d" />
     </>
   );
 }

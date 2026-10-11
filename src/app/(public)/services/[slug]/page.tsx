@@ -26,16 +26,16 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
         <div>
           {service.imageUrl && (
             // eslint-disable-next-line @next/next/no-img-element -- image URL is configured by the business
-            <img src={service.imageUrl} alt="" className="mb-10 aspect-[16/9] w-full rounded-[28px] object-cover" />
+            <img src={service.imageUrl} alt="" className="mb-10 aspect-[16/9] w-full rounded-[16px] object-cover" />
           )}
-          <p className="max-w-[60ch] text-xl leading-relaxed text-ink-950">{service.description}</p>
+          <p className="max-w-[60ch] text-xl leading-relaxed text-text">{service.description}</p>
           {service.requiredSkills.length > 0 && (
             <>
-              <h2 className="mt-14 text-2xl font-semibold tracking-[-0.025em] text-ink-950">What we look for in the caregiver</h2>
+              <h2 className="mt-14 text-2xl font-display font-bold tracking-[-0.015em] text-text">What we look for in the caregiver</h2>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {service.requiredSkills.map((skill) => (
-                  <li key={skill} className="flex items-start gap-3 rounded-2xl bg-white p-4 text-ink-950 ring-1 ring-ink-950/[0.06]">
-                    <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-mint-soft text-brand-deep">
+                  <li key={skill} className="flex items-start gap-3 rounded-2xl bg-white p-4 text-text ring-1 ring-rule">
+                    <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-field-soft text-field">
                       <CheckIcon size={13} weight="bold" aria-hidden />
                     </span>
                     {skill}
@@ -45,23 +45,23 @@ export default async function ServicePage({ params }: PageProps<"/services/[slug
             </>
           )}
           {service.notes && (
-            <p className="mt-10 flex gap-3 rounded-2xl bg-fog-2 p-5 leading-relaxed text-ink-950">
-              <InfoIcon size={22} className="mt-0.5 shrink-0 text-brand" aria-hidden />
+            <p className="mt-10 flex gap-3 rounded-2xl bg-field-soft/60 p-5 leading-relaxed text-text">
+              <InfoIcon size={22} className="mt-0.5 shrink-0 text-field" aria-hidden />
               {service.notes}
             </p>
           )}
         </div>
-        <aside className="on-ink h-fit rounded-[28px] bg-ink-950 p-8 lg:sticky lg:top-28">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-mint">Charges</p>
-          <p className="mt-3 text-lg leading-relaxed text-on-ink">
+        <aside className="h-fit rounded-[16px] bg-field p-8 lg:sticky lg:top-28">
+          <p className="text-sm font-semibold text-marigold">Charges</p>
+          <p className="mt-3 text-lg leading-relaxed text-field-soft">
             {service.indicativePrice ?? "Charges depend on the shift (12 or 24 hours) and the duration. We explain them clearly on the call before anything is arranged."}
           </p>
-          <Link href={`/request?service=${service.slug}`} className={buttonClass("mint", "lg", "mt-8 w-full")}>
+          <Link href={`/request?service=${service.slug}`} className={buttonClass("marigold", "lg", "mt-8 w-full")}>
             Request this service
             <ArrowRightIcon size={18} weight="bold" aria-hidden />
           </Link>
           <div className="mt-3">
-            <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} tone="ink" />
+            <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} tone="field" />
           </div>
         </aside>
       </div>

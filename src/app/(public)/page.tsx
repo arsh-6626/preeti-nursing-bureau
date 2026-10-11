@@ -1,181 +1,151 @@
 import Link from "next/link";
-import { ArrowRightIcon, MapPinIcon, PlusIcon } from "@phosphor-icons/react/ssr";
+import { ArrowRightIcon, ArrowUpRightIcon, PlusIcon } from "@phosphor-icons/react/ssr";
 import { getPublicSettings, listActiveAreas, listActiveServices } from "@/lib/services/settings";
 import { ContactActions } from "@/components/public/contact-actions";
 import { HeroNurse } from "@/components/public/hero-nurse";
-import { ServiceExplorer } from "@/components/public/service-explorer";
-import { ShiftSwitch } from "@/components/public/shift-switch";
-import { ProcessSteps } from "@/components/public/process-steps";
-import { Reveal } from "@/components/public/reveal";
+import { WhosWho } from "@/components/public/whos-who";
+import { ShiftDay } from "@/components/public/shift-day";
 import { buttonClass } from "@/components/ui/button";
 import { FAQS } from "@/components/public/faqs";
+
+const STEPS = [
+  { title: "Tell us what you need", body: "A three-minute request online, or a call or WhatsApp." },
+  { title: "We call you", body: "We talk through the patient, the shift, the dates and your locality." },
+  { title: "We suggest someone", body: "We tell you who is free, suitable, and what has been checked." },
+  { title: "You decide", body: "Care starts only when you and the caregiver both agree." },
+];
 
 export default async function HomePage() {
   const [settings, services, areas] = await Promise.all([getPublicSettings(), listActiveServices(), listActiveAreas()]);
   const cities = [...new Set(areas.map((a) => a.city))];
-  const facts = [
-    "12-hour shifts",
-    "24-hour care with planned rest",
-    "Every match reviewed by a person",
-    "Pay by UPI, cash or bank transfer",
-    ...cities,
-  ];
 
   return (
     <>
-      {/* Ink stage: headline and actions, with the 3D nurse between headline and text on phones. */}
-      <section className="on-ink relative -mt-[68px] overflow-hidden bg-ink-950 pt-[68px]">
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_75%_40%,rgb(124_242_210/0.14),transparent_70%)]" />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-x-8 px-4 pb-14 pt-10 sm:px-6 lg:min-h-[calc(100dvh-68px)] lg:max-h-[860px] lg:grid-cols-[1.3fr_1fr] lg:pb-20 lg:pt-6">
-          <h1 className="text-[2.55rem] font-semibold leading-[1.02] tracking-[-0.045em] text-white sm:text-6xl lg:col-start-1 lg:row-start-1 lg:self-end lg:text-[4.1rem]">
+      {/* Hero: one committed green field, the nurse staged like a product shot. */}
+      <section className="bg-field">
+        <div className="mx-auto grid max-w-6xl items-center gap-x-10 px-4 pb-12 pt-10 sm:px-6 lg:min-h-[640px] lg:grid-cols-[1.25fr_1fr] lg:pb-16 lg:pt-8">
+          <h1 className="font-display text-[2.7rem] font-bold leading-[0.98] tracking-[-0.03em] text-white sm:text-[4rem] lg:col-start-1 lg:row-start-1 lg:self-end lg:text-[4.6rem]">
             {settings.heroHeadline}
           </h1>
-          <div className="relative -mx-4 h-[340px] sm:mx-0 sm:h-[460px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[600px]">
-            <div aria-hidden className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(closest-side,rgb(124_242_210/0.32),transparent)]" />
+          <div className="relative -mx-4 h-[360px] sm:mx-0 sm:h-[460px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-[580px]">
             <HeroNurse />
           </div>
           <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
-            <p className="mt-2 max-w-[42ch] text-lg leading-relaxed text-on-ink-muted sm:text-xl lg:mt-7">{settings.heroSubtext}</p>
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Link href="/request" className={buttonClass("mint", "lg", "px-7")}>
+            <p className="max-w-[40ch] text-lg leading-relaxed text-field-soft sm:text-xl lg:mt-7">{settings.heroSubtext}</p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link href="/request" className={buttonClass("marigold", "lg", "px-6 text-[17px]")}>
                 Find a Caregiver
                 <ArrowRightIcon size={18} weight="bold" aria-hidden />
               </Link>
-              <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" tone="ink" />
+              <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" tone="field" />
             </div>
           </div>
         </div>
-        {/* One strip of plain facts, no claims. */}
-        <div className="relative border-t border-white/10 py-5" aria-label="At a glance">
-          <div className="flex w-max gap-10 whitespace-nowrap pnb-marquee">
-            {[...facts, ...facts].map((f, i) => (
-              <span key={i} aria-hidden={i >= facts.length} className="flex items-center gap-10 font-mono text-sm uppercase tracking-[0.12em] text-on-ink-muted">
-                {f}
-                <span aria-hidden className="text-mint/60">/</span>
-              </span>
-            ))}
-          </div>
-        </div>
       </section>
 
-      {/* Services: explore, then request. */}
-      <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6 md:py-32">
-        <Reveal>
-          <h2 className="max-w-[16ch] text-4xl font-semibold leading-[1.04] tracking-[-0.04em] text-ink-950 sm:text-6xl">
-            You choose the care. We find the person.
-          </h2>
-          <p className="mt-5 max-w-[52ch] text-lg leading-relaxed text-ink-700">
-            Most families need everyday personal care. Some patients need a qualified nurse. Pick what fits, or tell us and we will help you decide.
-          </p>
-        </Reveal>
-        <Reveal delay={0.08} className="mt-12">
-          <ServiceExplorer services={services} />
-        </Reveal>
-      </section>
-
-      {/* Shifts: the one rule that never bends. */}
-      <section className="px-3 sm:px-5">
-        <div className="on-ink relative mx-auto max-w-[1400px] overflow-hidden rounded-[36px] bg-ink-950 px-6 py-16 sm:px-12 md:py-24">
-          <div aria-hidden className="pointer-events-none absolute -left-32 bottom-[-40%] size-[620px] rounded-full bg-[radial-gradient(closest-side,rgb(124_242_210/0.16),transparent)]" />
-          <div className="relative mx-auto max-w-6xl">
-            <h2 className="max-w-[18ch] text-4xl font-semibold leading-[1.04] tracking-[-0.04em] text-white sm:text-6xl">Two shift lengths. No grey areas.</h2>
-            <p className="mt-5 max-w-[50ch] text-lg leading-relaxed text-on-ink-muted">
-              Every arrangement is either 12 hours or 24 hours, so everyone knows exactly what has been agreed.
+      {/* Who comes to your home */}
+      <section id="who" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-20 sm:px-6 md:py-28">
+        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <h2 className="max-w-[14ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
+              A caregiver or a nurse?
+            </h2>
+            <p className="mt-5 max-w-[42ch] text-lg leading-relaxed text-text-2">
+              Most families need everyday personal care, not nursing. Here is what each one does, so you can ask for the right person. Not sure? We will help you decide on the call.
             </p>
-            <div className="mt-12">
-              <ShiftSwitch />
-            </div>
+          </div>
+          <WhosWho />
+        </div>
+      </section>
+
+      {/* A shift, hour by hour */}
+      <section className="border-y border-rule bg-field-soft/50">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
+          <h2 className="max-w-[18ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
+            12 hours or 24 hours. Here is what a day looks like.
+          </h2>
+          <p className="mt-5 max-w-[56ch] text-lg leading-relaxed text-text-2">
+            We arrange only these two shift lengths. For 24-hour care, rest and relief are planned with you, so no one works around the clock without a break.
+          </p>
+          <div className="mt-10">
+            <ShiftDay />
           </div>
         </div>
       </section>
 
-      {/* Process */}
-      <section id="how-it-works" className="mx-auto grid max-w-6xl scroll-mt-24 gap-14 px-4 py-24 sm:px-6 md:py-32 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <h2 className="max-w-[12ch] text-4xl font-semibold leading-[1.04] tracking-[-0.04em] text-ink-950 sm:text-6xl">How it works</h2>
-          <p className="mt-5 max-w-[40ch] text-lg leading-relaxed text-ink-700">Four steps, and a person on the phone at every one of them.</p>
-          <Link href="/request" className={buttonClass("ink", "lg", "mt-9 px-7")}>
-            Start a request
-            <ArrowRightIcon size={18} weight="bold" aria-hidden />
-          </Link>
+      {/* Services index */}
+      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <h2 className="font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">Care we arrange</h2>
+          <Link href="/services" className="font-semibold text-field underline-offset-4 hover:underline">All services</Link>
         </div>
-        <ProcessSteps />
+        <ul className="mt-10 border-t border-text/15">
+          {services.map((s) => (
+            <li key={s.id} className="border-b border-text/15">
+              <Link href={`/services/${s.slug}`} className="group grid items-baseline gap-2 py-6 sm:grid-cols-[1fr_1.1fr_auto] sm:gap-8">
+                <span className="flex flex-wrap items-baseline gap-3">
+                  <span className="font-display text-2xl font-bold tracking-[-0.02em] text-text decoration-marigold decoration-[3px] underline-offset-[6px] group-hover:underline sm:text-[1.9rem]">
+                    {s.name}
+                  </span>
+                  {s.isNursing && <span className="rounded-[6px] bg-field px-2 py-0.5 text-xs font-semibold text-white">Nurse</span>}
+                </span>
+                <span className="text-text-2">{s.summary}</span>
+                <ArrowUpRightIcon size={22} className="hidden text-text transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 sm:block" aria-hidden />
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      {/* What families can count on: five tiles, five facts. */}
-      <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6 md:pb-32">
-        <Reveal>
-          <h2 className="max-w-[20ch] text-4xl font-semibold leading-[1.04] tracking-[-0.04em] text-ink-950 sm:text-5xl">What you will always know</h2>
-        </Reveal>
-        <div className="mt-12 grid gap-4 md:grid-cols-3">
-          <Reveal className="md:col-span-2">
-            <div className="on-ink flex h-full flex-col justify-between rounded-[28px] bg-ink-950 p-8 sm:p-10">
-              <p className="font-mono text-xs uppercase tracking-[0.14em] text-mint">Before anyone arrives</p>
-              <div className="mt-10">
-                <h3 className="max-w-[20ch] text-3xl font-semibold tracking-[-0.03em] text-white sm:text-4xl">Which checks are complete, and which are still pending</h3>
-                <p className="mt-4 max-w-[52ch] text-lg leading-relaxed text-on-ink-muted">
-                  We tell you plainly what has been verified for the caregiver we suggest, such as identity and references, and whether they hold a nursing qualification when the care needs one.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <div className="flex h-full flex-col justify-between rounded-[28px] bg-mint p-8">
-              <p className="font-mono text-xs uppercase tracking-[0.14em] text-ink-800">Your decision</p>
-              <h3 className="mt-16 text-3xl font-semibold leading-[1.08] tracking-[-0.03em] text-ink-950">Nothing is booked until you say yes.</h3>
-            </div>
-          </Reveal>
-          <Reveal>
-            <div className="flex h-full flex-col justify-between rounded-[28px] bg-white p-8 ring-1 ring-ink-950/[0.06]">
-              <p className="font-mono text-xs uppercase tracking-[0.14em] text-brand">Paying</p>
-              <div className="mt-12">
-                <p className="text-3xl font-semibold tracking-[-0.03em] text-ink-950">UPI, cash or bank transfer</p>
-                <p className="mt-3 text-ink-700">Amounts are explained on the call before anything starts.</p>
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <div className="flex h-full flex-col justify-between rounded-[28px] bg-white p-8 ring-1 ring-ink-950/[0.06]">
-              <p className="font-mono text-xs uppercase tracking-[0.14em] text-brand">Where we work</p>
-              <div className="mt-12">
-                <ul className="flex flex-wrap gap-2" aria-label="Cities">
-                  {cities.map((c) => (
-                    <li key={c} className="inline-flex items-center gap-1.5 rounded-full bg-fog px-3.5 py-1.5 text-[15px] font-medium text-ink-950">
-                      <MapPinIcon size={14} aria-hidden className="text-brand" />
-                      {c}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-4 text-ink-700">Availability depends on your locality and dates. We confirm on the call.</p>
-              </div>
-            </div>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <div className="flex h-full flex-col justify-between rounded-[28px] bg-white p-8 ring-1 ring-ink-950/[0.06]">
-              <p className="font-mono text-xs uppercase tracking-[0.14em] text-rose-700">Emergencies</p>
-              <div className="mt-12">
-                <p className="text-3xl font-semibold tracking-[-0.03em] text-ink-950">Call 112 or 108</p>
-                <p className="mt-3 text-ink-700">We arrange home care. We are not an emergency or ambulance service.</p>
-              </div>
-            </div>
-          </Reveal>
+      {/* How it works */}
+      <section id="how-it-works" className="scroll-mt-24 bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
+          <h2 className="max-w-[16ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
+            A person on the phone at every step
+          </h2>
+          <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {STEPS.map((s, i) => (
+              <li key={s.title} className="border-t-[3px] border-field pt-5">
+                <span className="font-display text-5xl font-bold text-field">{i + 1}</span>
+                <h3 className="mt-3 font-display text-xl font-bold text-text">{s.title}</h3>
+                <p className="mt-2 leading-relaxed text-text-2">{s.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Practicalities */}
+      <section className="mx-auto grid max-w-6xl px-4 py-20 sm:px-6 md:grid-cols-3 md:py-28">
+        <div className="pb-8 md:pb-0 md:pr-10">
+          <h3 className="font-display text-2xl font-bold text-text">Where we work</h3>
+          <p className="mt-3 text-lg leading-relaxed text-text">{cities.join(", ")}</p>
+          <p className="mt-2 text-text-2">Availability depends on your locality and dates. We confirm on the call.</p>
+        </div>
+        <div className="border-t border-rule py-8 md:border-l md:border-t-0 md:px-10 md:py-0">
+          <h3 className="font-display text-2xl font-bold text-text">Paying</h3>
+          <p className="mt-3 text-lg leading-relaxed text-text">UPI, cash or bank transfer.</p>
+          <p className="mt-2 text-text-2">Charges are explained on the call before anything starts.</p>
+        </div>
+        <div className="border-t border-rule pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
+          <h3 className="font-display text-2xl font-bold text-text">Emergencies</h3>
+          <p className="mt-3 text-lg leading-relaxed text-text">Call 112, or 108 for an ambulance.</p>
+          <p className="mt-2 text-text-2">We arrange home care. We are not an emergency service.</p>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-ink-950/[0.07] bg-white">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-24 sm:px-6 md:py-32 lg:grid-cols-[0.8fr_1.2fr]">
-          <h2 className="max-w-[12ch] text-4xl font-semibold leading-[1.04] tracking-[-0.04em] text-ink-950 sm:text-5xl">Questions families ask</h2>
-          <div className="divide-y divide-ink-950/[0.08] border-y border-ink-950/[0.08]">
+      <section className="border-t border-rule bg-white">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 md:py-28 lg:grid-cols-[0.8fr_1.2fr]">
+          <h2 className="max-w-[12ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">Questions families ask</h2>
+          <div className="border-t border-rule">
             {FAQS.map((f) => (
-              <details key={f.q} className="group py-6 [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-lg font-semibold text-ink-950">
+              <details key={f.q} className="group border-b border-rule py-5 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-display text-lg font-bold text-text sm:text-xl">
                   {f.q}
-                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-fog text-ink-950 transition-transform duration-200 group-open:rotate-45">
-                    <PlusIcon size={16} weight="bold" aria-hidden />
-                  </span>
+                  <PlusIcon size={20} weight="bold" aria-hidden className="shrink-0 text-field transition-transform duration-200 group-open:rotate-45" />
                 </summary>
-                <p className="mt-4 max-w-[60ch] text-lg leading-relaxed text-ink-700">{f.a}</p>
+                <p className="mt-3 max-w-[62ch] text-lg leading-relaxed text-text-2">{f.a}</p>
               </details>
             ))}
           </div>
@@ -183,19 +153,15 @@ export default async function HomePage() {
       </section>
 
       {/* Close */}
-      <section className="bg-white px-3 pb-3 sm:px-5 sm:pb-5">
-        <div className="on-ink relative mx-auto max-w-[1400px] overflow-hidden rounded-[36px] bg-ink-950 px-6 py-20 text-center sm:px-12 md:py-28">
-          <div aria-hidden className="pointer-events-none absolute left-1/2 top-full size-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(124_242_210/0.22),transparent)]" />
-          <div className="relative">
-            <h2 className="mx-auto max-w-[16ch] text-4xl font-semibold leading-[1.02] tracking-[-0.045em] text-white sm:text-7xl">Talk to a person about your family.</h2>
-            <p className="mx-auto mt-6 max-w-[44ch] text-lg text-on-ink-muted">Send a request and we will call you back. There is no charge for the conversation.</p>
-            <div className="mt-10 flex flex-wrap justify-center gap-3">
-              <Link href="/request" className={buttonClass("mint", "lg", "px-7")}>
-                Find a Caregiver
-                <ArrowRightIcon size={18} weight="bold" aria-hidden />
-              </Link>
-              <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" tone="ink" />
-            </div>
+      <section className="bg-field">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-4 py-20 sm:px-6 md:flex-row md:items-end md:py-24">
+          <h2 className="max-w-[15ch] font-display text-4xl font-bold leading-[1] tracking-[-0.03em] text-white sm:text-6xl">Talk to a person about your family.</h2>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/request" className={buttonClass("marigold", "lg", "px-6 text-[17px]")}>
+              Find a Caregiver
+              <ArrowRightIcon size={18} weight="bold" aria-hidden />
+            </Link>
+            <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" tone="field" />
           </div>
         </div>
       </section>

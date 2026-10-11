@@ -16,12 +16,12 @@ export function ContactActions({
   prefill: string;
   size?: "md" | "lg";
   showNumbers?: boolean;
-  tone?: "paper" | "ink";
+  tone?: "paper" | "field";
 }) {
   const tel = telHref(phone);
   const wa = whatsappHref(whatsapp, prefill);
   if (!tel && !wa) return null;
-  const cls = tone === "ink" ? buttonClass("onInk", size) : buttonClass("secondary", size, "rounded-full");
+  const cls = tone === "field" ? buttonClass("onField", size) : buttonClass("paper", size);
   return (
     <div className="flex flex-wrap gap-3">
       {tel && (

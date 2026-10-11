@@ -24,21 +24,21 @@ export default async function ServicesPage() {
               <li key={s.id} className={services.length % 2 === 1 && i === services.length - 1 ? "sm:col-span-2" : undefined}>
                 <Link
                   href={`/services/${s.slug}`}
-                  className={`group flex h-full flex-col justify-between gap-10 rounded-[28px] p-8 transition-transform duration-300 hover:-translate-y-0.5 ${
-                    s.isNursing ? "on-ink bg-ink-950" : "bg-white ring-1 ring-ink-950/[0.06] hover:ring-ink-950/20"
+                  className={`group flex h-full flex-col justify-between gap-10 rounded-[16px] p-8 transition-transform duration-300 hover:-translate-y-0.5 ${
+                    s.isNursing ? "bg-field" : "bg-white ring-1 ring-rule hover:ring-text/30"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <span className={`font-mono text-xs uppercase tracking-[0.14em] ${s.isNursing ? "text-mint" : "text-brand"}`}>
+                    <span className={`text-sm font-semibold ${s.isNursing ? "text-marigold" : "text-field"}`}>
                       {s.isNursing ? "Qualified nursing" : "Personal care"}
                     </span>
-                    <span className={`grid size-10 place-items-center rounded-full transition-colors ${s.isNursing ? "bg-white/10 text-white group-hover:bg-mint group-hover:text-ink-950" : "bg-fog text-ink-950 group-hover:bg-ink-950 group-hover:text-white"}`}>
+                    <span className={`grid size-10 place-items-center rounded-full transition-colors ${s.isNursing ? "bg-white/10 text-white group-hover:bg-marigold group-hover:text-text" : "bg-paper-2 text-text group-hover:bg-field group-hover:text-white"}`}>
                       <ArrowUpRightIcon size={18} weight="bold" aria-hidden />
                     </span>
                   </div>
                   <div>
-                    <h2 className={`text-2xl font-semibold tracking-[-0.03em] sm:text-3xl ${s.isNursing ? "text-white" : "text-ink-950"}`}>{s.name}</h2>
-                    <p className={`mt-2 max-w-[44ch] text-lg leading-relaxed ${s.isNursing ? "text-on-ink-muted" : "text-ink-700"}`}>{s.summary}</p>
+                    <h2 className={`text-2xl font-semibold tracking-[-0.03em] sm:text-3xl ${s.isNursing ? "text-white" : "text-text"}`}>{s.name}</h2>
+                    <p className={`mt-2 max-w-[44ch] text-lg leading-relaxed ${s.isNursing ? "text-field-soft" : "text-text-2"}`}>{s.summary}</p>
                   </div>
                 </Link>
               </li>
@@ -46,8 +46,8 @@ export default async function ServicesPage() {
           </ul>
         )}
         <div className="mt-14 flex flex-wrap items-center gap-4">
-          <Link href="/request" className={buttonClass("ink", "lg", "px-7")}>Find a Caregiver</Link>
-          <p className="text-ink-700">Not sure which one? Choose &ldquo;Something else&rdquo; in the form.</p>
+          <Link href="/request" className={buttonClass("field", "lg", "px-7")}>Find a Caregiver</Link>
+          <p className="text-text-2">Not sure which one? Choose &ldquo;Something else&rdquo; in the form.</p>
         </div>
       </div>
     </>

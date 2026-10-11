@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ComponentProps } from "react";
 
-type Variant = "primary" | "secondary" | "ghost" | "danger" | "quiet" | "mint" | "onInk" | "ink";
+type Variant = "primary" | "secondary" | "ghost" | "danger" | "quiet" | "mint" | "onInk" | "ink" | "field" | "marigold" | "onField" | "paper";
 type Size = "sm" | "md" | "lg";
 
 const base =
@@ -17,6 +17,10 @@ const variants: Record<Variant, string> = {
   mint: "rounded-full bg-mint text-ink-950 hover:bg-mint-soft shadow-[0_8px_30px_-8px_rgb(124_242_210/0.55)]",
   onInk: "rounded-full border border-white/20 bg-white/5 text-white hover:border-mint/60 hover:bg-white/10",
   ink: "rounded-full bg-ink-950 text-white hover:bg-ink-800",
+  field: "rounded-[12px] bg-field text-white hover:bg-field-deep",
+  marigold: "rounded-[12px] bg-marigold text-text hover:bg-[#f6b955]",
+  onField: "rounded-[12px] border border-white/35 text-white hover:border-white hover:bg-white/10",
+  paper: "rounded-[12px] border border-rule bg-white text-text hover:border-text/40",
 };
 
 const sizes: Record<Size, string> = {

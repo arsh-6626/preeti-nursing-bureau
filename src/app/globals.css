@@ -9,6 +9,7 @@
 @theme {
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-bricolage), var(--font-geist), ui-sans-serif, sans-serif;
 
   --color-paper: #ffffff;
   --color-mist: #f3f7f7;
@@ -37,7 +38,17 @@
   --color-rose-50: #fbeceb;
   --color-rose-700: #a3271f;
 
-  /* Public site (medtech redesign) */
+  /* Public site: committed deep-green field, marigold accent, neutral paper */
+  --color-field: #0f4f48;
+  --color-field-deep: #0a3b36;
+  --color-field-soft: #d8e8e3;
+  --color-marigold: #f2a93b;
+  --color-marigold-soft: #fde9c8;
+  --color-paper-2: #f6f7f4;
+  --color-text: #13231f;
+  --color-text-2: #4b5d58;
+  --color-rule: #dfe5e1;
+  /* Earlier public tokens kept for the request flow components */
   --color-ink-950: #061a1d;
   --color-ink-900: #0b2529;
   --color-ink-800: #12343a;
