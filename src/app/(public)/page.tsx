@@ -4,7 +4,6 @@ import { getPublicSettings, listActiveAreas, listActiveServices } from "@/lib/se
 import { ContactActions } from "@/components/public/contact-actions";
 import { HeroNurse } from "@/components/public/hero-nurse";
 import { WhosWho } from "@/components/public/whos-who";
-import { ShiftDay } from "@/components/public/shift-day";
 import { buttonClass } from "@/components/ui/button";
 import { CaregiverCta } from "@/components/public/caregiver-cta";
 import { FAQS } from "@/components/public/faqs";
@@ -59,17 +58,25 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* A shift, hour by hour */}
+      {/* Shift lengths */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="border-t border-text/15 py-20 md:py-28">
-          <h2 className="max-w-[18ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
-            12 hours or 24 hours. Here is what a day looks like.
+        <div className="grid gap-12 border-t border-text/15 py-20 md:py-28 lg:grid-cols-[0.85fr_1.15fr]">
+          <h2 className="max-w-[14ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
+            Two shift lengths: 12 hours or 24 hours
           </h2>
-          <p className="mt-5 max-w-[56ch] text-lg leading-relaxed text-text-2">
-            We arrange only these two shift lengths. For 24-hour care, rest and relief are planned with you, so no one works around the clock without a break.
-          </p>
-          <div className="mt-10">
-            <ShiftDay />
+          <div className="grid gap-10 sm:grid-cols-2">
+            <div className="border-t-[3px] border-field pt-5">
+              <h3 className="font-display text-2xl font-bold text-text">12 hours</h3>
+              <p className="mt-3 text-lg leading-relaxed text-text-2">
+                A caregiver is with the patient for a day or a night shift. The family, or a second caregiver, covers the remaining hours. Timings are agreed with you on the call.
+              </p>
+            </div>
+            <div className="border-t-[3px] border-field pt-5">
+              <h3 className="font-display text-2xl font-bold text-text">24 hours</h3>
+              <p className="mt-3 text-lg leading-relaxed text-text-2">
+                Round-the-clock care at home. Rest breaks and relief are planned with you before care starts, so no one works around the clock without a break.
+              </p>
+            </div>
           </div>
         </div>
       </section>

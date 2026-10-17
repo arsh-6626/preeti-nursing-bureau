@@ -35,9 +35,9 @@ test("a family can submit a care request from a phone and gets a reference", asy
   await page.getByRole("button", { name: "Continue" }).click();
 
   // Step 4: location.
-  await page.getByLabel("City").selectOption("Noida");
-  await page.getByLabel("Locality").selectOption({ label: "Sector 62" });
-  await expect(page.getByLabel("Pincode")).toHaveValue("201309");
+  await page.getByLabel("City").selectOption("Delhi");
+  await page.getByLabel("Locality").selectOption({ label: "Dwarka" });
+  await expect(page.getByLabel("Pincode")).toHaveValue("110075");
   await page.getByRole("button", { name: "Continue" }).click();
 
   // Step 5: contact details; consent is required.
@@ -72,7 +72,7 @@ test("the contact page saves a callback request", async ({ page }) => {
 });
 
 test("public pages and policy pages load", async ({ page }) => {
-  for (const path of ["/services", "/services/home-nursing", "/about", "/legal/privacy-policy", "/legal/service-limitations"]) {
+  for (const path of ["/services", "/services/home-nursing", "/about", "/legal/privacy-policy", "/legal/service-limitations", "/legal/disclaimer"]) {
     const res = await page.goto(path);
     expect(res?.status(), path).toBe(200);
   }

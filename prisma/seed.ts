@@ -10,6 +10,8 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { LEGAL_PAGES, ABOUT_TEXT } from "./seed-content";
+import { DISCLAIMER_PAGE } from "../src/content/disclaimer";
+import { AREAS } from "./areas";
 
 const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }) });
 
@@ -89,19 +91,6 @@ const SERVICES = [
   },
 ];
 
-const AREAS: Record<string, [string, string | null][]> = {
-  Delhi: [
-    ["Dwarka", "110075"], ["Rohini", "110085"], ["Janakpuri", "110058"], ["Lajpat Nagar", "110024"],
-    ["Saket", "110017"], ["Vasant Kunj", "110070"], ["Mayur Vihar", "110091"], ["Pitampura", "110034"],
-    ["Greater Kailash", "110048"], ["Karol Bagh", "110005"],
-  ],
-  Noida: [["Sector 62", "201309"], ["Sector 18", "201301"], ["Sector 50", "201301"], ["Sector 137", "201305"]],
-  "Greater Noida": [["Alpha 1", "201310"], ["Greater Noida West", "201318"]],
-  Ghaziabad: [["Indirapuram", "201014"], ["Vaishali", "201010"], ["Raj Nagar Extension", "201017"]],
-  Gurugram: [["DLF Phase 1", "122002"], ["Sohna Road", "122018"], ["Sector 56", "122011"], ["Golf Course Road", "122002"]],
-  Faridabad: [["Sector 15", "121007"], ["Greater Faridabad", "121002"]],
-};
-
 async function main() {
   await db.businessSettings.upsert({
     where: { id: 1 },
@@ -130,6 +119,8 @@ async function main() {
   for (const page of LEGAL_PAGES) {
     await db.contentPage.upsert({ where: { slug: page.slug }, update: {}, create: { ...page, needsReview: true } });
   }
+  // Supplied by the bureau, so it is published as written.
+  await db.contentPage.upsert({ where: { slug: DISCLAIMER_PAGE.slug }, update: {}, create: { slug: DISCLAIMER_PAGE.slug, title: DISCLAIMER_PAGE.title, body: DISCLAIMER_PAGE.body, needsReview: false } });
 
   const email = process.env.SEED_ADMIN_EMAIL?.toLowerCase();
   const password = process.env.SEED_ADMIN_PASSWORD;

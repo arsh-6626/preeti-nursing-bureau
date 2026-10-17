@@ -1,6 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { DISCLAIMER_PAGE } from "@/content/disclaimer";
 import { audit } from "@/lib/audit";
 import { assertCan, DomainError, NotFoundError, type Actor } from "@/lib/auth/permissions";
 import { toDbShift } from "@/lib/domain/shift";
@@ -274,10 +275,13 @@ export const CONTENT_PAGES = [
   { slug: "terms-of-service", title: "Terms of Service" },
   { slug: "cancellation-refund-policy", title: "Cancellation and Refund Policy" },
   { slug: "service-limitations", title: "Service Limitations and Emergency Disclaimer" },
+  { slug: "disclaimer", title: "Legal Disclaimer, Policies & Declaration" },
 ] as const;
 
 export async function getContentPage(slug: string) {
-  return db.contentPage.findUnique({ where: { slug } });
+  const page = await db.contentPage.findUnique({ where: { slug } });
+  if (!page && slug === DISCLAIMER_PAGE.slug) return { ...DISCLAIMER_PAGE, updatedAt: DISCLAIMER_PAGE.publishedAt };
+  return page;
 }
 
 export async function listContentPages(actor: Actor) {

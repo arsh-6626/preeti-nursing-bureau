@@ -15,8 +15,8 @@ test("admin runs a lead from inquiry to confirmed assignment and payment", async
   await page.getByLabel("Care needed").fill("Father needs help with bathing and walking after knee surgery.");
   await page.getByText("12 hours", { exact: true }).click();
   await page.getByLabel("Start date").fill(isoDate(4));
-  await page.getByLabel("City").selectOption("Noida");
-  await page.getByLabel("Listed locality").selectOption({ label: "Sector 62" });
+  await page.getByLabel("City").selectOption("Delhi");
+  await page.getByLabel("Listed locality").selectOption({ label: "Dwarka" });
   await (await centered(page.getByRole("checkbox"))).check();
   await page.getByRole("button", { name: "Create lead" }).click();
   await page.waitForURL(/\/admin\/leads\/[0-9a-f-]{36}$/);
@@ -38,7 +38,7 @@ test("admin runs a lead from inquiry to confirmed assignment and payment", async
   await page.getByLabel("Years of experience").fill("6");
   await page.getByLabel("General Duty Assistant (GDA)").check();
   await page.getByLabel("12 hours").check();
-  await page.getByLabel("Sector 62, Noida").check();
+  await page.getByLabel("Dwarka, Delhi").check();
   await page.getByRole("button", { name: "Create caregiver" }).click();
   await expect(page.getByText("Caregiver saved.")).toBeVisible();
   await expect(page.getByText("Not started").first()).toBeVisible();

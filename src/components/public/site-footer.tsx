@@ -38,6 +38,7 @@ export function SiteFooter({ settings }: { settings: PublicSettings }) {
             <li><Link className={link} href="/legal/terms-of-service">Terms of Service</Link></li>
             <li><Link className={link} href="/legal/cancellation-refund-policy">Cancellation and Refunds</Link></li>
             <li><Link className={link} href="/legal/service-limitations">Service Limitations</Link></li>
+            <li><Link className={link} href="/legal/disclaimer">Legal Disclaimer</Link></li>
           </ul>
         </div>
       </div>
