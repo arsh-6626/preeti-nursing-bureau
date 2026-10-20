@@ -3,7 +3,8 @@ import { ArrowRightIcon, ArrowUpRightIcon, PlusIcon } from "@phosphor-icons/reac
 import { getPublicSettings, listActiveAreas, listActiveServices } from "@/lib/services/settings";
 import { ContactActions } from "@/components/public/contact-actions";
 import Image from "next/image";
-import { HOME_IMAGES, type HomeImage } from "@/content/home-images";
+import { BEYOND_HOME, HERO_GALLERY, HOME_IMAGES, type HomeImage } from "@/content/home-images";
+import { HeroGallery } from "@/components/public/hero-gallery";
 import { JUSTDIAL_URL } from "@/content/links";
 import { WhosWho } from "@/components/public/whos-who";
 import { buttonClass } from "@/components/ui/button";
@@ -20,16 +21,14 @@ const STEPS = [
 export default async function HomePage() {
   const [settings, services, areas] = await Promise.all([getPublicSettings(), listActiveServices(), listActiveAreas()]);
   const cities = [...new Set(areas.map((a) => a.city))];
-  const { hero, caregiver, nurse, shift12, shift24, call, close } = HOME_IMAGES;
+  const { caregiver, nurse, shift12, shift24, call } = HOME_IMAGES;
 
   return (
     <>
-      {/* Hero: the headline beside a photograph of care at home. */}
+      {/* Hero: the headline beside a slow gallery of care at home, one moment per service. */}
       <section className="overflow-hidden">
-        <div
-          className={`mx-auto grid items-center gap-x-12 gap-y-8 px-4 pb-14 pt-10 sm:px-6 lg:pb-16 lg:pt-12 ${hero ? "max-w-[1320px] lg:grid-cols-[1fr_0.9fr]" : "max-w-6xl"}`}
-        >
-          <div className={hero ? "lg:pl-6" : ""}>
+        <div className="mx-auto grid max-w-[1320px] items-center gap-x-12 gap-y-10 px-4 pb-14 pt-10 sm:px-6 lg:grid-cols-[1fr_0.95fr] lg:pb-12 lg:pt-6">
+          <div className="lg:pl-6">
             <h1 className="max-w-[16ch] font-display text-[2.7rem] font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-[4rem] lg:text-[4.4rem]">
               {settings.heroHeadline}
             </h1>
@@ -42,7 +41,7 @@ export default async function HomePage() {
               <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" />
             </div>
           </div>
-          {hero && <Photo image={hero} className="aspect-[4/5] max-h-[680px] w-full rounded-[20px]" sizes="(min-width: 1024px) 560px, 100vw" priority />}
+          <HeroGallery images={HERO_GALLERY} />
         </div>
       </section>
 
@@ -59,21 +58,17 @@ export default async function HomePage() {
           </div>
           <WhosWho />
         </div>
-        {(caregiver || nurse) && (
-          <div className="mt-14 grid gap-6 sm:grid-cols-2">
-            {[
-              { image: caregiver, label: "GDA or attendant: everyday personal care" },
-              { image: nurse, label: "Home nurse: clinical tasks, as prescribed" },
-            ].map(({ image, label }) =>
-              image ? (
-                <figure key={label}>
-                  <Photo image={image} className="aspect-[3/2] w-full rounded-[16px]" sizes="(min-width: 640px) 50vw, 100vw" />
-                  <figcaption className="mt-3 text-text-2">{label}</figcaption>
-                </figure>
-              ) : null,
-            )}
-          </div>
-        )}
+        <div className="mt-14 grid gap-6 sm:grid-cols-2">
+          {[
+            { image: caregiver, label: "GDA or attendant: everyday personal care" },
+            { image: nurse, label: "Home nurse: clinical tasks, as prescribed" },
+          ].map(({ image, label }) => (
+            <figure key={label}>
+              <Photo image={image} className="aspect-square w-full rounded-[16px] sm:aspect-[4/3]" sizes="(min-width: 640px) 50vw, 100vw" />
+              <figcaption className="mt-3 text-text-2">{label}</figcaption>
+            </figure>
+          ))}
+        </div>
       </section>
 
       {/* Shift lengths */}
@@ -84,14 +79,14 @@ export default async function HomePage() {
           </h2>
           <div className="grid gap-10 sm:grid-cols-2">
             <div>
-              {shift12 && <Photo image={shift12} className="mb-6 aspect-[3/2] w-full rounded-[16px]" sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" />}
+              <Photo image={shift12} className="mb-6 aspect-square w-full rounded-[16px]" sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" />
               <h3 className="border-t-[3px] border-field pt-5 font-display text-2xl font-bold text-text">12 hours</h3>
               <p className="mt-3 text-lg leading-relaxed text-text-2">
                 A caregiver is with the patient for a day or a night shift. The family, or a second caregiver, covers the remaining hours. Timings are agreed with you on the call.
               </p>
             </div>
             <div>
-              {shift24 && <Photo image={shift24} className="mb-6 aspect-[3/2] w-full rounded-[16px]" sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" />}
+              <Photo image={shift24} className="mb-6 aspect-square w-full rounded-[16px]" sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" />
               <h3 className="border-t-[3px] border-field pt-5 font-display text-2xl font-bold text-text">24 hours</h3>
               <p className="mt-3 text-lg leading-relaxed text-text-2">
                 Round-the-clock care at home. Rest breaks and relief are planned with you before care starts, so no one works around the clock without a break.
@@ -127,20 +122,37 @@ export default async function HomePage() {
 
       {/* How it works */}
       <section id="how-it-works" className="scroll-mt-24">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
-          <h2 className="max-w-[16ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
-            A person on the phone at every step
-          </h2>
-          {call && <Photo image={call} className="mt-10 aspect-[16/9] w-full rounded-[20px] sm:aspect-[21/9]" sizes="(min-width: 1152px) 1104px, 100vw" />}
-          <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-            {STEPS.map((s, i) => (
-              <li key={s.title} className="border-t-[3px] border-field pt-5">
-                <span className="font-display text-5xl font-bold text-field">{i + 1}</span>
-                <h3 className="mt-3 font-display text-xl font-bold text-text">{s.title}</h3>
-                <p className="mt-2 leading-relaxed text-text-2">{s.body}</p>
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 sm:px-6 md:py-28 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+          <Photo image={call} className="aspect-square w-full rounded-[20px]" sizes="(min-width: 1024px) 480px, 100vw" />
+          <div>
+            <h2 className="max-w-[16ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
+              A person on the phone at every step
+            </h2>
+            <ol className="mt-10 grid gap-8 sm:grid-cols-2">
+              {STEPS.map((s, i) => (
+                <li key={s.title} className="border-t-[3px] border-field pt-5">
+                  <span className="font-display text-5xl font-bold text-field">{i + 1}</span>
+                  <h3 className="mt-3 font-display text-xl font-bold text-text">{s.title}</h3>
+                  <p className="mt-2 leading-relaxed text-text-2">{s.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* Care beyond the bedroom */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="border-t border-text/15 py-20 md:py-28">
+          <h2 className="max-w-[18ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">Care that goes where they go</h2>
+          <ul className="mt-10 grid gap-6 sm:grid-cols-3">
+            {BEYOND_HOME.map((b) => (
+              <li key={b.src}>
+                <Photo image={b} className="aspect-square w-full rounded-[16px]" sizes="(min-width: 640px) 33vw, 100vw" />
+                <p className="mt-3 font-display text-xl font-bold text-text">{b.caption}</p>
               </li>
             ))}
-          </ol>
+          </ul>
         </div>
       </section>
 
@@ -200,7 +212,6 @@ export default async function HomePage() {
 
       {/* Close */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
-        {close && <Photo image={close} className="aspect-[16/9] w-full rounded-[20px] sm:aspect-[21/9]" sizes="(min-width: 1152px) 1104px, 100vw" />}
         <div className="flex flex-col items-start justify-between gap-8 border-t border-text/15 py-20 md:flex-row md:items-end md:py-28">
           <h2 className="max-w-[15ch] font-display text-5xl font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-7xl">Talk to a person about your family.</h2>
           <div className="flex flex-wrap gap-3">

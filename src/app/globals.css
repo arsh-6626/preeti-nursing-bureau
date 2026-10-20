@@ -134,16 +134,20 @@ a {
   }
 }
 
-/* Public marquee: one strip of plain facts, paused under reduced motion. */
-@keyframes pnb-marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.pnb-marquee {
-  animation: pnb-marquee 38s linear infinite;
-}
+/* Hero photo gallery: each track holds its images twice and moves by half its
+   length, so the loop is seamless. Pauses on hover; still under reduced motion. */
+@keyframes pnb-marquee-left { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 0.375rem)); } }
+@keyframes pnb-marquee-up { from { transform: translateY(0); } to { transform: translateY(calc(-50% - 0.5rem)); } }
+@keyframes pnb-marquee-down { from { transform: translateY(calc(-50% - 0.5rem)); } to { transform: translateY(0); } }
+.pnb-marquee { will-change: transform; }
+.pnb-marquee-left { animation: pnb-marquee-left 60s linear infinite; }
+.pnb-marquee-up { animation: pnb-marquee-up 70s linear infinite; }
+.pnb-marquee-down { animation: pnb-marquee-down 70s linear infinite; }
+.pnb-marquee:hover { animation-play-state: paused; }
+.pnb-fade-x { mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent); }
+.pnb-fade-y { mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent); }
 @media (prefers-reduced-motion: reduce) {
-  .pnb-marquee { animation: none; }
+  .pnb-marquee { animation: none !important; }
 }
 
 /* Focus rings stay visible on dark public stages. */
