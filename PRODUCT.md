@@ -65,3 +65,7 @@ Users include older family members and people using phones with large text setti
 ## Design Preference (updated 2026-10-12)
 
 The first build used the category-standard layout; the owner rejected it as looking like "a generic e-commerce platform". Confirmed new direction for the public site: a **medtech startup** feel (product-grade, modern health-tech, confident), replacing the earlier canon choice. The admin keeps its current Operate design. After two concept rolls the owner asked for it to "look like a real startup": the bar is funded medtech brands such as Hims, Forward, Function Health and One Medical (polished product UI, big confident type, strong photography, smooth motion). Convention executed at that craft level is the commitment. Stock photography is allowed when clearly generic: never captioned, implied or presented as the bureau's staff, caregivers or clients, and listed for later replacement with real photos.
+
+## Homepage Photography (2026-10-20)
+
+The homepage uses generated photographs supplied by the owner (prompts: bright, happy, well-kept Delhi homes; carers in a teal-green uniform with "Preeti Nursing Bureau" on the pocket; male carers with male patients, female with female). The 3D room and nurse moved to the booking page. Captions describe roles only and never name or imply real individuals.

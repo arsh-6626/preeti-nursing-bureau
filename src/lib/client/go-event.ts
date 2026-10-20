@@ -1,7 +1,7 @@
 /**
  * Client-side "go" event: a call to action asks the page to play its
- * hand-off animation (nurse reacts, curtain covers the screen) and then
- * navigate. Listeners: the hero nurse and the page curtain.
+ * hand-off animation (the curtain covers the screen) and then navigate.
+ * Listeners: the page curtain, and the 3D scene wherever it is mounted.
  */
 export const GO_EVENT = "pnb:go";
 

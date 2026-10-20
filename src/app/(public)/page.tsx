@@ -2,7 +2,9 @@ import Link from "next/link";
 import { ArrowRightIcon, ArrowUpRightIcon, PlusIcon } from "@phosphor-icons/react/ssr";
 import { getPublicSettings, listActiveAreas, listActiveServices } from "@/lib/services/settings";
 import { ContactActions } from "@/components/public/contact-actions";
-import { HeroNurse } from "@/components/public/hero-nurse";
+import Image from "next/image";
+import { HOME_IMAGES, type HomeImage } from "@/content/home-images";
+import { JUSTDIAL_URL } from "@/content/links";
 import { WhosWho } from "@/components/public/whos-who";
 import { buttonClass } from "@/components/ui/button";
 import { CaregiverCta } from "@/components/public/caregiver-cta";
@@ -18,20 +20,20 @@ const STEPS = [
 export default async function HomePage() {
   const [settings, services, areas] = await Promise.all([getPublicSettings(), listActiveServices(), listActiveAreas()]);
   const cities = [...new Set(areas.map((a) => a.city))];
+  const { hero, caregiver, nurse, shift12, shift24, call, close } = HOME_IMAGES;
 
   return (
     <>
-      {/* Hero: the headline beside a 3D room at home, with the nurse at the bedside. */}
+      {/* Hero: the headline beside a photograph of care at home. */}
       <section className="overflow-hidden">
-        <div className="mx-auto grid max-w-[1320px] items-center gap-x-4 px-4 pb-10 pt-8 sm:px-6 lg:min-h-[660px] lg:grid-cols-[0.95fr_1.25fr] lg:pb-12 lg:pt-4">
-          <h1 className="font-display text-[2.7rem] font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-[4rem] lg:col-start-1 lg:row-start-1 lg:self-end lg:pl-6 lg:text-[4.4rem]">
-            {settings.heroHeadline}
-          </h1>
-          <div className="relative -mx-4 h-[340px] sm:mx-0 sm:h-[480px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:-mr-10 lg:h-[640px]">
-            <HeroNurse />
-          </div>
-          <div className="lg:col-start-1 lg:row-start-2 lg:self-start lg:pl-6">
-            <p className="max-w-[40ch] text-lg leading-relaxed text-text-2 sm:text-xl lg:mt-7">{settings.heroSubtext}</p>
+        <div
+          className={`mx-auto grid items-center gap-x-12 gap-y-8 px-4 pb-14 pt-10 sm:px-6 lg:pb-16 lg:pt-12 ${hero ? "max-w-[1320px] lg:grid-cols-[1fr_0.9fr]" : "max-w-6xl"}`}
+        >
+          <div className={hero ? "lg:pl-6" : ""}>
+            <h1 className="max-w-[16ch] font-display text-[2.7rem] font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-[4rem] lg:text-[4.4rem]">
+              {settings.heroHeadline}
+            </h1>
+            <p className="mt-7 max-w-[40ch] text-lg leading-relaxed text-text-2 sm:text-xl">{settings.heroSubtext}</p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <CaregiverCta href="/request" className={buttonClass("field", "lg", "px-6 text-[17px]")}>
                 Find a Caregiver
@@ -40,6 +42,7 @@ export default async function HomePage() {
               <ContactActions phone={settings.phone} whatsapp={settings.whatsapp} prefill={settings.whatsappPrefill} size="lg" />
             </div>
           </div>
+          {hero && <Photo image={hero} className="aspect-[4/5] max-h-[680px] w-full rounded-[20px]" sizes="(min-width: 1024px) 560px, 100vw" priority />}
         </div>
       </section>
 
@@ -56,6 +59,21 @@ export default async function HomePage() {
           </div>
           <WhosWho />
         </div>
+        {(caregiver || nurse) && (
+          <div className="mt-14 grid gap-6 sm:grid-cols-2">
+            {[
+              { image: caregiver, label: "GDA or attendant: everyday personal care" },
+              { image: nurse, label: "Home nurse: clinical tasks, as prescribed" },
+            ].map(({ image, label }) =>
+              image ? (
+                <figure key={label}>
+                  <Photo image={image} className="aspect-[3/2] w-full rounded-[16px]" sizes="(min-width: 640px) 50vw, 100vw" />
+                  <figcaption className="mt-3 text-text-2">{label}</figcaption>
+                </figure>
+              ) : null,
+            )}
+          </div>
+        )}
       </section>
 
       {/* Shift lengths */}
@@ -65,14 +83,16 @@ export default async function HomePage() {
             Two shift lengths: 12 hours or 24 hours
           </h2>
           <div className="grid gap-10 sm:grid-cols-2">
-            <div className="border-t-[3px] border-field pt-5">
-              <h3 className="font-display text-2xl font-bold text-text">12 hours</h3>
+            <div>
+              {shift12 && <Photo image={shift12} className="mb-6 aspect-[3/2] w-full rounded-[16px]" sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" />}
+              <h3 className="border-t-[3px] border-field pt-5 font-display text-2xl font-bold text-text">12 hours</h3>
               <p className="mt-3 text-lg leading-relaxed text-text-2">
                 A caregiver is with the patient for a day or a night shift. The family, or a second caregiver, covers the remaining hours. Timings are agreed with you on the call.
               </p>
             </div>
-            <div className="border-t-[3px] border-field pt-5">
-              <h3 className="font-display text-2xl font-bold text-text">24 hours</h3>
+            <div>
+              {shift24 && <Photo image={shift24} className="mb-6 aspect-[3/2] w-full rounded-[16px]" sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" />}
+              <h3 className="border-t-[3px] border-field pt-5 font-display text-2xl font-bold text-text">24 hours</h3>
               <p className="mt-3 text-lg leading-relaxed text-text-2">
                 Round-the-clock care at home. Rest breaks and relief are planned with you before care starts, so no one works around the clock without a break.
               </p>
@@ -111,6 +131,7 @@ export default async function HomePage() {
           <h2 className="max-w-[16ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
             A person on the phone at every step
           </h2>
+          {call && <Photo image={call} className="mt-10 aspect-[16/9] w-full rounded-[20px] sm:aspect-[21/9]" sizes="(min-width: 1152px) 1104px, 100vw" />}
           <ol className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {STEPS.map((s, i) => (
               <li key={s.title} className="border-t-[3px] border-field pt-5">
@@ -142,6 +163,23 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Reviews live on Justdial; we link out rather than copy or summarise them. */}
+      <section className="mx-auto mb-16 max-w-6xl px-4 sm:px-6 md:mb-20">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-[20px] bg-field-soft px-6 py-10 sm:px-10 md:flex-row md:items-center">
+          <div>
+            <h2 className="font-display text-3xl font-bold leading-[1.05] tracking-[-0.02em] text-text sm:text-4xl">What families say about us</h2>
+            <p className="mt-3 max-w-[52ch] text-lg leading-relaxed text-text-2">
+              Read reviews from families we have worked with on our Justdial listing, Preeti Nursing Bureau (Regd.), Rana Pratap Bagh.
+            </p>
+          </div>
+          <a href={JUSTDIAL_URL} target="_blank" rel="noopener noreferrer" className={buttonClass("field", "lg", "shrink-0 px-6 text-[17px]")}>
+            Read reviews on Justdial
+            <ArrowUpRightIcon size={18} weight="bold" aria-hidden />
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-12 border-t border-text/15 py-20 md:py-28 lg:grid-cols-[0.8fr_1.2fr]">
@@ -162,6 +200,7 @@ export default async function HomePage() {
 
       {/* Close */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
+        {close && <Photo image={close} className="aspect-[16/9] w-full rounded-[20px] sm:aspect-[21/9]" sizes="(min-width: 1152px) 1104px, 100vw" />}
         <div className="flex flex-col items-start justify-between gap-8 border-t border-text/15 py-20 md:flex-row md:items-end md:py-28">
           <h2 className="max-w-[15ch] font-display text-5xl font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-7xl">Talk to a person about your family.</h2>
           <div className="flex flex-wrap gap-3">
@@ -174,5 +213,13 @@ export default async function HomePage() {
         </div>
       </section>
     </>
+  );
+}
+
+function Photo({ image, className, sizes, priority }: { image: HomeImage; className: string; sizes: string; priority?: boolean }) {
+  return (
+    <div className={`relative overflow-hidden bg-field-soft ${className}`}>
+      <Image src={image.src} alt={image.alt} fill sizes={sizes} priority={priority} className="object-cover" />
+    </div>
   );
 }

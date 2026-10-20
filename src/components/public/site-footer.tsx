@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { JUSTDIAL_URL } from "@/content/links";
 import type { PublicSettings } from "@/lib/services/settings";
 import { formatPhoneDisplay, telHref, whatsappHref } from "@/lib/contact";
 
@@ -28,6 +29,7 @@ export function SiteFooter({ settings }: { settings: PublicSettings }) {
             {settings.businessHours && <li className="text-field-soft">{settings.businessHours}</li>}
             {settings.address && <li className="text-field-soft">{settings.address}</li>}
             <li><Link className={link} href="/contact">Contact page</Link></li>
+            <li><a className={link} href={JUSTDIAL_URL} target="_blank" rel="noopener noreferrer">Reviews on Justdial</a></li>
           </ul>
         </div>
         <div>

@@ -6,7 +6,7 @@ import { GO_EVENT, type GoDetail } from "@/lib/client/go-event";
 
 type Phase = "idle" | "cover" | "covered" | "reveal";
 
-const NURSE_BEAT_MS = 650; // let the nurse react before the curtain sweeps
+const PRESS_BEAT_MS = 120; // a beat for the button press to register before the curtain sweeps
 const COVER_MS = 650;
 const REVEAL_MS = 700;
 
@@ -30,11 +30,11 @@ export function PageCurtain() {
       fromPath.current = window.location.pathname;
       router.prefetch(href);
       timers.current = [
-        window.setTimeout(() => setPhase("cover"), NURSE_BEAT_MS),
+        window.setTimeout(() => setPhase("cover"), PRESS_BEAT_MS),
         window.setTimeout(() => {
           setPhase("covered");
           router.push(href);
-        }, NURSE_BEAT_MS + COVER_MS),
+        }, PRESS_BEAT_MS + COVER_MS),
       ];
     }
     window.addEventListener(GO_EVENT, onGo);
