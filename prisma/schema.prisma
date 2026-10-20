@@ -199,6 +199,17 @@ enum CallOutcome {
   OTHER
 }
 
+/// Separate staff records: caregivers (GDAs, attendants, nannies) and nurses.
+enum StaffKind {
+  CAREGIVER
+  NURSE
+}
+
+enum StaffFileKind {
+  PHOTO
+  AADHAAR
+}
+
 enum RatePeriod {
   PER_DAY
   PER_MONTH
@@ -492,7 +503,8 @@ model FollowUp {
 
 model Caregiver {
   id                 String             @id @default(uuid()) @db.Uuid
-  /// Human-readable caregiver ID, e.g. CG-0007.
+  kind               StaffKind          @default(CAREGIVER)
+  /// Human-readable ID: CG-0007 for caregivers, NR-0007 for nurses.
   code               String             @unique
   fullName           String
   phone              String
@@ -500,6 +512,10 @@ model Caregiver {
   photoUrl           String?
   gender             Gender             @default(UNSPECIFIED)
   skills             String[]
+  /// Patient conditions and care types handled (Paralysis, Child care, ...).
+  careTypes          String[]           @default([])
+  /// School education for caregivers (see lib/domain/staff.ts).
+  education          String?
   qualifications     String?
   experienceYears    Int                @default(0)
   languages          String[]
@@ -510,6 +526,9 @@ model Caregiver {
   payoutPeriod       RatePeriod         @default(PER_DAY)
   affiliation        AffiliationType    @default(INDEPENDENT)
   agencyName         String?
+  /// Cities outside Delhi the person works in (Gurugram, Noida, Ghaziabad,
+  /// Faridabad, Other). Delhi localities are in CaregiverArea.
+  workCities         String[]           @default([])
   /// Overall verification status. Always starts NOT_STARTED; only an admin
   /// can set it to VERIFIED.
   verificationStatus VerificationStatus @default(NOT_STARTED)
@@ -523,7 +542,10 @@ model Caregiver {
   verifications VerificationRecord[]
   assignments   Assignment[]
   notes         InternalNote[]
+  livingAreas   CaregiverLivingArea[]
+  files         StaffFile[]
 
+  @@index([kind, archivedAt])
   @@index([archivedAt, availabilityStatus])
   @@index([phone])
   @@index([fullName])
@@ -549,6 +571,44 @@ model CaregiverArea {
   @@index([serviceAreaId])
 }
 
+/// Where staff live, managed by the admin, used to cluster staff by locality.
+model LivingArea {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  caregivers CaregiverLivingArea[]
+}
+
+model CaregiverLivingArea {
+  caregiverId  String     @db.Uuid
+  livingAreaId String     @db.Uuid
+  caregiver    Caregiver  @relation(fields: [caregiverId], references: [id], onDelete: Cascade)
+  livingArea   LivingArea @relation(fields: [livingAreaId], references: [id], onDelete: Restrict)
+
+  @@id([caregiverId, livingAreaId])
+  @@index([livingAreaId])
+}
+
+/// Staff photo and Aadhaar image, stored in the database and served only
+/// through an authenticated admin route. One file per kind per person.
+model StaffFile {
+  id           String        @id @default(uuid()) @db.Uuid
+  caregiverId  String        @db.Uuid
+  kind         StaffFileKind
+  mimeType     String
+  size         Int
+  data         Bytes
+  uploadedById String?       @db.Uuid
+  createdAt    DateTime      @default(now())
+  caregiver    Caregiver     @relation(fields: [caregiverId], references: [id], onDelete: Cascade)
+
+  @@unique([caregiverId, kind])
+}
+
 /// Availability windows and temporary unavailability periods.
 model CaregiverAvailability {
   id          String           @id @default(uuid()) @db.Uuid
@@ -569,7 +629,7 @@ model VerificationRecord {
   type         VerificationType
   status       VerificationStatus @default(NOT_STARTED)
   /// Description of the document checked (e.g. "Aadhaar sighted, last 4 digits 1234").
-  /// Document files are not stored in the MVP.
+  /// Photo and Aadhaar images are stored separately in StaffFile.
   documentRef  String?
   expiresAt    DateTime?          @db.Date
   verifiedAt   DateTime?

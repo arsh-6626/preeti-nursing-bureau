@@ -11,8 +11,7 @@ import {
   contentPageSchema,
   pricingRuleSchema,
   serviceAreaSchema,
-  serviceCategorySchema,
-} from "@/lib/validation/admin";
+  serviceCategorySchema, livingAreaSchema } from "@/lib/validation/admin";
 
 /** Returns the singleton settings row, creating it with defaults if missing. */
 export async function getSettings() {
@@ -231,6 +230,34 @@ export async function setAreaActive(actor: Actor, id: string, isActive: boolean)
   await db.$transaction(async (tx) => {
     const area = await tx.serviceArea.update({ where: { id }, data: { isActive } });
     await audit({ actorId: actor.id, action: isActive ? "area.activate" : "area.deactivate", entityType: "ServiceArea", entityId: id, summary: `${isActive ? "Activated" : "Deactivated"} ${area.locality}, ${area.city}` }, tx);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Staff living areas (where caregivers and nurses live, for clustering)
+// ---------------------------------------------------------------------------
+
+export async function listLivingAreas(actor: Actor, { includeInactive = false } = {}) {
+  assertCan(actor, "caregiver:read");
+  return db.livingArea.findMany({ where: includeInactive ? {} : { isActive: true }, orderBy: [{ sortOrder: "asc" }, { name: "asc" }] });
+}
+
+export async function createLivingArea(actor: Actor, input: z.input<typeof livingAreaSchema>) {
+  assertCan(actor, "settings:write");
+  const data = livingAreaSchema.parse(input);
+  const exists = await db.livingArea.findFirst({ where: { name: { equals: data.name, mode: "insensitive" } } });
+  if (exists) throw new DomainError("This living area is already listed.");
+  await db.$transaction(async (tx) => {
+    const area = await tx.livingArea.create({ data });
+    await audit({ actorId: actor.id, action: "living_area.create", entityType: "LivingArea", entityId: area.id, summary: `Added living area ${area.name}` }, tx);
+  });
+}
+
+export async function setLivingAreaActive(actor: Actor, id: string, isActive: boolean) {
+  assertCan(actor, "settings:write");
+  await db.$transaction(async (tx) => {
+    const area = await tx.livingArea.update({ where: { id }, data: { isActive } });
+    await audit({ actorId: actor.id, action: isActive ? "living_area.activate" : "living_area.deactivate", entityType: "LivingArea", entityId: id, summary: `${isActive ? "Activated" : "Deactivated"} living area ${area.name}` }, tx);
   });
 }
 

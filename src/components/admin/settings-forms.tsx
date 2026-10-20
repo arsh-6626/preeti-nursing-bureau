@@ -8,8 +8,7 @@ import {
   saveCommissionPolicyAction,
   saveContentPageAction,
   savePricingAction,
-  saveServiceAction,
-} from "@/app/admin/actions/settings";
+  saveServiceAction, createLivingAreaAction } from "@/app/admin/actions/settings";
 import { COMMISSION_BASIS_LABELS, COMMISSION_RECOGNITION_LABELS, RATE_PERIOD_LABELS } from "@/lib/domain/labels";
 
 const opts = (r: Record<string, string>) => Object.entries(r).map(([value, label]) => ({ value, label }));
@@ -88,6 +87,15 @@ export function AreaForm() {
       <TextField name="locality" label="Locality" required />
       <TextField name="pincode" label="Pincode" inputMode="numeric" />
       <SubmitButton size="sm" variant="secondary" className="h-11">Add area</SubmitButton>
+    </ActionForm>
+  );
+}
+
+export function LivingAreaForm() {
+  return (
+    <ActionForm action={createLivingAreaAction} className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end" resetOnSuccess>
+      <TextField name="name" label="Area name" required placeholder="e.g. Shakti Nagar" />
+      <SubmitButton size="sm" variant="secondary" className="h-11">Add living area</SubmitButton>
     </ActionForm>
   );
 }

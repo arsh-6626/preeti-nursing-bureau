@@ -3,6 +3,7 @@
  * request. A score is a sorting aid only: it never confirms suitability or a
  * booking. Hard blockers (shift, availability, conflicts) prevent confirmation.
  */
+import { worksInCity } from "./staff";
 import type {
   AvailabilityKind,
   AvailabilityStatus,
@@ -32,6 +33,8 @@ export type MatchCaregiver = {
   serviceCategoryIds: string[];
   areaIds: string[];
   areaCities: string[];
+  /** Whole cities outside Delhi the person works in; "Other" covers unlisted cities. */
+  workCities: string[];
   gender: Gender;
   availabilityStatus: AvailabilityStatus;
   verificationStatus: VerificationStatus;
@@ -109,9 +112,11 @@ export function evaluateCaregiver(request: MatchRequest, caregiver: MatchCaregiv
     score += WEIGHTS.service / 2;
   }
 
-  const areaOk = request.serviceAreaId
-    ? caregiver.areaIds.includes(request.serviceAreaId)
-    : caregiver.areaCities.some((c) => c.toLowerCase() === request.city.toLowerCase());
+  // Choosing a whole city (e.g. Noida) counts as preferring every locality in it.
+  const areaOk =
+    (request.serviceAreaId
+      ? caregiver.areaIds.includes(request.serviceAreaId)
+      : caregiver.areaCities.some((c) => c.toLowerCase() === request.city.toLowerCase())) || worksInCity(caregiver.workCities, request.city);
   const cityOk = caregiver.areaCities.some((c) => c.toLowerCase() === request.city.toLowerCase());
   if (areaOk) {
     score += WEIGHTS.area;

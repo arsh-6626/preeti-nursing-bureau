@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   cacheComponents: false,
   poweredByHeader: false,
   devIndicators: false,
+  // Staff photo and Aadhaar uploads (resized in the browser to well under this).
+  experimental: { serverActions: { bodySizeLimit: "5mb" } },
   turbopack: {
     rules: {
       "*.css": {

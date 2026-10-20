@@ -4,7 +4,7 @@ import type { Actor } from "@/lib/auth/permissions";
 
 const TABLES = [
   "AuditLog", "CommissionRecord", "Payment", "FinancialAdjustment", "AssignmentEvent", "Assignment",
-  "VerificationRecord", "CaregiverAvailability", "CaregiverArea", "CaregiverService", "InternalNote",
+  "VerificationRecord", "CaregiverAvailability", "CaregiverArea", "CaregiverService", "CaregiverLivingArea", "LivingArea", "StaffFile", "InternalNote",
   "FollowUp", "StatusChange", "RequestStatusToken", "ServiceRequest", "Customer", "Caregiver", "PricingRule", "ServiceCategory",
   "ServiceArea", "ContactInquiry", "ContentPage", "BusinessSettings", "Session", "RateLimit", "User",
 ];

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PencilSimpleIcon } from "@phosphor-icons/react/ssr";
+import { IdentificationCardIcon, PencilSimpleIcon, UserIcon } from "@phosphor-icons/react/ssr";
 import { requirePermissionPage } from "@/lib/auth/dal";
 import { can, NotFoundError } from "@/lib/auth/permissions";
 import { getCaregiverDetail } from "@/lib/services/caregivers";
@@ -10,6 +10,9 @@ import { SHIFT_LABELS, fromDbShift } from "@/lib/domain/shift";
 import { formatDate, formatDateTime, toDateOnlyString } from "@/lib/domain/dates";
 import { formatINR } from "@/lib/domain/money";
 import { formatPhoneDisplay, telHref } from "@/lib/contact";
+import { DELHI, EDUCATION_LEVELS, STAFF, summariseWorkAreas, type EducationLevel } from "@/lib/domain/staff";
+import { listActiveAreas } from "@/lib/services/settings";
+import { staffFileUrl } from "@/lib/staff-files";
 import { PageHeader } from "@/components/admin/page-header";
 import { AssignmentStatusBadge, AvailabilityBadge, VerificationBadge } from "@/components/admin/status";
 import { DefinitionList, EmptyState, Notice, Panel } from "@/components/ui/panel";
@@ -19,7 +22,7 @@ import { InlineAction } from "@/components/admin/inline-action";
 import { AddVerificationForm, AvailabilityForm, CaregiverNoteForm, OverallVerificationForm, UpdateVerificationForm } from "@/components/admin/caregiver-detail-forms";
 import { archiveCaregiverAction, removeAvailabilityAction } from "@/app/admin/actions/caregivers";
 
-export const metadata: Metadata = { title: "Caregiver" };
+export const metadata: Metadata = { title: "Staff profile" };
 
 export default async function CaregiverPage({ params, searchParams }: PageProps<"/admin/caregivers/[id]">) {
   const actor = await requirePermissionPage("caregiver:read");
@@ -33,15 +36,25 @@ export default async function CaregiverPage({ params, searchParams }: PageProps<
   const canWrite = can(actor, "caregiver:write");
   const canVerify = can(actor, "caregiver:verification");
   const today = new Date();
+  const meta = STAFF[c.kind];
+  const photo = c.files.find((f) => f.kind === "PHOTO");
+  const aadhaar = c.files.find((f) => f.kind === "AADHAAR");
+  const delhiTotal = (await listActiveAreas()).filter((a) => a.city === DELHI).length;
+  const workIn = summariseWorkAreas(c.areas.map((a) => a.serviceArea), c.workCities, delhiTotal, { max: 40 });
   return (
     <>
       <PageHeader
-        back={{ href: "/admin/caregivers", label: "Caregivers" }}
+        back={{ href: meta.listPath, label: meta.plural }}
         title={
           <span className="flex flex-wrap items-center gap-3">
+            <span className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-full bg-teal-50 text-teal-700">
+              {/* eslint-disable-next-line @next/next/no-img-element -- served by an authenticated admin route */}
+              {photo ? <img src={staffFileUrl(c.id, "photo", photo.createdAt)} alt={`Photo of ${c.fullName}`} className="size-full object-cover" /> : <UserIcon size={24} aria-hidden />}
+            </span>
             {c.fullName} <span className="tabular text-base font-normal text-muted">{c.code}</span>
             <VerificationBadge status={c.verificationStatus} />
             <AvailabilityBadge status={c.availabilityStatus} />
+            <Badge tone="teal">{meta.label}</Badge>
             {c.archivedAt && <Badge tone="rose">Archived</Badge>}
           </span>
         }
@@ -55,13 +68,13 @@ export default async function CaregiverPage({ params, searchParams }: PageProps<
                 fields={{ caregiverId: c.id, archive: c.archivedAt ? "0" : "1" }}
                 label={c.archivedAt ? "Restore" : "Archive"}
                 variant={c.archivedAt ? "secondary" : "danger"}
-                confirm={c.archivedAt ? undefined : { title: "Archive this caregiver?", body: "They will no longer appear in matching. All history, assignments and payments are kept.", confirmLabel: "Archive" }}
+                confirm={c.archivedAt ? undefined : { title: `Archive this ${meta.label.toLowerCase()}?`, body: "They will no longer appear in matching. All history, assignments and payments are kept.", confirmLabel: "Archive" }}
               />
             </>
           ) : null
         }
       />
-      {sp.saved === "1" && <div className="mb-4"><Notice tone="success">Caregiver saved.</Notice></div>}
+      {sp.saved === "1" && <div className="mb-4"><Notice tone="success">{meta.label} saved.</Notice></div>}
 
       <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
         <div className="grid min-w-0 gap-6">
@@ -70,14 +83,17 @@ export default async function CaregiverPage({ params, searchParams }: PageProps<
               items={[
                 ["Mobile", <a key="p" href={telHref(c.phone) ?? undefined} className="tabular text-teal-700 hover:underline">{formatPhoneDisplay(c.phone)}</a>],
                 ["Email", c.email ?? "-"],
+                ["Lives in", <strong key="l" className="font-semibold">{c.livingAreas.map((l) => l.livingArea.name).join(", ") || "-"}</strong>],
                 ["Gender", GENDER_LABELS[c.gender]],
                 ["Experience", `${c.experienceYears} years`],
+                ...(c.kind === "CAREGIVER" ? ([["Education", c.education ? EDUCATION_LEVELS[c.education as EducationLevel] ?? c.education : "-"]] as [string, string][]) : []),
                 ["Languages", c.languages.join(", ") || "-"],
                 ["Services", c.services.map((s) => s.serviceCategory.name).join(", ") || "-"],
                 ["Skills", c.skills.join(", ") || "-"],
-                ["Qualifications", c.qualifications ?? "-"],
+                ["Can look after", c.careTypes.join(", ") || "-"],
+                [c.kind === "NURSE" ? "Nursing qualifications" : "Training", c.qualifications ?? "-"],
                 ["Shift types", <strong key="s" className="font-semibold">{c.supportedShifts.map((s) => SHIFT_LABELS[fromDbShift(s)]).join(", ")}</strong>],
-                ["Preferred areas", c.areas.map((a) => `${a.serviceArea.locality}, ${a.serviceArea.city}`).join("; ") || "-"],
+                ["Can work in", workIn || "-"],
                 ["Affiliation", `${AFFILIATION_LABELS[c.affiliation]}${c.agencyName ? ` (${c.agencyName})` : ""}`],
                 ...("payout12h" in c
                   ? ([
@@ -92,6 +108,14 @@ export default async function CaregiverPage({ params, searchParams }: PageProps<
           {canVerify && c.verifications && (
             <Panel title="Verification" description="Restricted to administrators. A profile is never verified automatically.">
               <OverallVerificationForm caregiverId={c.id} status={c.verificationStatus} />
+              <p className="mt-4 flex items-center gap-2 text-sm">
+                <IdentificationCardIcon size={18} className="text-muted" aria-hidden />
+                {aadhaar ? (
+                  <a href={staffFileUrl(c.id, "aadhaar", aadhaar.createdAt)} target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 underline">View Aadhaar image</a>
+                ) : (
+                  <span className="text-muted">No Aadhaar image uploaded{canWrite ? ". Add it from Edit." : "."}</span>
+                )}
+              </p>
               <div className="mt-5 border-t border-line pt-4">
                 {c.verifications.length === 0 ? (
                   <p className="text-sm text-muted">No checks recorded yet.</p>
@@ -160,7 +184,7 @@ export default async function CaregiverPage({ params, searchParams }: PageProps<
 
         <Panel title="Availability periods" description="Temporary unavailability and availability windows are checked before any confirmation." className="h-fit">
           {c.availability.length === 0 ? (
-            <p className="text-sm text-muted">No periods recorded. The caregiver is treated as available unless booked or marked unavailable.</p>
+            <p className="text-sm text-muted">No periods recorded. They are treated as available unless booked or marked unavailable.</p>
           ) : (
             <ul className="grid gap-2">
               {c.availability.map((p) => (

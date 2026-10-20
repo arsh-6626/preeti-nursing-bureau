@@ -5,11 +5,13 @@ import { redirect } from "next/navigation";
 import { requireActor } from "@/lib/auth/dal";
 import { formToObject, success, toActionState, type ActionState } from "@/lib/actions/state";
 import {
+  createLivingArea,
   createServiceArea,
   moveService,
   saveContentPage,
   saveServiceCategory,
   setAreaActive,
+  setLivingAreaActive,
   setServiceActive,
   updateBusinessSettings,
   updateCommissionPolicy,
@@ -95,6 +97,28 @@ export async function toggleAreaAction(_p: ActionState, fd: FormData): Promise<A
     await setAreaActive(actor, String(fd.get("id")), fd.get("active") === "1");
     revalidatePublic();
     return success("Service area updated.");
+  } catch (e) {
+    return toActionState(e);
+  }
+}
+
+export async function createLivingAreaAction(_p: ActionState, fd: FormData): Promise<ActionState> {
+  try {
+    const actor = await requireActor();
+    await createLivingArea(actor, formToObject(fd) as never);
+    revalidatePath("/admin/settings");
+    return success("Living area added.");
+  } catch (e) {
+    return toActionState(e);
+  }
+}
+
+export async function toggleLivingAreaAction(_p: ActionState, fd: FormData): Promise<ActionState> {
+  try {
+    const actor = await requireActor();
+    await setLivingAreaActive(actor, String(fd.get("id")), fd.get("active") === "1");
+    revalidatePath("/admin/settings");
+    return success("Living area updated.");
   } catch (e) {
     return toActionState(e);
   }

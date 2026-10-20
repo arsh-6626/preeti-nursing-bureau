@@ -10,24 +10,37 @@ import {
   addVerificationRecord,
   createCaregiver,
   removeAvailability,
+  prepareStaffFiles,
+  storeStaffFiles,
   setCaregiverArchived,
   setOverallVerification,
   updateCaregiver,
   updateVerificationRecord,
 } from "@/lib/services/caregivers";
 
-const ARRAYS = ["serviceCategoryIds", "areaIds", "supportedShifts"];
+const ARRAYS = ["serviceCategoryIds", "areaIds", "supportedShifts", "workCities", "livingAreaIds", "skills", "careTypes"];
+
+/** Takes an uploaded image out of the form data (an empty input arrives as a 0-byte file). */
+function takeFile(fd: FormData, name: string): File | null {
+  const v = fd.get(name);
+  fd.delete(name);
+  return v instanceof File && v.size > 0 ? v : null;
+}
 
 export async function saveCaregiverAction(_p: ActionState, fd: FormData): Promise<ActionState> {
   let id = String(fd.get("id") ?? "");
   try {
     const actor = await requireActor();
+    // Images are checked first so a rejected file never leaves a half-saved profile.
+    const files = await prepareStaffFiles(actor, { PHOTO: takeFile(fd, "photo"), AADHAAR: takeFile(fd, "aadhaar") });
     const data = formToObject(fd, ARRAYS);
     if (id) await updateCaregiver(actor, id, data as never);
     else id = (await createCaregiver(actor, data as never)).id;
+    await storeStaffFiles(actor, id, files);
   } catch (e) {
     return toActionState(e);
   }
+  revalidatePath("/admin/nurses");
   revalidatePath("/admin/caregivers");
   revalidatePath(`/admin/caregivers/${id}`);
   redirect(`/admin/caregivers/${id}?saved=1`);

@@ -37,3 +37,9 @@ test("staff cannot open finance, settings, users or unassigned leads", async ({ 
   await page.goto("/admin/leads");
   await expect(page.getByText(/No leads/)).toBeVisible();
 });
+
+test("staff images are never served without signing in", async ({ request }) => {
+  const res = await request.get("/admin/files/staff/00000000-0000-0000-0000-000000000000/aadhaar", { maxRedirects: 0 });
+  expect(res.status()).not.toBe(200);
+  expect(res.headers()["content-type"] ?? "").not.toMatch(/^image\//);
+});

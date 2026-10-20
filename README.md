@@ -3,7 +3,7 @@
 A website and admin system for Preeti Nursing Bureau, a bureau that connects families in Delhi NCR with General Duty Assistants, home nurses and patient attendants, and earns a commission on each successful placement.
 
 - **Public website:** services, how it works, a 6-step mobile-first care request form, a contact / call-back form, policy pages, and working phone and WhatsApp links.
-- **Admin:** leads, follow-ups, customers, caregivers with verification records, matching, administrator-confirmed assignments, manual payments, commission tracking, reports and settings.
+- **Admin:** leads, follow-ups, customers, separate caregiver and nurse records with verification, photo and Aadhaar images, matching, administrator-confirmed assignments, manual payments, commission tracking, reports and settings.
 
 Only **12-hour** and **24-hour** shifts exist anywhere in the system: in forms, the API, the database enum, matching, pricing, filters, reports and tests.
 
@@ -143,6 +143,8 @@ tests/unit, tests/integration, e2e/
 ## How the key rules are enforced
 
 **Two shift types only.** `src/lib/domain/shift.ts` is the single source of truth (`SHIFT_TYPES = ["12_HOURS", "24_HOURS"]` plus a Zod schema). The public schema is `.strict()`, so extra fields such as a free-text duration are rejected. The database column is a Postgres enum with exactly the two values; a test proves that a raw `UPDATE ... '8_HOURS'` fails. Caregivers store supported shifts as an array of that enum. Pricing rules are unique per service and shift. Day/night preference is a separate field and never changes the duration. 24-hour assignments require a written relief/rest/staffing plan before they can be confirmed.
+
+**Caregivers and nurses.** Both live in the `Caregiver` table with a `kind` (`CAREGIVER` or `NURSE`), fixed at creation, and have their own admin lists (`/admin/caregivers`, `/admin/nurses`), forms and codes (`CG-0001`, `NR-0001`). Option lists (education, skills, care types, work cities) are in `lib/domain/staff.ts`. Delhi is chosen by locality; outside Delhi by city (Gurugram, Noida, Ghaziabad, Faridabad, Others), and a whole city counts as a full locality match. "Living areas" are managed in Settings and shown as a column and filter to cluster staff by where they live. Photo and Aadhaar images are resized in the browser, checked by file signature on the server before anything is saved, stored in `StaffFile`, and served only through `/admin/files/staff/[id]/[kind]` (Aadhaar needs the verification permission, never cached).
 
 **Lead pipeline.** Statuses and allowed transitions are in `lib/domain/lead-status.ts`. Every change writes a `StatusChange` row recording who made it, plus an audit entry. "Caregiver assigned / Service active / Completed" require a confirmed assignment.
 

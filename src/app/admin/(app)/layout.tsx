@@ -28,6 +28,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
     { href: "/admin/follow-ups", label: "Follow-ups", icon: "followups", badge: dueFollowUps || undefined },
     { href: "/admin/assignments", label: "Assignments", icon: "assignments" },
     { href: "/admin/caregivers", label: "Caregivers", icon: "caregivers" },
+    { href: "/admin/nurses", label: "Nurses", icon: "nurses" },
     { href: "/admin/customers", label: "Customers", icon: "customers" },
   ];
   if (can(actor, "finance:read")) items.push({ href: "/admin/finance", label: "Finance", icon: "finance" });

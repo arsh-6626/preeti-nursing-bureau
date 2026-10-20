@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowDownIcon, ArrowUpIcon, PlusIcon } from "@phosphor-icons/react/ssr";
 import { requirePermissionPage } from "@/lib/auth/dal";
-import { getSettings, listAllAreas, listAllServices, listContentPages } from "@/lib/services/settings";
+import { getSettings, listAllAreas, listAllServices, listContentPages, listLivingAreas } from "@/lib/services/settings";
 import { SHIFT_LABELS, SHIFT_TYPES, toDbShift } from "@/lib/domain/shift";
 import { moneyString } from "@/lib/domain/money";
 import { PageHeader } from "@/components/admin/page-header";
@@ -10,8 +10,8 @@ import { Notice, Panel } from "@/components/ui/panel";
 import { Badge } from "@/components/ui/badge";
 import { LinkButton } from "@/components/ui/button";
 import { InlineAction } from "@/components/admin/inline-action";
-import { AreaForm, BusinessSettingsForm, CommissionPolicyForm, ContentPageForm, PricingForm } from "@/components/admin/settings-forms";
-import { moveServiceAction, toggleAreaAction, toggleServiceAction } from "@/app/admin/actions/settings";
+import { AreaForm, LivingAreaForm, BusinessSettingsForm, CommissionPolicyForm, ContentPageForm, PricingForm } from "@/components/admin/settings-forms";
+import { moveServiceAction, toggleAreaAction, toggleLivingAreaAction, toggleServiceAction } from "@/app/admin/actions/settings";
 
 export const metadata: Metadata = { title: "Settings" };
 
@@ -21,12 +21,19 @@ const SECTIONS = [
   ["services", "Services"],
   ["pricing", "Pricing"],
   ["areas", "Service areas"],
+  ["living", "Staff living areas"],
   ["pages", "Policy pages"],
 ] as const;
 
 export default async function SettingsPage() {
   const actor = await requirePermissionPage("settings:write");
-  const [s, services, areas, pages] = await Promise.all([getSettings(), listAllServices(actor), listAllAreas(actor), listContentPages(actor)]);
+  const [s, services, areas, pages, livingAreas] = await Promise.all([
+    getSettings(),
+    listAllServices(actor),
+    listAllAreas(actor),
+    listContentPages(actor),
+    listLivingAreas(actor, { includeInactive: true }),
+  ]);
   const missing = [!s.phone && "telephone", !s.whatsapp && "WhatsApp number", !s.businessHours && "business hours"].filter(Boolean);
   const cities = [...new Set(areas.map((a) => a.city))];
   return (
@@ -139,6 +146,22 @@ export default async function SettingsPage() {
               </div>
             ))}
           </div>
+        </Panel>
+
+        <Panel id="living" title="Staff living areas" description="Where caregivers and nurses live. These appear as checkboxes on the staff forms and as a filter, so you can find staff near a family." className="scroll-mt-6">
+          <LivingAreaForm />
+          {livingAreas.length === 0 ? (
+            <p className="mt-4 text-sm text-muted">No living areas yet. Add the localities your staff live in.</p>
+          ) : (
+            <ul className="mt-6 grid gap-x-8 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
+              {livingAreas.map((a) => (
+                <li key={a.id} className="flex items-center justify-between gap-2 text-sm">
+                  <span className={a.isActive ? "text-ink" : "text-muted line-through"}>{a.name}</span>
+                  <InlineAction action={toggleLivingAreaAction} fields={{ id: a.id, active: a.isActive ? "0" : "1" }} label={a.isActive ? "Deactivate" : "Activate"} variant="quiet" />
+                </li>
+              ))}
+            </ul>
+          )}
         </Panel>
 
         <Panel id="pages" title="Policy pages" description="Draft wording is provided. Review it, ideally with legal advice, before relying on it." className="scroll-mt-6">

@@ -4,6 +4,7 @@ import { SHIFT_TYPES, shiftTypeSchema } from "@/lib/domain/shift";
 import { isValidDateOnly } from "@/lib/domain/dates";
 import { MONEY_PATTERN } from "@/lib/domain/money";
 import { phoneSchema } from "./request";
+import { CARE_TYPE_OPTIONS, EDUCATION_LEVELS, WORK_CITIES } from "@/lib/domain/staff";
 
 const text = (max: number) => z.string().trim().max(max);
 const optionalText = (max: number) =>
@@ -185,9 +186,12 @@ export const customerSchema = z.object({
 // Caregivers
 // ---------------------------------------------------------------------------
 
+const tickList = (allowed: readonly string[]) => stringList.transform((v) => [...new Set(v)].filter((x) => allowed.includes(x)));
+
 export const caregiverSchema = z
   .object({
-    fullName: text(100).min(2, "Enter the caregiver's full name"),
+    kind: z.enum(["CAREGIVER", "NURSE"]).default("CAREGIVER"),
+    fullName: text(100).min(2, "Enter the full name"),
     phone: phoneSchema,
     email: z
       .string()
@@ -197,18 +201,19 @@ export const caregiverSchema = z
       .nullable()
       .transform((v) => (v ? v.toLowerCase() : null))
       .refine((v) => v === null || z.email().safeParse(v).success, "Enter a valid email address"),
-    photoUrl: z
-      .string()
-      .trim()
-      .max(500)
-      .optional()
-      .nullable()
-      .transform((v) => (v ? v : null))
-      .refine((v) => v === null || /^https:\/\//.test(v), "Use an https:// image link"),
     gender: z.enum(["FEMALE", "MALE", "OTHER", "UNSPECIFIED"]),
     serviceCategoryIds: stringList.pipe(z.array(z.uuid())),
     areaIds: stringList.pipe(z.array(z.uuid())),
-    skills: csvList,
+    workCities: tickList(WORK_CITIES),
+    livingAreaIds: stringList.pipe(z.array(z.uuid())),
+    // Checkbox values; skills recorded before the checklist existed are kept as extra ticked options.
+    skills: stringList.transform((v) => [...new Set(v.map((x) => x.trim()).filter(Boolean))]).pipe(z.array(z.string().max(60)).max(40)),
+    careTypes: tickList(CARE_TYPE_OPTIONS),
+    education: z
+      .enum(Object.keys(EDUCATION_LEVELS) as [string, ...string[]])
+      .optional()
+      .or(z.literal("").transform(() => undefined))
+      .transform((v) => v ?? null),
     qualifications: optionalText(1000),
     experienceYears: z.coerce.number().int().min(0, "Cannot be negative").max(70),
     languages: csvList,
@@ -437,6 +442,10 @@ export const serviceCategorySchema = z.object({
   notes: optionalText(1000),
   isNursing: z.union([z.literal("on"), z.literal("")]).optional().transform((v) => v === "on"),
   isActive: z.union([z.literal("on"), z.literal("")]).optional().transform((v) => v === "on"),
+});
+
+export const livingAreaSchema = z.object({
+  name: text(120).min(2, "Enter the area name"),
 });
 
 export const serviceAreaSchema = z.object({

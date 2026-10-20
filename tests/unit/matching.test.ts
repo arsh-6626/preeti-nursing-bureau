@@ -19,6 +19,7 @@ const caregiver = (overrides: Partial<MatchCaregiver> = {}): MatchCaregiver => (
   serviceCategoryIds: ["svc-gda"],
   areaIds: ["area-noida-62"],
   areaCities: ["Noida"],
+  workCities: [],
   gender: "FEMALE",
   availabilityStatus: "AVAILABLE",
   verificationStatus: "VERIFIED",
@@ -80,6 +81,13 @@ describe("matching", () => {
     expect(r.checks.filter((c) => !c.ok).map((c) => c.label)).toEqual(
       expect.arrayContaining(["Does not match gender preference", "Location is outside preferred areas"]),
     );
+  });
+
+  it("counts a whole work city as a full area match", () => {
+    const byCity = evaluateCaregiver(request, caregiver({ areaIds: [], areaCities: [], workCities: ["Noida"] }));
+    const byLocality = evaluateCaregiver(request, caregiver());
+    expect(byCity.score).toBe(byLocality.score);
+    expect(byCity.checks).toContainEqual({ ok: true, label: "Prefers this locality" });
   });
 
   it("puts eligible caregivers before blocked ones", () => {

@@ -41,7 +41,7 @@ async function makeCaregiver(overrides: Record<string, unknown> = {}) {
     gender: "FEMALE",
     serviceCategoryIds: [cat.gda.id],
     areaIds: [cat.area.id],
-    skills: "Mobility support, Feeding",
+    skills: ["Mobility support", "Feeding"],
     experienceYears: "5",
     languages: "Hindi, English",
     availabilityStatus: "AVAILABLE",
