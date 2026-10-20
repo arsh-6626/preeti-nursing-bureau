@@ -1,8 +1,9 @@
 /**
- * Sets a new password for an administrator and signs them out everywhere.
- * The password is read from the environment and never stored in the repo.
+ * Sets a new password (and optionally a new email) for an administrator and
+ * signs them out everywhere. Values come from the environment and are never
+ * stored in the repo.
  *
- *   DATABASE_URL=... NEW_PASSWORD='...' [ADMIN_EMAIL=...] npx tsx prisma/reset-admin-password.ts
+ *   DATABASE_URL=... NEW_PASSWORD='...' [NEW_EMAIL=...] [ADMIN_EMAIL=...] npx tsx prisma/reset-admin-password.ts
  *
  * Without ADMIN_EMAIL it resets the only active administrator, and refuses
  * if there is more than one.
@@ -22,11 +23,12 @@ async function main() {
   if (admins.length === 0) throw new Error(email ? `No user ${email}` : "No active administrator found");
   if (admins.length > 1) throw new Error(`Several administrators (${admins.map((a) => a.email).join(", ")}): set ADMIN_EMAIL`);
   const [admin] = admins;
+  const newEmail = process.env.NEW_EMAIL?.trim().toLowerCase() || admin.email;
   await db.$transaction([
-    db.user.update({ where: { id: admin.id }, data: { passwordHash: await bcrypt.hash(password, 12), isActive: true } }),
+    db.user.update({ where: { id: admin.id }, data: { email: newEmail, passwordHash: await bcrypt.hash(password, 12), isActive: true } }),
     db.session.deleteMany({ where: { userId: admin.id } }),
   ]);
-  console.log(`Password updated for ${admin.email}. Existing sessions were signed out.`);
+  console.log(`Administrator ${newEmail}: password updated, existing sessions signed out.`);
 }
 
 main()

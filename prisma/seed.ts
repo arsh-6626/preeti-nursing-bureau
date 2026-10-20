@@ -13,6 +13,8 @@ import { LEGAL_PAGES, ABOUT_TEXT } from "./seed-content";
 import { DISCLAIMER_PAGE } from "../src/content/disclaimer";
 import { AREAS } from "./areas";
 
+const DEFAULT_ADMIN_EMAIL = "arsh@preetinursing.com";
+
 const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }) });
 
 const SERVICES = [
@@ -122,7 +124,7 @@ async function main() {
   // Supplied by the bureau, so it is published as written.
   await db.contentPage.upsert({ where: { slug: DISCLAIMER_PAGE.slug }, update: {}, create: { slug: DISCLAIMER_PAGE.slug, title: DISCLAIMER_PAGE.title, body: DISCLAIMER_PAGE.body, needsReview: false } });
 
-  const email = process.env.SEED_ADMIN_EMAIL?.toLowerCase();
+  const email = (process.env.SEED_ADMIN_EMAIL ?? DEFAULT_ADMIN_EMAIL).toLowerCase();
   const password = process.env.SEED_ADMIN_PASSWORD;
   if (email && password) {
     if (password.length < 12) throw new Error("SEED_ADMIN_PASSWORD must be at least 12 characters");
@@ -134,7 +136,7 @@ async function main() {
       console.log(`Created administrator ${email}`);
     }
   } else {
-    console.warn("SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD not set: no administrator created.");
+    console.warn("SEED_ADMIN_PASSWORD not set: no administrator created.");
   }
   console.log("Base seed complete.");
 }

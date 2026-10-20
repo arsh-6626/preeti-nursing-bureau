@@ -73,7 +73,7 @@ Without Docker, create two databases (for example `pnb` and `pnb_test`) on any P
 | `TEST_DATABASE_URL` | for tests | A **separate** database; the test suites truncate it |
 | `SESSION_SECRET` | yes | Random secret used when hashing client fingerprints for rate limiting (`openssl rand -base64 32`) |
 | `APP_URL` | recommended | Public base URL |
-| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD` | first run | Creates the first administrator during `npm run db:seed` (password 12+ chars) |
+| `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD` | first run | Creates the first administrator during `npm run db:seed` (password 12+ chars; email defaults to `arsh@preetinursing.com`) |
 | `NEXT_PUBLIC_CONTACT_PHONE`, `NEXT_PUBLIC_CONTACT_WHATSAPP` | optional | Fallbacks used only if Settings has no number |
 | `BCRYPT_COST` | optional | Password hashing cost, default 12 |
 
@@ -201,6 +201,7 @@ Any Node.js host with PostgreSQL works (for example a VPS with Docker, Railway, 
 2. `npm ci` (runs `prisma generate`).
 3. `npm run db:deploy` to apply migrations.
 4. First time only: set `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` and run `npm run db:seed`, then remove those variables.
+5. To change the administrator's password or email later: `DATABASE_URL=... NEW_PASSWORD='...' NEW_EMAIL=... npx tsx prisma/reset-admin-password.ts`.
 5. `npm run build && npm run start` (port 3000 by default; use `-p` to change).
 6. Serve over HTTPS behind a reverse proxy that sets `X-Forwarded-For` (used for rate limiting).
 7. Back up the database daily. It holds the only copy of payments and history.
