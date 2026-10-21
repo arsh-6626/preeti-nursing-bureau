@@ -54,3 +54,7 @@ src/generated/
 /.claude/
 /skills-lock.json
 /.impeccable/review/
+
+# local one-off scripts
+/*-tmp.mjs
+/prod-check.mjs
