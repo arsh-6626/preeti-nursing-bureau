@@ -28,9 +28,8 @@ export const HOME_IMAGES = {
   call: img("family-talks", "An attendant talks through the day's care with a patient and his son"),
 };
 
-/** Care outside the bedroom. */
+/** Care outside the house. */
 export const BEYOND_HOME: (HomeImage & { caption: string })[] = [
   { ...img("male-park-walk", "An attendant walks with an elderly man in a park"), caption: "Morning walks" },
   { ...img("female-wheelchair-park", "A caregiver pushes an elderly woman's wheelchair through a garden"), caption: "Wheelchair outings" },
-  { ...img("baby-care", "A japa maid cares for a newborn while the mother rests"), caption: "Newborn and mother care" },
 ];

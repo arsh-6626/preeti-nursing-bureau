@@ -7,6 +7,7 @@ import { BEYOND_HOME, HERO_GALLERY, HOME_IMAGES, type HomeImage } from "@/conten
 import { HeroGallery } from "@/components/public/hero-gallery";
 import { JUSTDIAL_URL } from "@/content/links";
 import { WhosWho } from "@/components/public/whos-who";
+import { ServiceGrid } from "@/components/public/service-grid";
 import { buttonClass } from "@/components/ui/button";
 import { CaregiverCta } from "@/components/public/caregiver-cta";
 import { FAQS } from "@/components/public/faqs";
@@ -29,7 +30,7 @@ export default async function HomePage() {
       <section className="overflow-hidden">
         <div className="mx-auto grid max-w-[1320px] items-center gap-x-12 gap-y-10 px-4 pb-14 pt-10 sm:px-6 lg:grid-cols-[1fr_0.95fr] lg:pb-12 lg:pt-6">
           <div className="lg:pl-6">
-            <h1 className="max-w-[16ch] font-display text-[2.7rem] font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-[4rem] lg:text-[4.4rem]">
+            <h1 className="max-w-[18ch] font-display text-[2.3rem] font-bold leading-[1.04] tracking-[-0.025em] text-field sm:text-[3.1rem] lg:text-[3.4rem]">
               {settings.heroHeadline}
             </h1>
             <p className="mt-7 max-w-[40ch] text-lg leading-relaxed text-text-2 sm:text-xl">{settings.heroSubtext}</p>
@@ -49,11 +50,11 @@ export default async function HomePage() {
       <section id="who" className="mx-auto max-w-6xl scroll-mt-24 border-t border-text/15 px-4 py-20 sm:px-6 md:py-28">
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
-            <h2 className="max-w-[14ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
-              A caregiver or a nurse?
+            <h2 className="max-w-[14ch] font-display text-3xl font-bold leading-[1.08] tracking-[-0.02em] text-text sm:text-4xl">
+              Who will look after them?
             </h2>
             <p className="mt-5 max-w-[42ch] text-lg leading-relaxed text-text-2">
-              Most families need everyday personal care, not nursing. Here is what each one does, so you can ask for the right person. Not sure? We will help you decide on the call.
+              Most families need a gentle helping hand every day, not a nurse. Here is what each can do. Not sure what your loved one needs? We will work it out together on the call.
             </p>
           </div>
           <WhosWho />
@@ -74,22 +75,22 @@ export default async function HomePage() {
       {/* Shift lengths */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-12 border-t border-text/15 py-20 md:py-28 lg:grid-cols-[0.85fr_1.15fr]">
-          <h2 className="max-w-[14ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
-            Two shift lengths: 12 hours or 24 hours
+          <h2 className="max-w-[14ch] font-display text-3xl font-bold leading-[1.08] tracking-[-0.02em] text-text sm:text-4xl">
+            Someone by their side for 12 hours, or all day and night
           </h2>
           <div className="grid gap-10 sm:grid-cols-2">
             <div>
               <Photo image={shift12} className="mb-6 aspect-square w-full rounded-[16px]" sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" />
               <h3 className="border-t-[3px] border-field pt-5 font-display text-2xl font-bold text-text">12 hours</h3>
               <p className="mt-3 text-lg leading-relaxed text-text-2">
-                A caregiver is with the patient for a day or a night shift. The family, or a second caregiver, covers the remaining hours. Timings are agreed with you on the call.
+                Your caregiver is with them through the day or the night, so you can get to work or rest. The other hours are with you or a second caregiver, at times you choose.
               </p>
             </div>
             <div>
               <Photo image={shift24} className="mb-6 aspect-square w-full rounded-[16px]" sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" />
               <h3 className="border-t-[3px] border-field pt-5 font-display text-2xl font-bold text-text">24 hours</h3>
               <p className="mt-3 text-lg leading-relaxed text-text-2">
-                Round-the-clock care at home. Rest breaks and relief are planned with you before care starts, so no one works around the clock without a break.
+                Someone is always there, day and night. We plan rest breaks and relief with you before care starts, so your caregiver stays fresh and attentive.
               </p>
             </div>
           </div>
@@ -99,25 +100,12 @@ export default async function HomePage() {
       {/* Services index */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-6 border-t border-text/15 pt-20 md:pt-28">
-          <h2 className="font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">Care we arrange</h2>
+          <h2 className="font-display text-3xl font-bold leading-[1.08] tracking-[-0.02em] text-text sm:text-4xl">How we can help your family</h2>
           <Link href="/services" className="font-semibold text-field underline-offset-4 hover:underline">All services</Link>
         </div>
-        <ul className="mt-10 border-t border-text/15">
-          {services.map((s) => (
-            <li key={s.id} className="border-b border-text/15">
-              <Link href={`/services/${s.slug}`} className="group grid items-baseline gap-2 py-6 sm:grid-cols-[1fr_1.1fr_auto] sm:gap-8">
-                <span className="flex flex-wrap items-baseline gap-3">
-                  <span className="font-display text-2xl font-bold tracking-[-0.02em] text-text decoration-marigold decoration-[3px] underline-offset-[6px] group-hover:underline sm:text-[1.9rem]">
-                    {s.name}
-                  </span>
-                  {s.isNursing && <span className="rounded-[6px] bg-field px-2 py-0.5 text-xs font-semibold text-white">Nurse</span>}
-                </span>
-                <span className="text-text-2">{s.summary}</span>
-                <ArrowUpRightIcon size={22} className="hidden text-text transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 sm:block" aria-hidden />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-10">
+          <ServiceGrid services={services} />
+        </div>
       </section>
 
       {/* How it works */}
@@ -125,8 +113,8 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 sm:px-6 md:py-28 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
           <Photo image={call} className="aspect-square w-full rounded-[20px]" sizes="(min-width: 1024px) 480px, 100vw" />
           <div>
-            <h2 className="max-w-[16ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">
-              A person on the phone at every step
+            <h2 className="max-w-[16ch] font-display text-3xl font-bold leading-[1.08] tracking-[-0.02em] text-text sm:text-4xl">
+              A real person, with you at every step
             </h2>
             <ol className="mt-10 grid gap-8 sm:grid-cols-2">
               {STEPS.map((s, i) => (
@@ -144,11 +132,11 @@ export default async function HomePage() {
       {/* Care beyond the bedroom */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="border-t border-text/15 py-20 md:py-28">
-          <h2 className="max-w-[18ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">Care that goes where they go</h2>
-          <ul className="mt-10 grid gap-6 sm:grid-cols-3">
+          <h2 className="max-w-[18ch] font-display text-3xl font-bold leading-[1.08] tracking-[-0.02em] text-text sm:text-4xl">Out in the fresh air, too</h2>
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2">
             {BEYOND_HOME.map((b) => (
               <li key={b.src}>
-                <Photo image={b} className="aspect-square w-full rounded-[16px]" sizes="(min-width: 640px) 33vw, 100vw" />
+                <Photo image={b} className="aspect-square w-full rounded-[16px]" sizes="(min-width: 640px) 50vw, 100vw" />
                 <p className="mt-3 font-display text-xl font-bold text-text">{b.caption}</p>
               </li>
             ))}
@@ -179,7 +167,7 @@ export default async function HomePage() {
       <section className="mx-auto mb-16 max-w-6xl px-4 sm:px-6 md:mb-20">
         <div className="flex flex-col items-start justify-between gap-6 rounded-[20px] bg-field-soft px-6 py-10 sm:px-10 md:flex-row md:items-center">
           <div>
-            <h2 className="font-display text-3xl font-bold leading-[1.05] tracking-[-0.02em] text-text sm:text-4xl">What families say about us</h2>
+            <h2 className="font-display text-3xl font-bold leading-[1.05] tracking-[-0.02em] text-text sm:text-4xl">Hear from families we have cared for</h2>
             <p className="mt-3 max-w-[52ch] text-lg leading-relaxed text-text-2">
               Read reviews from families we have worked with on our Justdial listing, Preeti Nursing Bureau (Regd.), Rana Pratap Bagh.
             </p>
@@ -195,7 +183,7 @@ export default async function HomePage() {
       {/* FAQ */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-12 border-t border-text/15 py-20 md:py-28 lg:grid-cols-[0.8fr_1.2fr]">
-          <h2 className="max-w-[12ch] font-display text-4xl font-bold leading-[1.02] tracking-[-0.025em] text-text sm:text-5xl">Questions families ask</h2>
+          <h2 className="max-w-[12ch] font-display text-3xl font-bold leading-[1.08] tracking-[-0.02em] text-text sm:text-4xl">Things families often ask us</h2>
           <div className="border-t border-rule">
             {FAQS.map((f) => (
               <details key={f.q} className="group border-b border-rule py-5 [&_summary::-webkit-details-marker]:hidden">
@@ -213,7 +201,7 @@ export default async function HomePage() {
       {/* Close */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-col items-start justify-between gap-8 border-t border-text/15 py-20 md:flex-row md:items-end md:py-28">
-          <h2 className="max-w-[15ch] font-display text-5xl font-bold leading-[0.98] tracking-[-0.03em] text-field sm:text-7xl">Talk to a person about your family.</h2>
+          <h2 className="max-w-[16ch] font-display text-4xl font-bold leading-[1.04] tracking-[-0.025em] text-field sm:text-5xl">We would love to hear about your family.</h2>
           <div className="flex flex-wrap gap-3">
             <CaregiverCta href="/request" className={buttonClass("field", "lg", "px-6 text-[17px]")}>
               Find a Caregiver

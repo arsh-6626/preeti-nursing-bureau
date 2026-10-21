@@ -91,6 +91,15 @@ const SERVICES = [
     requiredSkills: ["Consistency", "Daily routine support"],
     isNursing: false,
   },
+  {
+    slug: "baby-care",
+    name: "Baby Care (Japa Maid)",
+    summary: "Newborn and mother care in the first weeks at home.",
+    description:
+      "An experienced japa maid helps with the newborn and the new mother: bathing and oil massage for the baby, burping and settling, keeping the nursery clean, and supporting the mother's rest and recovery. This is caregiving, not medical care; follow your paediatrician's advice for the baby's health.",
+    requiredSkills: ["Newborn bathing and massage", "Feeding and burping support", "Mother's postnatal care"],
+    isNursing: false,
+  },
 ];
 
 async function main() {

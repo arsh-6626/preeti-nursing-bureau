@@ -338,8 +338,8 @@ model BusinessSettings {
   businessHours         String?
   address               String?
   regionLabel           String                @default("Delhi NCR")
-  heroHeadline          String                @default("Patient care at home, arranged by people who call you back")
-  heroSubtext           String                @default("Tell us what your family needs. We call you, understand the situation, and suggest a suitable caregiver.")
+  heroHeadline          String                @default("Caring for your loved ones, as we would our own")
+  heroSubtext           String                @default("Tell us about the person you are worried about. We will call you back, listen, and find someone kind and trained to look after them at home.")
   aboutText             String                @default("")
   consentText           String                @default("I agree to be contacted by phone or WhatsApp about this request.")
   whatsappPrefill       String                @default("Hello, I would like to ask about patient care at home.")
